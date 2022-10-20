@@ -99,7 +99,7 @@ function saveBook(saveValue: boolean, index: number) {
                     <i v-if="saved" class="fa-solid fa-circle-xmark" />
                 </HTMLButton>
             </aside>
-            <LibBook
+            <LazyLibBook
                 v-if="books"
                 v-for="(book, i) in books"
                 :book="book"

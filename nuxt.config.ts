@@ -10,6 +10,7 @@ export default defineNuxtConfig({
         public: {
             API: 'http://localhost:8080',
             NODE_ENV: 'dev' as 'dev' | 'prod',
+            WS: 'localhost:7000',
         },
     },
     typescript: {
@@ -19,7 +20,11 @@ export default defineNuxtConfig({
     css: ["@/assets/scss/main.scss"],
     modules: [
         '@pinia/nuxt',
+        '@nuxt/image-edge',
     ],
+    image: {
+        domains: ['s3.amazonaws.com'],
+    },
     imports: {
         dirs: ['stores'],
     },

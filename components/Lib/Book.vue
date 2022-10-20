@@ -36,7 +36,7 @@ async function saveBook() {
         <NuxtLink :to="`/biblioteca/libro/${book.slug}`">
             <header>
                 <h2>{{ book.name }}</h2>
-                <img :src="book.image.url" :alt="book.name" />
+                <NuxtImg :src="book.image.url" :alt="book.name" loading="lazy" preload />
             </header>
         </NuxtLink>
         <section class="Ranking">

@@ -1,4 +1,4 @@
-import { HTMLTableSmall } from "#components"
+import { HTMLTableSmall, NuxtImg } from "#components"
 import type { Author } from "~~/models/library/author.model"
 import { urlify } from "~~/utils/format"
 
@@ -66,7 +66,7 @@ export default defineComponent({
                         <pre>{this.author.biography}</pre>
                     </header>
                     <picture>
-                        <img style={this.Img} src={this.author.image?.url} alt={this.author.name} />
+                        <NuxtImg style={this.Img} src={this.author.image?.url} alt={this.author.name} />
                         <HTMLTableSmall>
                             {this.author.table_info.map(({ key, value }, i) => {
                                 return (

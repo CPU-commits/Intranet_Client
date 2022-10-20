@@ -120,7 +120,7 @@ function downloadBook() {
         </section>
         <footer>
             <h5>Editorial</h5>
-            <img
+            <NuxtImg
                 :src="(book.editorial as Editorial).image.url"
                 :alt="(book.editorial as Editorial).editorial"
             />

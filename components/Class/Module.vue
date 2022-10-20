@@ -16,10 +16,11 @@ const { moduleData, isHistory } = defineProps<{
     <article class="Module">
         <NuxtLink :to="`/aula_virtual/clase/${moduleData._id}`">
             <header>
-                <img
+                <NuxtImg
                     :class="isHistory ? 'IsHistoryImg' : ''"
                     :src="moduleData.section.file.url"
                     :alt="moduleData.section.section"
+					loading="lazy"
                 />
                 <h3>
                     {{ moduleData.subject.subject }}

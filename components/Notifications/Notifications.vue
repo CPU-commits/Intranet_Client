@@ -8,6 +8,8 @@ import onScroll from '~~/utils/onScroll';
 import { UserTypesKeys } from '~~/models/user/user.model';
 // Nuxtapp
 const { $fetchModule, $notificationService } = useNuxtApp()
+// Config
+const config = useRuntimeConfig()
 // Composable
 const notificationsNumber = useNotification()
 const spinner = useSpinner()
@@ -52,7 +54,7 @@ async function getNotifications(total = false, skip = 0) {
 const notificationsOpen = ref(false)
 
 onMounted(async () => {
-    const socket = io(`ws://localhost:7000`, {
+    const socket = io(`ws://${config.public.WS}`, {
         extraHeaders: {
             Authorization: auth.getToken ?? '',
         },
@@ -63,7 +65,7 @@ onMounted(async () => {
     })
     /* Students socket */
     if (auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE)) {
-        const socketStudents = io(`ws://localhost:7000/students`, {
+        const socketStudents = io(`ws://${config.public.WS}/students`, {
             extraHeaders: {
                 Authorization: auth.getToken ?? '',
             },

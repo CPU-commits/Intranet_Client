@@ -87,7 +87,7 @@ function deleteAnnoucement(index: number) {
 				<article class="News">
 					<header>
 						<h2>{{ _news.title }}</h2>
-						<img :src="_news.image.url" :alt="_news.title" />
+						<NuxtImg :src="_news.image.url" :alt="_news.title" preload />
 					</header>
 					<footer>
 						<small>

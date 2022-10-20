@@ -92,7 +92,7 @@ async function deleteNews() {
                     <p>{{ news.headline }}</p>
                 </div>
             </section>
-            <img :src="news.image.url" :alt="news.title" />
+            <NuxtImg :src="news.image.url" :alt="news.title" loading="lazy" preload />
         </NuxtLink>
         <footer class="News__details">
             <button @click="likeNews"> 

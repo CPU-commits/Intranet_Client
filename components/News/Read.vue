@@ -23,7 +23,7 @@ const { news } = defineProps<{
                     </span>
                 </span>
             </header>
-            <img :src="news.image.url" :alt="news.title" />
+			<NuxtImg :src="news.image.url" :alt="news.title" fit="cover" />
             <HTMLRich :haveBackground="false" :readOnly="true" :body="news.body" />
         </div>
     </section>
@@ -55,7 +55,6 @@ const { news } = defineProps<{
 	img {
 		width: 100%;
 		max-height: 400px;
-		object-fit: cover;
 		margin-bottom: 30px;
 	}
 
@@ -78,7 +77,8 @@ const { news } = defineProps<{
 	}
 
 	.News__container--author,
-	.News__container--author i {
+	.News__container--author i,
+	.News__container--author span {
 		color: var(--color-main);
 		font-weight: bold;
 	}
