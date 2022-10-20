@@ -19,7 +19,15 @@ const url = route.path
 // Menu
 const menuOpen = ref(false)
 
-onMounted(async () => {
+watch(() => auth.isAuth, (newValue) => {
+	if (newValue) getVotingStatus()
+})
+
+onMounted(() => {
+	if (auth.isAuth) getVotingStatus()
+})
+
+async function getVotingStatus() {
 	try {
 		const dataFetch = await $fetchModule.fetchData<BodyFetch<{
 			status: keyof typeof VotingStatus
@@ -33,7 +41,7 @@ onMounted(async () => {
 	} catch (err) {
 		console.error(err)
 	}
-})
+}
 
 function toggleMenu() {
 	if (!open) {
