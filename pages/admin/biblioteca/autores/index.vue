@@ -1,0 +1,96 @@
+<script setup lang="ts">
+// Types
+import type { ErrorFetch } from '~~/common/fetchModule';
+import type { Author } from '~~/models/library/author.model'
+import { UserTypesKeys } from '~~/models/user/user.model'
+
+// Utils
+import { formatDate } from '~~/utils/format'
+// Guard
+definePageMeta({
+    middleware: 'role',
+    roles: [
+        UserTypesKeys.DIRECTIVE,
+        UserTypesKeys.DIRECTOR,
+        UserTypesKeys.LIBRARIAN,
+    ],
+})
+// Nuxtapp
+const {
+    $libraryService,
+    $fetchModule,
+} = useNuxtApp()
+// Composable
+const spinner = useSpinner()
+
+// Promises
+const authors = ref<Array<Author> | null>(null)
+
+const error = ref<ErrorFetch | null>(null)
+onMounted(async () =>{
+    try {
+        authors.value = await $libraryService.getAuthors()
+    } catch (err){
+        const _err = $fetchModule.handleError(err)
+        error.value = _err
+    }
+})
+
+// Functions
+async function deleteAuthor(idAuthor: string) {
+    const dataFetch = await $libraryService.deleteAuthor(idAuthor)
+    if (dataFetch && authors.value)
+        authors.value = authors.value.filter((author) => {
+            if (author._id !== idAuthor) return author
+        })
+}
+</script>
+
+<template>
+    <NuxtLayout name="admin">
+        <AdminPanel>
+            <template #nav>
+                <Icons>
+                    <HTMLAIcon
+                        title="Nuevo autor"
+                        href="/admin/biblioteca/autores/nuevo_autor"
+                        classItem="fa-solid fa-plus"
+                    />
+                </Icons>
+            </template>
+            <h2>Autores</h2>
+            <!-- Data -->
+            <br />
+            <HTMLTable :header="['Nombre', 'Fecha', 'Ver entrada', 'Editar', '']">
+                <tr v-for="author in authors" :key="author._id">
+                    <td>{{ author.name }}</td>
+                    <td>{{ formatDate(author.date_update) }}</td>
+                    <td>
+                        <HTMLAIcon
+                            :href="`/biblioteca/autor/${author.slug}`"
+                            classItem="fa-solid fa-pager"
+                        />
+                    </td>
+                    <td>
+                        <HTMLAIcon
+                            target="'_blank'"
+                            :href="`/admin/biblioteca/autores/editar/${author.slug}`"
+                            classItem="fa-solid fa-pen-to-square"
+                        />
+                    </td>
+                    <td>
+                        <HTMLButtonIcon
+                            title="Eliminar autor"
+                            classItem="fa-solid fa-circle-minus"
+                            :click="() => deleteAuthor(author._id)"
+                        />
+                    </td>
+                </tr>
+            </HTMLTable>
+            <span v-if="authors && authors.length === 0">Sin autores...</span>
+
+            <SpinnerGet v-if="spinner" />
+            <Error v-if="error" :err="error" />
+        </AdminPanel>
+    </NuxtLayout>
+</template>

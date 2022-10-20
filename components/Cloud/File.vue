@@ -1,0 +1,143 @@
+<script setup lang="ts">
+// Types
+import { UserFile } from '~~/models/file/file.model';
+// Utils
+import { getIcon } from '@@/utils/getIcon'
+import { formatDate } from '~~/utils/format';
+// Props
+const {
+    file,
+    edit,
+    idModule,
+    canDownload,
+    minimalist,
+    isClassroom,
+} = withDefaults(defineProps<{
+    file: UserFile
+    edit?: boolean
+    idModule?: string
+    canDownload?: boolean
+    minimalist?: boolean
+    isClassroom?: boolean
+}>(), { edit: false, canDownload: true, minimalist: false, isClassroom: false })
+// Nuxtapp
+const {
+    $filesService,
+} = useNuxtApp()
+// Emits
+defineEmits<{
+    (e: 'delete', index: string): void
+}>()
+
+async function downloadFile() {
+    if (canDownload) {
+        let urlToken: string | undefined
+        if (isClassroom && idModule) {
+            urlToken = await $filesService.downloadFileClassroom(
+                file._id.$oid,
+                idModule,
+            )
+        } else {
+            urlToken = await $filesService.downloadFile(file._id.$oid)
+        }
+        // Download
+        if (urlToken !== undefined)
+            $filesService.downloadFileUrl(urlToken)
+    }
+}
+</script>
+
+<template>
+    <article v-if="!minimalist" class="File">
+        <div class="File__container" @click={downloadFile}>
+            <header>
+                <i :class="getIcon(file.type)" />
+            </header>
+            <div class="File__content">
+                <h3>{{ file.title }}</h3>
+                <small>{{ formatDate(file.date) }}</small>
+            </div>
+        </div>
+        <aside v-if="edit">
+            <HTMLButtonIcon
+                :click="() => $emit('delete', file._id.$oid)"
+                classItem="fa-solid fa-xmark"
+            />
+        </aside>
+    </article>
+    <article v-else class="FileMin" @click={downloadFile}>
+        <span>┈</span>
+        <i :class="getIcon(file.type)" />
+        <h4>{{ file.title }}</h4>
+    </article>
+</template>
+
+<style scoped>
+	.File {
+		width: 100%;
+		border: 2px solid var(--color-light);
+		border-radius: 5px;
+		max-width: 500px;
+		cursor: pointer;
+		position: relative;
+	}
+
+	.File__container {
+		display: flex;
+		align-items: center;
+	}
+
+	.File__container:hover h3 {
+		color: var(--color-main);
+	}
+
+	header {
+		padding: 14px;
+		border-right: 2px solid var(--color-light);
+	}
+
+	h3 {
+		transition: all 0.4s ease;
+		max-width: 30ch;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	i {
+		color: var(--color-main);
+		font-size: 1.4rem;
+	}
+
+	.File__content {
+		display: flex;
+		flex-direction: column;
+		padding: 10px;
+		width: 100%;
+	}
+
+	aside {
+		position: absolute;
+		right: 10px;
+		top: 20px;
+	}
+
+	.FileMin {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		cursor: pointer;
+		width: fit-content;
+	}
+
+	.FileMin i {
+		font-size: 1.1rem;
+	}
+
+	.FileMin:hover h4 {
+		color: var(--color-main);
+	}
+
+	.FileMin h4 {
+		transition: all 0.4s;
+	}
+</style>
