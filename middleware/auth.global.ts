@@ -7,11 +7,12 @@ function inPublicPath(path: string) {
 }
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
+    if (useError().value) return
+    
     const cookie = useCookie('INT_SESSION')
     const auth = useAuthStore()
-    const nuxtApp = useNuxtApp()
 
-    if (!(nuxtApp.ssrContext?.noSSR ?? true) && !cookie.value) {
+    if (process.server && !cookie.value) {
         auth.unsetAuth()
 
         if (!inPublicPath(from.path))
@@ -21,7 +22,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                     redirect: from.path,
                 },
             })
-    } else if (cookie.value && !auth.getIsAuth && !nuxtApp.ssrContext?.noSSR) {
+    } else if (cookie.value && !auth.getIsAuth && process.server) {
         const { createClientRedis } = await import('~~/utils/redis')
 
         const idSession = cookie.value

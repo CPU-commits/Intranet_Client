@@ -8,13 +8,13 @@ import type { StudentGrade } from '~~/models/classroom/student_grade.model'
 import type { GradeProgram } from '~~/models/classroom/grade.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Guard
-definePageMeta({
+/*definePageMeta({
     middleware: 'role',
     roles: [
         UserTypesKeys.DIRECTIVE,
         UserTypesKeys.DIRECTOR,
     ],
-})
+})*/
 // Nuxtapp
 const {
     $fetchModule,
@@ -38,7 +38,7 @@ const semesters: Ref<Array<{
         students?: Array<Student>
     }
 }> | null> = ref(null)
-if (!Number.isNaN(year) && typeof year === 'string') {
+if (typeof year === 'string' && !isNaN(Number(year))) {
     try {
         semesters.value = (await $semesterService.getSemesterYear(parseInt(year))).semesters
     } catch (err){
@@ -50,7 +50,9 @@ if (!Number.isNaN(year) && typeof year === 'string') {
 } else {
     throw createError({
         statusCode: 400,
+        message: 'Param [year] is not a year',
         statusMessage: 'Param [year] is not a year',
+        fatal: true,
     })
 }
 // Modals
