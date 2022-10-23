@@ -34,11 +34,13 @@ if (typeof idModule !== 'string')
 	throw createError({
 		message: '[module] must be a string',
 		statusCode: 400,
+		fatal: true,
 	})
 if (typeof idWork !== 'string')
 	throw createError({
 		message: '[work] must be a string',
 		statusCode: 400,
+		fatal: true,
 	})
 
 // Components

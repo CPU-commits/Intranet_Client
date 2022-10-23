@@ -28,11 +28,13 @@ if (typeof idModule !== 'string')
 	throw createError({
 		message: '[module] must be a string',
 		statusCode: 400,
+        fatal: true,
 	})
 if (typeof idPublication !== 'string')
 	throw createError({
 		message: '[publication] must be a string',
 		statusCode: 400,
+        fatal: true,
 	})
 // Data
 const publication = ref<Publication | null>(null)

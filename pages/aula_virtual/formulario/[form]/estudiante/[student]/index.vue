@@ -23,11 +23,13 @@ if (typeof idForm !== 'string')
 	throw createError({
 		message: `[form] must be a string`,
 		statusCode: 400,
+		fatal: true,
 	})
 if (typeof idStudent !== 'string')
 	throw createError({
 		message: `[student] must be a string`,
 		statusCode: 400,
+		fatal: true,
 	})
 
 onBeforeUnmount(() => {
@@ -39,7 +41,10 @@ try {
     await form.getFormStudent(idForm, idStudent)
 } catch (err) {
     const _err = $fetchModule.handleError(err)
-    throw createError(_err)
+    throw createError({
+		..._err,
+		fatal: true,
+	})
 }
 </script>
 

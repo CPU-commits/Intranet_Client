@@ -18,6 +18,7 @@ if (typeof idNews !== 'string')
     throw createError({
         message: '[news] must be a string',
         statusCode: 400,
+        fatal: true,
     })
 
 const news = ref<News | null>(null)
@@ -26,7 +27,10 @@ try {
     news.value = dataFetch
 } catch (err) {
     const _err = $fetchModule.handleError(err)
-    throw createError(_err)
+    throw createError({
+        ..._err,
+        fatal: true,
+    })
 }
 
 // News

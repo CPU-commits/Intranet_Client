@@ -25,6 +25,7 @@ if (typeof idForm !== 'string')
 	throw createError({
 		message: `[form] must be a string`,
 		statusCode: 400,
+		fatal: true,
 	})
 
 // Init form store
@@ -32,7 +33,10 @@ try {
     await form.getForm(idForm)
 } catch (err) {
     const _err = $fetchModule.handleError(err)
-    throw createError(_err)
+    throw createError({
+		..._err,
+		fatal: true,
+	})
 }
 
 onBeforeUnmount(() => {

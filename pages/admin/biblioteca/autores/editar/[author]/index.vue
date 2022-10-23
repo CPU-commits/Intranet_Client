@@ -30,12 +30,16 @@ if (typeof idAuthor === 'string') {
         author.value = await $libraryService.getAuthor(idAuthor)
     } catch (err) {
         const _err = $fetchModule.handleError(err)
-        throw createError({..._err})
+        throw createError({
+            ..._err,
+            fatal: true,
+        })
     }
 } else {
     throw createError({
         message: '[author] must be string',
         statusCode: 400,
+        fatal: true,
     })
 }
 

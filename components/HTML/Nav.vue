@@ -19,6 +19,7 @@ if (!total)
 	throw createError({
 		message: 'Total no injected',
 		statusCode: 500,
+		fatal: true,
 	})
 const pages = ref(Math.ceil(total.value / (navigate?.max ?? 1)))
 const selected = ref(0)

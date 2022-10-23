@@ -41,6 +41,7 @@ export default defineComponent({
             throw createError({
                 message: '[author] must be a string',
                 statusCode: 400,
+                fatal: true,
             })
         // Data
         try {
@@ -51,7 +52,10 @@ export default defineComponent({
             }
         } catch (err) {
             const _err = $fetchModule.handleError(err)
-            throw createError(_err)
+            throw createError({
+                ..._err,
+                fatal: true,
+            })
         }
     },
     render () {

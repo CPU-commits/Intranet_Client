@@ -45,6 +45,7 @@ if (typeof year === 'string' && !isNaN(Number(year))) {
         const _err = $fetchModule.handleError(err)
         throw createError({
             ..._err,
+            fatal: true,
         })
     }
 } else {

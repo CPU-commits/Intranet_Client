@@ -36,12 +36,16 @@ if (typeof idBook === 'string') {
         book.value = await $libraryService.getBook(idBook)
     } catch (err) {
         const _err = $fetchModule.handleError(err)
-        throw createError(_err)
+        throw createError({
+            ..._err,
+            fatal: true,
+        })
     }
 } else {
     throw createError({
         message: '[book] must be string',
         statusCode: 400,
+        fatal: true,
     })
 }
 

@@ -28,6 +28,7 @@ if (typeof courseId !== 'string')
     throw createError({
         message: '[course] must be a string',
         statusCode: 400,
+        fatal: true,
     })
 
 // Modals

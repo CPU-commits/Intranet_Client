@@ -18,6 +18,7 @@ if (typeof idBook !== 'string')
     throw createError({
         message: '[book] must be a string',
         statusCode: 400,
+        fatal: true,
     })
 // Data
 const book = ref<Book | null>(null)
@@ -26,7 +27,10 @@ try {
     book.value = dataFetch
 } catch (err) {
     const _err = $fetchModule.handleError(err)
-    throw createError(_err)
+    throw createError({
+        ..._err,
+        fatal: true,
+    })
 }
 
 const opinion = ref ('')

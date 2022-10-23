@@ -29,6 +29,7 @@ if (typeof idModule !== 'string')
 	throw createError({
 		message: '[module] must be a string',
 		statusCode: 400,
+        fatal: true,
 	})
 // Component
 const Student = resolveComponent('ClassGradeStudent')

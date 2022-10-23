@@ -26,7 +26,10 @@ try {
     semesters.value = await $semesterService.getSemesters()
 } catch (err) {
     const _err = $fetchModule.handleError(err)
-    throw createError(_err)
+    throw createError({
+        ..._err,
+        fatal: true,
+    })
 }
 
 // Selected

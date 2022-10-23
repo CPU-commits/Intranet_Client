@@ -34,7 +34,10 @@ try {
     finishSemester.value = dataFetch
 } catch (err) {
     const _err = $fetchModule.handleError(err)
-    throw createError(_err)
+    throw createError({
+        ..._err,
+        fatal: true,
+    })
 }
 
 // Data

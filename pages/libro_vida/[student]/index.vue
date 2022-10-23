@@ -18,6 +18,7 @@ if (typeof idStudent !== 'string')
     throw createError({
         message: '[student] must be a string',
         statusCode: 400,
+        fatal: true,
     })
 </script>
 

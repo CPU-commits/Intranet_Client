@@ -24,6 +24,7 @@ if (typeof idForm !== 'string')
 	throw createError({
 		message: '[idForm] must be a string',
 		statusCode: 400,
+		fatal: true,
 	})
 // Modal
 const modal = ref(false)
