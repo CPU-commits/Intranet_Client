@@ -161,7 +161,6 @@ async function uploadWork() {
                     <label for="form"><i class="fa-solid fa-clipboard" /> Formulario asignado</label>
                     <HTMLSelect v-model:value="newWork.form" id="form">
                         <option value="">Seleccione una opci&oacute;n</option>
-                        {#each forms as form}
                         <option
                             v-for="form in forms"
                             :value="form._id"

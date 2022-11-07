@@ -67,7 +67,7 @@ async function getGrades(idSemester: string) {
             </tr>
         </HTMLTable>
         
-        <SpinnerGet v-if="spinner" />
+        <SpinnerGet />
         <Error v-if="error" :err="error" />
     </User>
 </template>

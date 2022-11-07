@@ -182,7 +182,7 @@ async function getDirectives() {
                 No hay m&oacute;dulos para este semestre
             </span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 

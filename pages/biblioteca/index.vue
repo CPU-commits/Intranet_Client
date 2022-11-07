@@ -104,16 +104,15 @@ function saveBook(saveValue: boolean, index: number) {
                 v-for="(book, i) in books"
                 :book="book"
                 :key="book._id"
-                @save="(e) => saveBook(e, i)"
+                @save="(e: boolean) => saveBook(e, i)"
             />
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <section v-if="books && books.length === 0" class="Void">
                 <img src="/img/fishing.svg" alt="Pescando" />
                 <span>No se ha pescado ning&uacute;n libro</span>
             </section>
+            <Error v-if="error" :err="error" />
         </section>
-        
-        <Error v-if="error" :err="error" />
     </section>
 </template>
 

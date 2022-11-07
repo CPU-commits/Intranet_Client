@@ -303,7 +303,7 @@ async function finishCurrentSemester() {
             </div>
             <span v-if="!spinner && !currentSemester">No existe semestre vigente</span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
     </NuxtLayout>

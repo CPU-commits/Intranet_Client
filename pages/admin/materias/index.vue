@@ -180,7 +180,7 @@ async function deleteSubjectCourse(idSubject: string) {
             </HTMLTable>
             <span v-if="subjects && subjects.length === 0">No hay materias...</span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 

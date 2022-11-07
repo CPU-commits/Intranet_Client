@@ -211,7 +211,7 @@ async function changeStatus() {
             </HTMLTable>
             <span v-if="students && students.users.length === 0">No hay alumnos...</span>
             
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 

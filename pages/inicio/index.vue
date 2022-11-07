@@ -124,7 +124,7 @@ function deleteAnnoucement(index: number) {
 				</div>
 			</LazyClientOnly>
 			
-			<SpinnerGet v-if="spinner" />
+			<SpinnerGet />
 			<Error v-if="error" :err="error" />
 		</section>
 	</section>

@@ -13,8 +13,6 @@ definePageMeta({
 })
 // Nuxt App
 const { $fetchModule, $semesterService } = useNuxtApp()
-// Stores
-const spinner = useSpinner()
 
 // Data
 const error: Ref<ErrorFetch | null> = ref(null)
@@ -49,7 +47,7 @@ onMounted(async () => {
             <!-- Error -->
             <Error v-if="error" :err="error" />
             <!-- Loading -->
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
         </AdminPanel>
     </NuxtLayout>
 </template>

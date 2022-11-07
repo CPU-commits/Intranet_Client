@@ -6,7 +6,7 @@ const spinner = useSpinner()
 <template>
     <div>
         <!-- Loading -->
-        <Loading v-if="spinner" />
+        <Loading v-if="spinner"  />
         <!-- Toasts -->
         <Toasts />
         <!-- Menu -->

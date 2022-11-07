@@ -89,7 +89,7 @@ async function deleteAuthor(idAuthor: string) {
             </HTMLTable>
             <span v-if="authors && authors.length === 0">Sin autores...</span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
     </NuxtLayout>

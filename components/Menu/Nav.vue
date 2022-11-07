@@ -144,4 +144,19 @@ watch(() => route.path, (newValue) => {
 		font-size: 1.1rem;
 		cursor: pointer;
 	}
+
+	// Media queries
+	@media (max-width: 767.98px) {
+		.Header {
+			height: 55px;
+		}
+
+		h2 {
+			font-size: 1.4rem;
+		}
+
+		a {
+			font-size: 0.95rem;
+		}
+	}
 </style>

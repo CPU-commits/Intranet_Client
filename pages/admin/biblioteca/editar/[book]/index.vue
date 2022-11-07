@@ -200,7 +200,7 @@ async function updateBook() {
                 <HTMLButton type="submit">Actualizar libro</HTMLButton>
             </HTMLForm>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
 
             <!-- Modals -->

@@ -209,7 +209,7 @@ async function uploadVoting() {
                 </tr>
             </HTMLTable>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </Modal>
     </NuxtLayout>

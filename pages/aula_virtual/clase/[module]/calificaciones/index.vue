@@ -60,7 +60,7 @@ onMounted(async () => {
                 :idModule="idModule"
             />
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
     </NuxtLayout>

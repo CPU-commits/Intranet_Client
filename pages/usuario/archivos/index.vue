@@ -129,7 +129,7 @@ function changePermissions(index: number, idFile: string) {
             </HTMLTable>
             <span v-if="userFiles && userFiles.length === 0">No hay archivos subidos...</span>
             
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
 

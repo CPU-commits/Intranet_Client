@@ -305,7 +305,7 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 					</td>
 				</tr>
 				<template #footer>
-					<SpinnerGet v-if="spinner" />
+					<SpinnerGet />
 				</template>
 			</HTMLTable>
 			<span v-if="books && books.length === 0">No hay libros...</span>

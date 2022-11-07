@@ -181,7 +181,7 @@ async function uploadBook() {
 				<HTMLButton type="submit">Subir libro</HTMLButton>
 			</HTMLForm>
 
-			<SpinnerGet v-if="spinner" />
+			<SpinnerGet />
 			<Error v-if="error" :err="error" />
 		</AdminPanel>
 

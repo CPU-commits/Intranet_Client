@@ -95,7 +95,7 @@ onMounted(async () => {
             Todav&iacute;a ninguna programaci&oacute;n
         </span>
 
-        <SpinnerGet v-if="spinner" />
+        <SpinnerGet />
         <Error v-if="error" :err="error" />
     </section>
 </template>

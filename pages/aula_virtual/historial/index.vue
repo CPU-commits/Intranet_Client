@@ -68,7 +68,7 @@ async function getModules(total: boolean = false, skip: number = 0) {
                 Sin m&oacute;dulos en historial
             </span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
     </section>

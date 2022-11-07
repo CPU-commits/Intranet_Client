@@ -63,7 +63,7 @@ onMounted(async () => {
                 Actualizar datos
             </HTMLButton>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
     </NuxtLayout>    

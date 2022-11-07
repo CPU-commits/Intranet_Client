@@ -139,7 +139,7 @@ async function updateSemester() {
 			</HTMLTable>
 			<span v-if="semesters && semesters.length === 0">No hay semestres...</span>
 			
-			<SpinnerGet v-if="spinner" />
+			<SpinnerGet />
 			<Error v-if="error" :err="error" />
 		</AdminPanel>
 

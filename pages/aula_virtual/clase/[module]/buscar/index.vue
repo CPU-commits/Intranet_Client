@@ -105,7 +105,7 @@ async function searchFunction() {
 				</footer>
 			</article>
 			
-			<SpinnerGet v-if="spinner" />
+			<SpinnerGet />
 			<Error v-if="error" :err="error" />
 		</section>
 	</NuxtLayout>

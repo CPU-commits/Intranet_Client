@@ -322,7 +322,7 @@ async function exportGrades() {
 			No hay estudiantes...
 		</span>
 		
-		<SpinnerGet v-if="spinner" />
+		<SpinnerGet />
 		<Error v-if="error" :err="error" />
 
 		<!-- Modals -->

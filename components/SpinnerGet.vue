@@ -1,5 +1,9 @@
+<script setup lang="ts">
+const spinnerGet = useSpinnerGet()
+</script>
+
 <template>
-    <div class="lds-ring">
+    <div v-if="spinnerGet" class="lds-ring">
         <div />
         <div />
         <div />

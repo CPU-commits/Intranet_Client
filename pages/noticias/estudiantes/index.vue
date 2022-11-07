@@ -87,7 +87,7 @@ function deleteNews(index: number) {
         />
         <h3 v-if="news && news.length === 0">Sin noticias...</h3>
         
-        <SpinnerGet v-if="spinner" />
+        <SpinnerGet />
         <Error v-if="error" :err="error" />
 
         <button v-if="auth.userTypeIs(UserTypesKeys.STUDENT_DIRECTIVE)">

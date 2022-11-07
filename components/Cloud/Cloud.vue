@@ -19,7 +19,7 @@ const modalRef = ref(false)
 const modal = toRef(props, 'modal')
 
 watch(modal, (newValue) => {
-    if (newValue && error.value) getFiles()
+    if (newValue) getFiles()
     modalRef.value = newValue
     // Emit
     emits('update:modal', modal.value)
@@ -84,7 +84,7 @@ function addFile(index: number) {
 			classItem="fa-solid fa-cloud-arrow-up"
 		/>
 
-        <SpinnerGet v-if="spinner" />
+        <SpinnerGet />
         <Error v-if="error" :err="error" />
 	</Modal>
 </template>

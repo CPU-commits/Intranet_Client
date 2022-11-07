@@ -90,7 +90,7 @@ async function voteForList() {
                 </HTMLButton>
             </HTMLForm>
             
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
         </section>
         <header v-else class="Voting__content">
             <h2>Votaciones cerradas</h2>

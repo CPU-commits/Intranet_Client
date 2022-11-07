@@ -149,7 +149,7 @@ async function deleteObservation(id: string) {
                 No hay observaciones en este periodo
             </span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
 

@@ -42,7 +42,7 @@ onMounted(async () => {
         </section>
         <span v-if="modules && modules.length === 0">Sin m&oacute;dulos...</span>
 
-        <SpinnerGet v-if="spinner" />
+        <SpinnerGet />
         <Error v-if="error" :err="error" />
     </section>
 </template>

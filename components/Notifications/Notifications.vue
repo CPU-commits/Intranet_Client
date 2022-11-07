@@ -12,7 +12,6 @@ const { $fetchModule, $notificationService } = useNuxtApp()
 const config = useRuntimeConfig()
 // Composable
 const notificationsNumber = useNotification()
-const spinner = useSpinner()
 // Store
 const auth = useAuthStore()
 // Router
@@ -128,7 +127,7 @@ function deleteNotification(index: number) {
                     Sin notificaciones...
                 </p>
 
-                <SpinnerGet v-if="spinner" />
+                <SpinnerGet />
                 <Error v-if="error" :err="error" />
             </div>
         </section>

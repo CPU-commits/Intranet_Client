@@ -178,7 +178,7 @@ async function updateVoting() {
                 <HTMLButton type="submit">Editar votaciones</HTMLButton>
             </HTMLForm>
             
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 
@@ -206,7 +206,7 @@ async function updateVoting() {
                 </tr>
             </HTMLTable>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </Modal>
     </NuxtLayout>

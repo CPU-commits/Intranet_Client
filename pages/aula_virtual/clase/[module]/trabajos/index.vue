@@ -72,7 +72,7 @@ function deleteWork(index: number) {
                 <figcaption>Sin trabajos a la vista...</figcaption>
             </figure>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
     </NuxtLayout>

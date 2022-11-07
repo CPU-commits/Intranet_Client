@@ -304,7 +304,7 @@ async function deleteLink(index: number) {
                 <HTMLButton type="submit">Editar trabajo</HTMLButton>
             </HTMLForm>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
     </NuxtLayout>

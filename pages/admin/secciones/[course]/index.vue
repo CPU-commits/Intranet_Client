@@ -235,7 +235,7 @@ async function selectNextSection(sectionData: Section | null = null) {
             </HTMLTable>
             <span v-if="sections && sections.length === 0">No hay secciones</span>
             
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 
@@ -295,7 +295,7 @@ async function selectNextSection(sectionData: Section | null = null) {
                 </HTMLTable>
             </section>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="errorNS" :err="errorNS" />
         </Modal>
     </NuxtLayout>

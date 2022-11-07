@@ -180,7 +180,7 @@ onMounted(async () => {
 				</footer>
 			</template>
 			
-			<SpinnerGet v-if="spinner" />
+			<SpinnerGet />
 			<Error v-if="error" :err="error" />
 		</section>
 	</NuxtLayout>

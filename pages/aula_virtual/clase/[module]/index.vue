@@ -106,7 +106,7 @@ function deletePublication(index: number) {
 					<img src="/img/empty.svg" alt="Contenido Vacío" />
 					<span>Parece que est&aacute; todo vac&iacute;o por aqu&iacute;...</span>
 				</div>
-				<SpinnerGet v-if="spinner" />
+				<SpinnerGet />
 				<Error v-if="error" :err="error" />
 			</section>
 		</section>

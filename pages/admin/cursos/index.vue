@@ -226,7 +226,7 @@ async function deleteCourse(id: string) {
                 </HTMLTable>
                 <span v-if="courses && courses.length === 0">No existen cursos...</span>
 
-                <SpinnerGet v-if="spinner" />
+                <SpinnerGet />
                 <Error v-if="error" :err="error" />
             </AdminPanel>
 

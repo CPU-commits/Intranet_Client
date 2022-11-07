@@ -76,7 +76,7 @@ function stringStatus(status: number) {
                 <i class="fa-solid fa-house-flag" /> Sin trabajos pendientes...
             </span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
     </section>

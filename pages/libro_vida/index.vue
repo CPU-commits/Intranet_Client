@@ -84,7 +84,7 @@ const search = ref('')
         </section>
         <Booklife v-else />
 
-        <SpinnerGet v-if="spinner" />
+        <SpinnerGet />
         <Error v-if="error" :err="error" />
     </section>
 </template>

@@ -173,7 +173,7 @@ async function changeStatus() {
                 No hay directivos...
             </span>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 

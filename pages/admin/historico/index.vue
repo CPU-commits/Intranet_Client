@@ -141,7 +141,7 @@ function applyFilters(getFilters = false) {
                 </tr>
             </HTMLTable>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 
@@ -197,7 +197,7 @@ function applyFilters(getFilters = false) {
                 <HTMLButton type="submit">Aplicar filtros</HTMLButton>
             </HTMLForm>
 
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="errorSem" :err="errorSem" />
         </Modal>
     </NuxtLayout>

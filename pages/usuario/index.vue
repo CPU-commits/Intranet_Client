@@ -85,7 +85,7 @@ onMounted(async () => {
                     </tr>
                 </HTMLVerticalTable>
                 
-                <SpinnerGet v-if="spinner" />
+                <SpinnerGet />
                 <Error v-if="error" :err="error" />
             </section>
         </div>

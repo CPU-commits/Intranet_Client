@@ -1,3 +1,5 @@
+// Modules
+import { v4 as uuidv4 } from 'uuid'
 // Types
 import type { FetchError } from 'ohmyfetch'
 
@@ -16,6 +18,11 @@ interface ConfigFetch {
     headers?: HeadersInit
     token?: string | null
     nuxt?: boolean
+    // Abort is for all same URLs
+    abort?: {
+        url: string
+    }
+    signal?: AbortSignal
     responseType?: 'blob' | 'text' | 'json' | 'stream' | 'arrayBuffer'
 }
 
@@ -32,7 +39,32 @@ export type ErrorFetch = {
 
 export class Fetch {
     private publicApi: string | undefined
+    // string: URL, Array: currentFetchController
+    private currentFetch: Map<string, Array<{
+        id: string
+        controller: AbortController
+    }>> = new Map()
+
+    private counters: {
+        counterFetch: number
+        counterGetFetch: number
+    } = new Proxy({ counterFetch: 0, counterGetFetch: 0 }, {
+        set(obj, prop, value) {
+            if (prop === 'counterFetch' || prop === 'counterGetFetch') {
+                obj[prop] = value
+
+                if (prop === 'counterFetch' && value === 0) useSpinner().value = false
+                if (prop === 'counterGetFetch' && value === 0) useSpinnerGet().value = false
+            }
+            return true
+        }
+    })
     private readonly spinner = useSpinner()
+    private readonly spinnerGet = useSpinnerGet()
+
+    private generateFetchId(): string {
+        return `fetch_id_${uuidv4()}`
+    }
 
     private isFetchError(error: unknown): error is FetchError {
         return (
@@ -63,7 +95,7 @@ export class Fetch {
         }
     }
 
-    private getFetch({ method, body, nuxt, token, responseType }: ConfigFetch) {
+    private getFetch({ method, body, nuxt, token, responseType, signal }: ConfigFetch) {
         if (!this.publicApi) {
             const config = useRuntimeConfig()
             this.publicApi = config.public.API
@@ -77,31 +109,82 @@ export class Fetch {
             },
             method,
             body,
+            signal,
             async onRequestError({ request, options, error }) {
-                const spinner = useSpinner()
                 // Log error
                 console.log('[fetch request error]', request, error)
-                // Spinner false
-                spinner.value = false
             },
             async onResponseError({ request, response, options }) {
-                const spinner = useSpinner()
                 // Log response
                 console.log('[fetch response error]', request, response.body)
-                // Spinner false
-                spinner.value = false
             },
             mode: 'cors',
         })
     }
 
+    private popFetch(id: string, counters: { get: boolean, fetch: boolean }, key: string) {
+        if (counters.get) this.counters.counterGetFetch -= 1
+        if (counters.fetch) this.counters.counterFetch -= 1
+
+        const index = this.currentFetch.get(key)?.findIndex(f => f.id === id)
+        this.currentFetch.get(key)?.splice(index ?? 0, 1)
+    }
+
     async fetchData<T extends DefaultResponse>(config: ConfigFetch): Promise<T> {
+        const key = config.URL.split('?')[0]
+        // Abort all fetchs
+        const abortKey = config.abort?.url === 'same' ? key : config.abort?.url
+        if (config.abort && this.currentFetch.has(abortKey ?? '')) {
+            this.currentFetch.get(abortKey ?? '')?.forEach((c) => {
+                c.controller.abort()
+            })
+        }
+        // Id
+        const id = this.generateFetchId()
+        // Controller signal
+        const controller = new AbortController()
+        config.signal = controller.signal
+
+        if (this.currentFetch.has(key)) {
+            this.currentFetch.get(key)?.push({
+                id,
+                controller,
+            })
+        } else {
+            this.currentFetch.set(key, [{ id, controller }])
+        }
+        // Create fetch
         const apiFetch = this.getFetch(config)
 
-        this.spinner.value = config.spinnerStatus ?? false
-        const dataFetch = await apiFetch<T & DefaultResponse>(config.URL)
+        if (config.method !== 'get' || config.spinnerStatus) {
+            this.spinner.value = true
+            this.counters.counterFetch += 1
+        }
+        if (config.method === 'get') {
+            this.spinnerGet.value = true
+            this.counters.counterGetFetch += 1
+        }
 
-        this.spinner.value = false
+        const dataFetch = await apiFetch<T & DefaultResponse>(config.URL)
+            .catch((err) => {
+                this.popFetch(
+                    id,
+                    {
+                        get: config.method === 'get',
+                        fetch: config.method !== 'get' || (config.spinnerStatus ?? false),
+                    },
+                    key
+                )
+                throw err
+            })
+        this.popFetch(
+            id,
+            {
+                get: config.method === 'get',
+                fetch: config.method !== 'get' || (config.spinnerStatus ?? false),
+            },
+            key
+        )
         return dataFetch as T & DefaultResponse
     }
 }

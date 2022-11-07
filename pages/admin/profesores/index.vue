@@ -243,7 +243,7 @@ function getSubjectsInSections(courses: Array<Course>) {
             </HTMLTable>
             <span v-if="teachers && teachers.users.length === 0">No hay profesores...</span>
             
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </AdminPanel>
 

@@ -13,6 +13,13 @@ export default defineNuxtConfig({
             WS: 'localhost:7000',
         },
     },
+    content: {
+        watch: {
+            ws: {
+                hostname: 'localhost'
+            },
+        },
+    },
     typescript: {
         strict: true,
         typeCheck: true,
@@ -23,9 +30,10 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         '@nuxt/image-edge',
+        '@nuxt/content',
     ],
     image: {
-        domains: ['s3.amazonaws.com'],
+        domains: ['*.s3.amazonaws.com'],
     },
     imports: {
         dirs: ['stores'],

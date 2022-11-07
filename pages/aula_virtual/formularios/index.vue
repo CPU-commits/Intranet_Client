@@ -63,7 +63,7 @@ onMounted(async () => {
                 </HTMLButtonText>
             </template>
             
-            <SpinnerGet v-if="spinner" />
+            <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
         <a href="/aula_virtual/formularios/nuevo"

@@ -98,7 +98,7 @@ async function deleteForm() {
 				</div>
 			</HTMLForm>
 
-		<SpinnerGet v-if="spinner" />
+		<SpinnerGet />
 		<Error v-if="error" :err="error" />
 		
 		<!-- Modals -->

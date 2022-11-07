@@ -89,6 +89,9 @@ export class LibraryService {
                 URL,
                 token: this.authStore.getToken,
                 spinnerStatus: true,
+                abort: {
+                    url: 'same',
+                },
             })
         return dataFetch.body.books
     }
