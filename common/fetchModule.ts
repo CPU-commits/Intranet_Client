@@ -135,9 +135,11 @@ export class Fetch {
         // Abort all fetchs
         const abortKey = config.abort?.url === 'same' ? key : config.abort?.url
         if (config.abort && this.currentFetch.has(abortKey ?? '')) {
-            this.currentFetch.get(abortKey ?? '')?.forEach((c) => {
+            const struct = this.currentFetch.get(abortKey ?? '')
+            struct?.forEach((c) => {
                 c.controller.abort()
             })
+            struct?.splice(0, struct.length)
         }
         // Id
         const id = this.generateFetchId()
