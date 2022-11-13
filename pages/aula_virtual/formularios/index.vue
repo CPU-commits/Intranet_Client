@@ -1,9 +1,18 @@
 <script setup lang="ts">
 // Types
-import { ErrorFetch } from '~~/common/fetchModule';
+import { ErrorFetch } from '~~/common/fetchModule'
 import type { UserForm } from '~~/models/form/form.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-import { timeAgo } from '~~/utils/format';
+import { timeAgo } from '~~/utils/format'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Formularios - Aula Virtual - ${schoolName} - Intranet`
+            : 'Formularios - Aula Virtual - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

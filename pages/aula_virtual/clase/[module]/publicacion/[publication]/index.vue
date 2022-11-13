@@ -3,6 +3,13 @@
 import type { ErrorFetch } from '~~/common/fetchModule';
 import type { Publication } from '~~/models/classroom/publication.model';
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Publicación - ${moduleName.value} - ${schoolName} - Intranet`
+	: `Publicación - ${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -50,6 +57,10 @@ try {
 
 <template>
     <section class="Publication">
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+
         <ClassPublication
             v-if="publication"
             :publication="publication"

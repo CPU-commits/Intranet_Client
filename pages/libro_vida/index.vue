@@ -2,7 +2,16 @@
 // Types
 import type { Student } from '~~/models/user/student.model'
 import { UserTypesKeys } from '~~/models/user/user.model';
-import { ErrorFetch } from '~~/common/fetchModule';
+import { ErrorFetch } from '~~/common/fetchModule'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Libro de Vida - ${schoolName} - Intranet`
+            : 'Libro de Vida - Intranet'
+    },
+})
 // Nuxtapp
 const {
     $fetchModule,

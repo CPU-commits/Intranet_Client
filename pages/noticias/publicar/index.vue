@@ -2,6 +2,15 @@
 // Types
 import type { Editor } from '@tiptap/core'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Publicar noticia - ${schoolName} - Intranet`
+            : 'Publicar noticia - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

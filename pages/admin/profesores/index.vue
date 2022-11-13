@@ -4,6 +4,15 @@ import { ErrorFetch } from '~~/common/fetchModule';
 import type { Course } from '~~/models/course/course.model'
 import type { Teacher, Teachers } from '~~/models/user/teacher.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Profesores - Admin - ${schoolName} - Intranet`
+            : 'Profesores - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

@@ -3,6 +3,13 @@
 import { ErrorFetch } from '~~/common/fetchModule';
 import type { Work } from '~~/models/classroom/work.model';
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Trabajos - ${moduleName.value} - ${schoolName} - Intranet`
+	: `Trabajos - ${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -50,6 +57,10 @@ function deleteWork(index: number) {
 <template>
     <NuxtLayout name="class">
         <section class="Works">
+            <Head>
+                <Title>{{ title }}</Title>
+            </Head>
+
             <h2>Trabajos</h2>
             <NuxtLink
                 v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"

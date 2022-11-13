@@ -3,6 +3,13 @@
 import { ErrorFetch } from '~~/common/fetchModule';
 import type { GradeProgram } from '~~/models/classroom/grade.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Calificaciones - ${moduleName.value} - ${schoolName} - Intranet`
+	: `Calificaciones - ${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -49,6 +56,10 @@ onMounted(async () => {
 <template>
     <NuxtLayout name="class">
         <section class="Grades">
+            <Head>
+                <Title>{{ title }}</Title>
+            </Head>
+
             <component
                 v-if="gradePrograms"
                 :is="auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE)

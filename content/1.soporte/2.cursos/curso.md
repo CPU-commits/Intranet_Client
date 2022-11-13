@@ -1,3 +1,6 @@
+---
+title: 'Curso - Cursos - Soporte - Intranet'
+---
 # Curso
 * * *
 

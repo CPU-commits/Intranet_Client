@@ -7,6 +7,15 @@ import type { Student } from "~~/models/user/student.model"
 import type { StudentGrade } from '~~/models/classroom/student_grade.model'
 import type { GradeProgram } from '~~/models/classroom/grade.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Archivado (${year}) - Admin - ${schoolName} - Intranet`
+            : `Archivado (${year}) - Admin - Intranet`
+    },
+})
 // Guard
 /*definePageMeta({
     middleware: 'role',

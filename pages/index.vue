@@ -1,4 +1,13 @@
 <script setup lang="ts">
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Iniciar sesión - ${schoolName} - Intranet`
+            : 'Iniciar sesión - Intranet'
+    },
+})
 // Nuxt app
 const { $fetchModule } = useNuxtApp()
 // Stores

@@ -3,6 +3,15 @@
 import type { Voting } from '~~/models/voting/voting.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 import { ErrorFetch } from '~~/common/fetchModule';
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Votar - ${schoolName} - Intranet`
+            : 'Votar - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

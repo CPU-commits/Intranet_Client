@@ -4,6 +4,13 @@ import { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { formatDate } from '~~/utils/format'
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Buscar - ${moduleName.value} - ${schoolName} - Intranet`
+	: `Buscar - ${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -69,6 +76,10 @@ async function searchFunction() {
 <template>
 	<NuxtLayout name="class">
 		<section class="SearchContainer">
+			<Head>
+				<Title>{{ title }}</Title>
+			</Head>
+
 			<HTMLSearch v-model:value="search" :search="searchFunction" />
 			<br />
 			<article v-for="work in works" :key="work._id" class="Item">

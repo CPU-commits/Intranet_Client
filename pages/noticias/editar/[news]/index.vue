@@ -2,6 +2,11 @@
 // Types
 import type { Editor } from '@tiptap/core';
 import type { News } from '~~/models/news/news.model'
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+    ? `Noticia (editar) - ${schoolName} - Intranet`
+    : 'Noticia (editar) - Intranet')
 // Nuxtapp
 const {
     $fetchModule,
@@ -25,6 +30,10 @@ const news = ref<News | null>(null)
 try {
     const dataFetch = await $newsService.getSingleNews(idNews)
     news.value = dataFetch
+
+    title.value = schoolName
+        ? `${news.value.title} (editar) - ${schoolName} - Intranet`
+        : `${news.value.title} (editar) - Intranet`
 } catch (err) {
     const _err = $fetchModule.handleError(err)
     throw createError({
@@ -70,6 +79,10 @@ async function updateNews() {
 
 <template>
     <section v-if="news" class="News">
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+
         <div class="News__contain">
             <HTMLForm :form="updateNews">
                 <input v-model="news.title" placeholder="Titulo" type="text" />

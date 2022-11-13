@@ -1,3 +1,6 @@
+---
+title: 'Secciones - Cursos - Soporte - Intranet'
+---
 # Secciones
 * * *
 

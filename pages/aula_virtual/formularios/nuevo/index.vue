@@ -1,6 +1,15 @@
 <script setup lang="ts">
 // Types
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Nuevo Formulario - Aula Virtual - ${schoolName} - Intranet`
+            : 'Nuevo Formulario - Aula Virtual - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

@@ -5,6 +5,15 @@ import type { News } from '~~/models/news/news.model'
 import { UserTypesKeys } from '~~/models/user/user.model';
 // Utils
 import onScroll from '~~/utils/onScroll'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Noticias - ${schoolName} - Intranet`
+            : 'Noticias - Intranet'
+    },
+})
 // Nuxtapp
 const {
     $fetchModule,

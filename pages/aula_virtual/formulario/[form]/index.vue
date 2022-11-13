@@ -4,6 +4,11 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 import { intToRoman } from '~~/utils/format';
 // Moment
 import moment from 'moment'
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Formulario - Aula Virtual - ${schoolName} - Intranet`
+	: 'Formulario - Aula Virtual - Intranet')
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -91,6 +96,10 @@ function sumAfters(index: number): number {
 
 <template>
 	<ClassForm>
+		<Head>
+			<Title>{{ title }}</Title>
+		</Head>
+
 		<template v-for="(item, i) in form.getItems" :key="i">
 			<h3>
 				{{ intToRoman(i + 1) }}.

@@ -2,12 +2,17 @@
 // Types
 import type { ClassroomModule } from '~~/models/classroom/modules.model'
 import type { Panel } from '~~/models/classroom/panel.model'
+import { UserTypesKeys } from '~~/models/user/user.model';
 type Section = {
     _id: string
     name: string
 }
 // Nuxtapp
 const { $moduleService, $fetchModule } = useNuxtApp()
+// Composable
+const moduleName = useModuleName()
+// Stores
+const auth = useAuthStore()
 // Router
 const route = useRoute()
 
@@ -38,8 +43,11 @@ watch(() => route.query.section, (newValue) => {
 try {
     const dataFetch = await $moduleService.getModule(idModule)
     _module.value = dataFetch
+
+    moduleName.value = `${_module.value.subject.subject} ${auth.userTypeIs(UserTypesKeys.TEACHER)
+        ? `- ${_module.value.section.course.course} ${ _module.value.section.section}`
+        : ''}`
 } catch (err) {
-    console.log('Error!!', err)
     const _err = $fetchModule.handleError(err)
     throw createError({
         ..._err,

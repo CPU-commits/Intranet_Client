@@ -2,6 +2,11 @@
 // Types
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Editar formulario - ${schoolName} - Intranet`
+	: 'Editar formulario - Intranet')
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -11,8 +16,6 @@ definePageMeta({
 })
 // Nuxtapp
 const { $fetchModule } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const buildForm = useBuildFormStore()
 // Router
@@ -55,6 +58,10 @@ async function deleteForm() {
 
 <template>
 	<section class="Forms">
+		<Head>
+			<Title>{{ title }}</Title>
+		</Head>
+
 		<input v-model="buildForm.form.title" type="text" placeholder="Titulo" />
 			<HTMLForm :form="updateForm">
 				<label for="score">Puntaje (Preguntas)</label>

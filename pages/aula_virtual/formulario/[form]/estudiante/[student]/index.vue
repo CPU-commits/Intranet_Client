@@ -3,6 +3,11 @@
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { intToRoman } from '~~/utils/format'
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Formulario - Aula Virtual - ${schoolName} - Intranet`
+	: 'Formulario - Aula Virtual - Intranet')
 // Guard
 /*definePageMeta({
     middleware: 'role',
@@ -50,6 +55,10 @@ try {
 
 <template>
     <ClassForm>
+		<Head>
+			<Title>{{ title }}</Title>
+		</Head>
+
         <template v-for="(item, i) in form.getItems" :key="i">
             <h3>
                 {{ intToRoman(i + 1) }}.

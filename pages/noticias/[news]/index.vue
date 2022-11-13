@@ -1,6 +1,11 @@
 <script setup lang="ts">
 // Types
 import { News } from '~~/models/news/news.model'
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+    ? `Noticia - ${schoolName} - Intranet`
+    : 'Noticia - Intranet')
 // Nuxtapp
 const {
     $fetchModule,
@@ -20,6 +25,10 @@ if (typeof idNews !== 'string')
 const news = ref<News | null>(null)
 try {
     news.value = await $newsService.getSingleNews(idNews)
+
+    title.value = schoolName
+        ? `${news.value.title} - ${schoolName} - Intranet`
+        : `${news.value.title} - Intranet`
 } catch (err) {
     const _err = $fetchModule.handleError(err)
     throw createError({
@@ -30,5 +39,10 @@ try {
 </script>
 
 <template>
-    <NewsRead v-if="news" :news="news" />
+    <div>
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <NewsRead v-if="news" :news="news" />
+    </div>
 </template>

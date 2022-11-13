@@ -2,6 +2,11 @@
 // Types
 import type { Author } from "~~/models/library/author.model"
 import { urlify } from "~~/utils/format"
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+    ? `Autor - ${schoolName} - Intranet`
+    : 'Autor - Intranet')
 
 const { $fetchModule, $libraryService } = useNuxtApp()
 const route = useRoute()
@@ -19,6 +24,10 @@ try {
     const dataFetch = await $libraryService.getAuthor(authorParam)
 
     author.value = dataFetch
+
+    title.value = schoolName
+    ? `${author.value.name} - ${schoolName} - Intranet`
+    : `${author.value.name} - Intranet`
 } catch (err) {
     const _err = $fetchModule.handleError(err)
     throw createError({
@@ -34,6 +43,10 @@ function copyLink() {
 
 <template>
     <section class="Author" v-if="author">
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+
         <section class="AuthorTop">
             <header>
                 <h1>

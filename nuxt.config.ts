@@ -11,6 +11,7 @@ export default defineNuxtConfig({
             API: 'http://localhost:8080',
             NODE_ENV: 'dev' as 'dev' | 'prod',
             WS: 'localhost:7000',
+            COLLEGE_NAME: 'School',
         },
     },
     content: {
@@ -48,9 +49,14 @@ export default defineNuxtConfig({
             },
         },
     },
-    head: {
-        htmlAttrs: {
-            lang: 'es',
+    app: {
+        head: {
+            htmlAttrs: {
+                lang: 'es',
+            },
         },
+    },
+    render: {
+        csp: true,
     },
 })

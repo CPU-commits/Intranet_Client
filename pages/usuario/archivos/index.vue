@@ -6,7 +6,16 @@ import type { UserFile } from '~~/models/file/file.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { formatDate } from '~~/utils/format';
-import { getIcon, getTypeFile } from '~~/utils/getIcon';
+import { getIcon, getTypeFile } from '~~/utils/getIcon'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Archivos - Usuario - ${schoolName} - Intranet`
+            : 'Archivos - Usuario - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

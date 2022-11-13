@@ -4,7 +4,16 @@ import type { Specialty } from '~~/models/subject/specialty.model'
 import type { Subject } from '~~/models/subject/subject.model'
 import type { Course } from '~~/models/course/course.model'
 import type { ErrorFetch } from '~~/common/fetchModule'
-import { UserTypesKeys } from '~~/models/user/user.model';
+import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Materias - Admin - ${schoolName} - Intranet`
+            : 'Materias - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

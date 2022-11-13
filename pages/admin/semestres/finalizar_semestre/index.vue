@@ -7,6 +7,15 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 import { ErrorFetch } from '~~/common/fetchModule';
 // Utils
 import { formatDate } from '~~/utils/format'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Finalizar Semestre - Admin - ${schoolName} - Intranet`
+            : 'Finalizar Semestre - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

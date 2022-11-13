@@ -4,6 +4,15 @@ import type { Student, Students } from '~~/models/user/student.model'
 import type { Voting } from '~~/models/voting/voting.model'
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Votaciones(editar) - Estudiantes - Admin - ${schoolName} - Intranet`
+            : 'Votaciones(editar) - Estudiantes - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

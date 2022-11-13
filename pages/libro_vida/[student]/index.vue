@@ -1,7 +1,15 @@
 <script setup lang="ts">
-// Guard
 import { UserTypesKeys } from '~~/models/user/user.model'
-
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Libro de Vida - Estudiante - ${schoolName} - Intranet`
+            : 'Libro de Vida - Estudiante - Intranet'
+    },
+})
+// Guard
 definePageMeta({
     middleware: 'role',
     roles: [

@@ -2,6 +2,15 @@
 // Types
 import type { Student } from '~~/models/user/student.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Estudiantes - Masivo - Admin - ${schoolName} - Intranet`
+            : 'Estudiantes - Masivo - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

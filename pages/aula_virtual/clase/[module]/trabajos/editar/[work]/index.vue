@@ -6,7 +6,6 @@ import type { Work } from '~~/models/classroom/work.model'
 import type { UserFile } from '~~/models/file/file.model'
 import type { UserForm } from '~~/models/form/form.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-
 // Utils
 import { dateIsBefore } from '~~/utils/dates'
 import {
@@ -21,6 +20,13 @@ type Link = {
     link: string
     _id_attached?: string
 }
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Editar trabajo - ${moduleName.value} - ${schoolName} - Intranet`
+	: `Editar trabajo - ${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -35,8 +41,6 @@ const {
     $workService,
     $gradesService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Router
 const route = useRoute()
 const router = useRouter()
@@ -171,6 +175,10 @@ async function deleteLink(index: number) {
 <template>
     <NuxtLayout name="class">
         <section v-if="work" class="NewWork">
+            <Head>
+                <Title>{{ title }}</Title>
+            </Head>
+
             <HTMLForm :form="updateWork">
                 <label for="title">Titulo trabajo</label>
                 <HTMLInput v-model:value="work.title" id="title" />

@@ -5,6 +5,15 @@ import type { ClassroomModule } from '~~/models/classroom/modules.model'
 import { UserTypesKeys } from '~~/models/user/user.model';
 // Utils
 import onScroll from '~~/utils/onScroll'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Historial - Aula Virtual - ${schoolName} - Intranet`
+            : 'Historial - Aula Virtual - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

@@ -3,6 +3,15 @@
 import { ErrorFetch } from '~~/common/fetchModule';
 import type { Semester } from '~~/models/semester/semester.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Semestres - Admin - ${schoolName} - Intranet`
+            : 'Semestres - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

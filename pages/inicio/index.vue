@@ -7,6 +7,15 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { formatMiniDate } from '~~/utils/format'
 import onScroll from '~~/utils/onScroll'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Inicio - ${schoolName} - Intranet`
+            : 'Inicio - Intranet'
+    },
+})
 // Nuxtapp
 const {
 	$fetchModule,

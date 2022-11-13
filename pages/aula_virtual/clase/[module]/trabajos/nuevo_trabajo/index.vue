@@ -16,6 +16,13 @@ type Link = {
     title: string
     link: string
 }
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Nuevo trabajo - ${moduleName.value} - ${schoolName} - Intranet`
+	: `Nuevo trabajo - ${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -113,6 +120,10 @@ async function uploadWork() {
 <template>
     <NuxtLayout name="class">
         <section v-if="forms" class="NewWork">
+            <Head>
+                <Title>{{ title }}</Title>
+            </Head>
+
             <h2>Nuevo trabajo</h2>
             <br />
             <HTMLForm :form="uploadWork">

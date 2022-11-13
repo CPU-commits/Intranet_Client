@@ -50,6 +50,8 @@ const formStore = defineStore('form', {
             this.answers = dataFetch.answers ?? []
             this.work = dataFetch.work
             this.points = dataFetch.points
+
+            return dataFetch.form.title
         },
         async getFormStudent(idWork: string, idStudent: string) {
             const nuxtApp = useNuxtApp()
@@ -60,6 +62,8 @@ const formStore = defineStore('form', {
             // Set data
             this.form = dataFetch.form
             this.answers = dataFetch.answers ?? []
+
+            return dataFetch.form.title
         },
         async finishForm(idWork: string) {
             const { $formService } = useNuxtApp()

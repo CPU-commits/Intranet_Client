@@ -1,3 +1,6 @@
+---
+title: 'Libro de Vida - Administración - Soporte - Intranet'
+---
 # Libro de vida
 * * *
 

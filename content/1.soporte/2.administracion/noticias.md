@@ -1,3 +1,6 @@
+---
+title: 'Noticias - Administración - Soporte - Intranet'
+---
 # Noticias
 * * *
 

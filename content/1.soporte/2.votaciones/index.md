@@ -1,3 +1,6 @@
+---
+title: 'Votaciones - Soporte - Intranet'
+---
 # Votaciones
 * * *
 

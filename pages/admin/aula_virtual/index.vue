@@ -7,6 +7,15 @@ import type { ClassroomModule } from '~~/models/classroom/modules.model';
 import type { StudentGrade } from '~~/models/classroom/student_grade.model';
 import type { DirectiveModule } from '~~/models/classroom/modules.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Aula Virtual - Admin - ${schoolName} - Intranet`
+            : 'Aula Virtual - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

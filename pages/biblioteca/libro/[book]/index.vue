@@ -4,6 +4,11 @@ import type { Book } from '~~/models/library/book.model'
 import type { Tag } from '~~/models/library/tag.model'
 import type { Author } from '~~/models/library/author.model'
 import type { Editorial } from '~~/models/library/editorial.model'
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+    ? `Libro - ${schoolName} - Intranet`
+    : 'Libro - Intranet')
 // Nuxtp
 const {
     $fetchModule,
@@ -25,6 +30,10 @@ const book = ref<Book | null>(null)
 try {
     const dataFetch = await $libraryService.getBook(idBook)
     book.value = dataFetch
+
+    title.value = schoolName
+        ? `${book.value.name} - ${schoolName} - Intranet`
+        : `${book.value.name} - Intranet`
 } catch (err) {
     const _err = $fetchModule.handleError(err)
     throw createError({
@@ -43,6 +52,10 @@ function downloadBook() {
 
 <template>
     <section v-if="book" class="Book">
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+
         <section class="Header">
             <figure class="Header__image">
                 <img :src="book.image.url" :alt="book.name" />

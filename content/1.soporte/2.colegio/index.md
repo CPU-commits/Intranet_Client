@@ -1,3 +1,6 @@
+---
+title: 'Colegio - Soporte - Intranet'
+---
 # Colegio
 * * *
 

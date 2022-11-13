@@ -1,3 +1,7 @@
+---
+title: 'Módulo panel - Aula Virtual - Administración - Soporte - Intranet'
+---
+<!-- Content -->
 # Aula virtual - Módulo panel
 
 Aquí es dónde se publican los recursos y anuncios del módulo.

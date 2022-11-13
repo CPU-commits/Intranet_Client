@@ -1,12 +1,19 @@
 <script setup lang="ts">
-import { ErrorFetch } from '~~/common/fetchModule';
-import { Work } from '~~/models/classroom/work.model';
+import { ErrorFetch } from '~~/common/fetchModule'
+import { Work } from '~~/models/classroom/work.model'
 import { StudentAccess } from '~~/models/classroom/students_access.model'
 import { FormAccess } from '~~/models/classroom/form_access.model'
 import { FilesUploadedClassroom } from '~~/models/file/files_uploaded.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-import { Grade } from '~~/models/classroom/grade.model';
-import { formatDate } from '~~/utils/format';
+import { Grade } from '~~/models/classroom/grade.model'
+import { formatDate } from '~~/utils/format'
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `Trabajo - ${moduleName.value} - ${schoolName} - Intranet`
+	: `Trabajo - ${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -21,8 +28,6 @@ const {
     $fetchModule,
     $workService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const auth = useAuthStore()
 // Router
@@ -97,6 +102,10 @@ onMounted(async () => {
         // Fix obj null
         if (work.value?.attached?.length === 1 && work.value.attached[0]._id === '')
             work.value.attached = null
+		// Title
+		title.value = schoolName
+			? `${work.value.title} - ${moduleName.value} - ${schoolName} - Intranet`
+			: `${work.value.title} - ${moduleName.value} - Intranet`
     } catch (err) {
         error.value = $fetchModule.handleError(err)
     }
@@ -106,6 +115,10 @@ onMounted(async () => {
 <template>
 	<NuxtLayout name="class">
 		<section class="Work">
+			<Head>
+				<Title>{{ title }}</Title>
+			</Head>
+
 			<template v-if="work">
 				<header>
 					<h2>

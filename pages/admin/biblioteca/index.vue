@@ -10,6 +10,15 @@ import type { User } from '~~/models/user/user.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { formatDate } from '~~/utils/format'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Biblioteca Virtual - Admin - ${schoolName} - Intranet`
+            : 'Biblioteca Virtual - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',

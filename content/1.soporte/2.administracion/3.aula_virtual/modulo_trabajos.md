@@ -1,3 +1,6 @@
+---
+title: 'Módulo trabajos - Aula Virtual - Administración - Soporte - Intranet'
+---
 # Aula virtual - Módulo trabajos
 
 Los 🧰 trabajos están construidos de la siguiente forma:

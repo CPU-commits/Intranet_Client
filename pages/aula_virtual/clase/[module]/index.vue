@@ -4,6 +4,13 @@ import { ErrorFetch } from '~~/common/fetchModule';
 import type { Publication } from '~~/models/classroom/publication.model'
 import { UserTypesKeys } from '~~/models/user/user.model';
 import onScroll from '~~/utils/onScroll'
+// Composable
+const moduleName = useModuleName()
+// Meta
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = ref(schoolName
+	? `${moduleName.value} - ${schoolName} - Intranet`
+	: `${moduleName.value} - Intranet`)
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -83,6 +90,10 @@ function deletePublication(index: number) {
 <template>
 	<NuxtLayout name="class">
 		<section class="Publications">
+			<Head>
+				<Title>{{ title }}</Title>
+			</Head>
+
 			<section class="Publications__content">
 				<div class="Publications__write">
 					<ClassPublicationWrite

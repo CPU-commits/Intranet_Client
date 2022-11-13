@@ -2,6 +2,15 @@
 // Types
 import { ErrorFetch } from '~~/common/fetchModule';
 import { AnyUser, UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Usuario - ${schoolName} - Intranet`
+            : 'Usuario - Intranet'
+    },
+})
 // Nuxtapp
 const {
     $fetchModule,

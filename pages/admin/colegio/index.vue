@@ -2,6 +2,15 @@
 // Types
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Meta
+useHead({
+    titleTemplate: () => {
+        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+        return schoolName
+            ? `Colegio - Admin - ${schoolName} - Intranet`
+            : 'Colegio - Admin - Intranet'
+    },
+})
 // Guard
 definePageMeta({
     middleware: 'role',
