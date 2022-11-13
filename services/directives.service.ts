@@ -21,6 +21,9 @@ export class DirectivesService {
                 token: this.authStore.getToken,
                 spinnerStatus: true,
                 method: 'get',
+                abort: {
+                    url: 'same',
+                },
             })
         return data.body
     }

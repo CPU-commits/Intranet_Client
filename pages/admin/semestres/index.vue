@@ -112,18 +112,17 @@ async function updateSemester() {
 							: 'Vigente' }}
 					</td>
 					<td>
-						<HTMLButton
+						<HTMLButtonIcon
 							:click="() => {
 								positionSemester = i
 								initSemester()
 							}"
 							type="button"
-						>
-							<i class="fa-solid fa-rocket" />
-						</HTMLButton>
+							class-item="fa-solid fa-rocket"
+						/>
 					</td>
 					<td>
-						<HTMLButton
+						<HTMLButtonIcon
 							:click="() => {
 								modalEdit = true
 								positionSemester = i
@@ -131,9 +130,8 @@ async function updateSemester() {
 								semesterData.semester = semesterData.semester.toString()
 							}"
 							type="button"
-						>
-							<i class="fa-solid fa-pen-to-square" />
-						</HTMLButton>
+							class-item="fa-solid fa-pen-to-square"
+						/>
 					</td>
 				</tr>
 			</HTMLTable>

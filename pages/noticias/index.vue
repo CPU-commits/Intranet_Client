@@ -10,8 +10,6 @@ const {
     $fetchModule,
     $newsService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const auth = useAuthStore()
 
@@ -154,5 +152,35 @@ function deleteNews(index: number) {
     .page-leave-to {
         opacity: 0;
         filter: blur(1rem);
+    }
+
+    @media (max-width: 767.98px) {
+        .News {
+            padding: 20px;
+        }
+
+        .AddNews {
+            width: 40px;
+            height: 40px;
+            bottom: 10px;
+            right: 10px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .News {
+            padding: 10px;
+            gap: 20px;
+        }
+
+        .AddNews {
+            width: 35px;
+            height: 35px;
+            bottom: 10px;
+            right: 10px;
+            i {
+                font-size: 0.8rem;
+            }
+        }
     }
 </style>

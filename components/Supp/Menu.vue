@@ -1,6 +1,14 @@
 <script setup lang="ts">
+// Props
+const { menu } = defineProps<{
+    menu: boolean
+}>()
 // Router
 const route = useRoute()
+// Emits
+const emits = defineEmits<{
+    (e: 'menuClose', menuClose: void): VoidFunction
+}>()
 
 const path = ref(route.path)
 watch(() => route.path, (newValue) => {
@@ -9,7 +17,14 @@ watch(() => route.path, (newValue) => {
 </script>
 
 <template>
-    <nav class="SuppMenu">
+    <nav class="SuppMenu" :class="{'MenuOpen': menu}">
+        <HTMLButtonIcon
+            :class-item="'fa-solid fa-circle-info'"
+            :click="() => emits('menuClose')"
+        >
+            Menu
+        </HTMLButtonIcon>
+        <br />
         <ul>
             <li>
                 <span><i class="fa-solid fa-bell-concierge" /> Aplicaciones o servicios</span>
@@ -287,12 +302,25 @@ watch(() => route.path, (newValue) => {
 
 <style scoped lang="scss">
     .SuppMenu {
+        left: -270px;
+        width: 250px;
         background-color: white;
         box-shadow: rgb(71 75 255 / 10%) 0px 2px 4px;
-        position: sticky;
-        top: 0;
+        position: absolute;
+        top: 60px;
         padding: 10px;
         height: fit-content;
+        transition: all .4s ease;
+    }
+
+    .SuppMenu ul:first-child {
+        overflow-y: auto;
+        position: relative;
+        height: calc(100vh - 80px);
+    }
+
+    .MenuOpen {
+        left: 0;
     }
 
     ul {
@@ -367,5 +395,17 @@ watch(() => route.path, (newValue) => {
 
     span {
         font-size: 0.8rem;
+    }
+
+    @media (max-width: 767.98px) {
+        .SuppMenu {
+            top: 50px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .SuppMenu {
+            top: 45px;
+        }
     }
 </style>

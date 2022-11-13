@@ -4,12 +4,12 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { intToRoman } from '~~/utils/format'
 // Guard
-definePageMeta({
+/*definePageMeta({
     middleware: 'role',
     roles: [
         UserTypesKeys.TEACHER,
     ],
-})
+})*/
 // Nuxtapp
 const { $fetchModule } = useNuxtApp()
 // Stores
@@ -117,5 +117,25 @@ try {
 		align-items: center;
 		height: fit-content;
 		border-radius: 5px;
+	}
+
+	@media (max-width: 767.98px) {
+		h3 {
+			font-size: 1.1rem;
+		}
+
+		span, button {
+			font-size: 0.9rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		h3 {
+			font-size: 1rem;
+		}
+
+		span, button {
+			font-size: 0.8rem;
+		}
 	}
 </style>

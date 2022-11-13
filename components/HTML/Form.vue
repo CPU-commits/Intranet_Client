@@ -5,16 +5,22 @@ const { form } = defineProps<{
 </script>
 
 <template>
-	<form class="Form" @submit.prevent="form">
+	<form class="FormClass" @submit.prevent="form">
 		<slot />
 	</form>
 </template>
 
-<style scoped>
-	.Form {
+<style>
+	.FormClass {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		gap: 15px;
+	}
+
+	@media (max-width: 575.98px) {
+		.FormClass label {
+			font-size: 0.9rem;
+		}
 	}
 </style>

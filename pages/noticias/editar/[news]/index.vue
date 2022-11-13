@@ -89,8 +89,9 @@ async function updateNews() {
                 />
                 <HTMLRich
                     :body="news.body"
-                    @build-editor="(e) => editor = e"
+                    @build-editor="(e: Editor) => editor = e"
                     placeholder="Cuerpo..."
+                    :have-background="false"
                 />
                 <button type="submit">Editar noticia </button>
             </HTMLForm>
@@ -133,6 +134,7 @@ async function updateNews() {
 		background: var(--color-news-black);
 		color: white;
 		padding: 10px 15px;
+        border: none;
 	}
 
 	input:focus,
@@ -153,5 +155,16 @@ async function updateNews() {
 		font-size: 1rem;
 		border-bottom: 2px solid #ebebeb;
 		margin-bottom: 25px;
+	}
+
+    @media (max-width: 575.98px) {
+		.News {
+			margin: 10px;
+		}
+
+		input:first-child {
+			padding-top: 10px;
+			font-size: 2.2rem;
+		}
 	}
 </style>

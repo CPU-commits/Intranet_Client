@@ -17,8 +17,6 @@ const {
     $fetchModule,
     $workService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const auth = useAuthStore()
 // Router
@@ -103,4 +101,33 @@ function deleteWork(index: number) {
 	a {
 		color: var(--color-main);
 	}
+
+    @media (max-width: 767.98px) {
+        .Works {
+            margin: 15px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        a {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Works {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+        }
+
+        a {
+            font-size: 0.8rem;
+        }
+    }
 </style>

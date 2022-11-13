@@ -66,102 +66,111 @@ onMounted(async () => {
         })
     }
 })
+
+const filtersOpen = ref(false)
+function openFilters() {
+    filtersOpen.value = !filtersOpen.value
+}
 </script>
 
 <template>
     <nav class="Filter">
-        <h4><i class="fa-solid fa-filter" /> Filtros</h4>
-        <HTMLSearch
-            placeholder="Palabra clave"
-            v-model:value="search"
-            :search="() => getBooks(true, 0, search, {
-                ...filters,
-                saved: isSaved,
-            })"
-        />
-        <div>
-            <h5>Alfab&eacute;tico</h5>
-            <HTMLButtonIcon
-                :selected="filters.alphebet === 'asc'"
-                :oneHundred="false"
-                :click="() => filters.alphebet = 'asc'"
-                classItem="fa-solid fa-arrow-down-a-z"
+        <h4 @click="openFilters">
+            <i class="fa-solid fa-filter" /> Filtros
+        </h4>
+        <section class="Filter__content" :class="{'Filter__open': filtersOpen}">
+            <HTMLSearch
+                placeholder="Palabra clave"
+                v-model:value="search"
+                :search="() => getBooks(true, 0, search, {
+                    ...filters,
+                    saved: isSaved,
+                })"
             />
-            <HTMLButtonIcon
-                :selected="filters.alphebet === 'desc'"
-                :oneHundred="false"
-                :click="() => filters.alphebet = 'desc'"
-                classItem="fa-solid fa-arrow-up-a-z"
-            />
-        </div>
-        <div class="Filter__stars">
-            <h5>Clasificaci&oacute;n</h5>
-            <article class="Stars">
-                <input type="radio" value="5" v-model="filters.ranking" @click="() => filters.ranking = '5'" />
-                <i v-for="_ in 5" class="fa-solid fa-star" />
-            </article>
-            <article class="Stars">
-                <input type="radio" value="4" v-model="filters.ranking" @click="() => filters.ranking = '4'" />
-                <i v-for="_ in 4" class="fa-solid fa-star" />
-            </article>
-            <article class="Stars">
-                <input type="radio" value="3" v-model="filters.ranking" @click="() => filters.ranking = '3'" />
-                <i v-for="_ in 3" class="fa-solid fa-star" />
-            </article>
-            <article class="Stars">
-                <input type="radio" value="2" v-model="filters.ranking" @click="() => filters.ranking = '2'" />
-                <i v-for="_ in 2" class="fa-solid fa-star" />
-            </article>
-            <article class="Stars">
-                <input type="radio" value="1" v-model="filters.ranking" @click="() => filters.ranking = '1'" />
-                <i class="fa-solid fa-star" />
-            </article>
-            <div class="Dissmiss">
-                <HTMLButtonText
-                    :click="() => {
-                        filters.ranking = ''
-                    }"
-                >
-                    <i class="fa-solid fa-delete-left" /> Desmarcar
-                </HTMLButtonText>
+            <div>
+                <h5>Alfab&eacute;tico</h5>
+                <HTMLButtonIcon
+                    :selected="filters.alphebet === 'asc'"
+                    :oneHundred="false"
+                    :click="() => filters.alphebet = 'asc'"
+                    classItem="fa-solid fa-arrow-down-a-z"
+                />
+                <HTMLButtonIcon
+                    :selected="filters.alphebet === 'desc'"
+                    :oneHundred="false"
+                    :click="() => filters.alphebet = 'desc'"
+                    classItem="fa-solid fa-arrow-up-a-z"
+                />
             </div>
-        </div>
-        <div>
-            <h5>Fecha de Añadido</h5>
-            <HTMLButtonIcon
-                :selected="filters.added === 'desc'"
-                :click="() => filters.added = 'desc'"
-                classItem="fa-solid fa-arrow-down-wide-short"
-                :oneHundred="false"
-            />
-            <HTMLButtonIcon
-                :selected="filters.added === 'asc'"
-                :click="() => filters.added = 'asc'"
-                classItem="fa-solid fa-arrow-up-wide-short"
-                :oneHundred="false"
-            />
-        </div>
-        <label for="author">Autor</label>
-        <HTMLSelect id="author" v-model:value="filters.author">
-            <option value="">Cualquier autor</option>
-            <option v-for="(author, i) in authors" :value="author._id" :key="i">
-                {{ author.name }}
-            </option>
-        </HTMLSelect>
-        <label for="category">Categor&iacute;a</label>
-        <HTMLSelect id="category" v-model:value="filters.category">
-            <option value="">Cualquier categor&iacute;a</option>
-            <option v-for="(tag, i) in tags" :value="tag._id" :key="i">
-                {{ tag.tag }}
-            </option>
-        </HTMLSelect>
-        <label for="editorial">Editorial/publicador</label>
-        <HTMLSelect id="editorial" v-model:value="filters.editorial">
-            <option value="">Cualquier editorial/publicador</option>
-            <option v-for="(editorial, i) in editorials" :value="editorial._id" :key="i">
-                {{ editorial.editorial }}
-            </option>
-        </HTMLSelect>
+            <div class="Filter__stars">
+                <h5>Clasificaci&oacute;n</h5>
+                <article class="Stars">
+                    <input type="radio" value="5" v-model="filters.ranking" @click="() => filters.ranking = '5'" />
+                    <i v-for="_ in 5" class="fa-solid fa-star" />
+                </article>
+                <article class="Stars">
+                    <input type="radio" value="4" v-model="filters.ranking" @click="() => filters.ranking = '4'" />
+                    <i v-for="_ in 4" class="fa-solid fa-star" />
+                </article>
+                <article class="Stars">
+                    <input type="radio" value="3" v-model="filters.ranking" @click="() => filters.ranking = '3'" />
+                    <i v-for="_ in 3" class="fa-solid fa-star" />
+                </article>
+                <article class="Stars">
+                    <input type="radio" value="2" v-model="filters.ranking" @click="() => filters.ranking = '2'" />
+                    <i v-for="_ in 2" class="fa-solid fa-star" />
+                </article>
+                <article class="Stars">
+                    <input type="radio" value="1" v-model="filters.ranking" @click="() => filters.ranking = '1'" />
+                    <i class="fa-solid fa-star" />
+                </article>
+                <div class="Dissmiss">
+                    <HTMLButtonText
+                        :click="() => {
+                            filters.ranking = ''
+                        }"
+                    >
+                        <i class="fa-solid fa-delete-left" /> Desmarcar
+                    </HTMLButtonText>
+                </div>
+            </div>
+            <div>
+                <h5>Fecha de Añadido</h5>
+                <HTMLButtonIcon
+                    :selected="filters.added === 'desc'"
+                    :click="() => filters.added = 'desc'"
+                    classItem="fa-solid fa-arrow-down-wide-short"
+                    :oneHundred="false"
+                />
+                <HTMLButtonIcon
+                    :selected="filters.added === 'asc'"
+                    :click="() => filters.added = 'asc'"
+                    classItem="fa-solid fa-arrow-up-wide-short"
+                    :oneHundred="false"
+                />
+            </div>
+            <label for="author">Autor</label>
+            <HTMLSelect id="author" v-model:value="filters.author">
+                <option value="">Cualquier autor</option>
+                <option v-for="(author, i) in authors" :value="author._id" :key="i">
+                    {{ author.name }}
+                </option>
+            </HTMLSelect>
+            <label for="category">Categor&iacute;a</label>
+            <HTMLSelect id="category" v-model:value="filters.category">
+                <option value="">Cualquier categor&iacute;a</option>
+                <option v-for="(tag, i) in tags" :value="tag._id" :key="i">
+                    {{ tag.tag }}
+                </option>
+            </HTMLSelect>
+            <label for="editorial">Editorial/publicador</label>
+            <HTMLSelect id="editorial" v-model:value="filters.editorial">
+                <option value="">Cualquier editorial/publicador</option>
+                <option v-for="(editorial, i) in editorials" :value="editorial._id" :key="i">
+                    {{ editorial.editorial }}
+                </option>
+            </HTMLSelect>
+        </section>
     </nav>
 </template>
 
@@ -174,6 +183,12 @@ onMounted(async () => {
 		flex-direction: column;
 		gap: 10px;
 	}
+
+    .Filter__content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
 	.Filter__stars {
 		display: flex;
@@ -194,4 +209,47 @@ onMounted(async () => {
 	.Dissmiss {
 		width: fit-content;
 	}
+
+    @media (max-width: 767.98px) {
+        h5 {
+            font-size: 0.8rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+        }
+
+        button {
+            padding: 5px;
+            font-size: 0.95rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Filter {
+            top: 0;
+            position: relative;
+        }
+
+        .Filter__content {
+            display: none;
+        }
+
+        .Filter__open {
+            display: block;
+        }
+
+        h5 {
+            font-size: 0.7rem;
+        }
+
+        label {
+            font-size: 0.8rem;
+        }
+
+        button {
+            padding: 5px;
+            font-size: 0.9rem;
+        }
+    }
 </style>

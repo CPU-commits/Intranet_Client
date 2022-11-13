@@ -78,7 +78,7 @@ button {
     border-bottom: 2px solid var(--color-main) !important;
 }
 
-.RichButtonSelected i {
+.RichButtonSelected i, .RichButtonSelected span {
     color: var(--color-main)
 }
 
@@ -266,4 +266,40 @@ button {
 .hljs-deletion{
     color:#ffdcd7;
     background-color:#67060c
+}
+
+// Links
+.Link {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+// Media queries
+@media (max-width: 767.98px) {
+	.Tbody td {
+        padding: 4px 10px;
+        font-size: 0.85rem;
+    }
+
+    .ProseMirror {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .Tbody td {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+    }
+
+    .Tbody tr:last-child td {
+        padding-bottom: 10px;   
+    }
+
+    .ProseMirror {
+        padding: 5px;
+        font-size: 0.8rem;
+    }
 }

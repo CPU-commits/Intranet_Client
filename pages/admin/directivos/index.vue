@@ -121,7 +121,7 @@ async function changeStatus() {
                 <Icons>
                     <HTMLButtonIcon
                         title="Agregar directivo"
-                        @click="() => modal = true"
+                        :click="() => modal = true"
                         classItem="fa-solid fa-user-plus"
                     />
                     <HTMLAIcon
@@ -144,7 +144,7 @@ async function changeStatus() {
                         await getDirectives(true, n, search.value)
                     },
                 }"
-                @memo="(value) => {
+                @memo="(value: any) => {
                     if (directives) directives.users = value
                 }"
             >
@@ -155,7 +155,7 @@ async function changeStatus() {
                     <td>{{ directive.rut }}</td>
                     <td>{{ directive.status ? 'Activo' : 'Inactivo ' }}</td>
                     <td>
-                        <HTMLButton
+                        <HTMLButtonIcon
                             :click="() => {
                                 directiveEdit = Object.assign({}, directive)
                                 directivePosition = i
@@ -163,9 +163,8 @@ async function changeStatus() {
                                 modalEdit = true
                             }"
                             type="button"
-                        >
-                            <i class="fa-solid fa-pen-to-square" />
-                        </HTMLButton>
+                            class-item="fa-solid fa-pen-to-square"
+                        />
                     </td>
                 </tr>
             </HTMLTable>
@@ -277,4 +276,10 @@ async function changeStatus() {
 			color: var(--color-main);
 		}
 	}
+
+    @media (max-width: 575.98px) {
+        .Form__button {
+            top: 45px;
+        }
+    }
 </style>

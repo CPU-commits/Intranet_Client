@@ -291,4 +291,67 @@ async function deleteNews() {
 			transform: scale(0);
 		}
 	}
+
+	@media (max-width: 767.98px) {
+		.News a {
+			margin: 15px;
+			margin-bottom: 20px;
+		}
+
+		h3 {
+			font-size: 1.2rem;
+		}
+
+		p {
+			font-size: 0.9rem;
+		}
+
+		.News__details {
+			font-size: 0.75rem;
+		}
+
+		small {
+			font-size: 0.7rem;
+			bottom: 3px;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.News a {
+			margin: 5px;
+			margin-bottom: 20px;
+		}
+
+		h3 {
+			font-size: 1rem;
+		}
+
+		p {
+			font-size: 0.75rem;
+		}
+
+		img {
+			width: 120px;
+			height: 70px;
+		}
+
+		.News__details {
+			font-size: 0.7rem;
+			left: 0;
+			i {
+				font-size: 0.6rem;
+				margin-right: 2px;
+			}
+		}
+
+		small {
+			font-size: 0.6rem;
+			right: 0;
+		}
+
+		.News__config {
+			top: 0;
+			right: 0;
+		}
+	}
 </style>

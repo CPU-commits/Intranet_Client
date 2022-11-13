@@ -236,4 +236,52 @@ onMounted(async () => {
 	footer span {
 		color: var(--color-main);
 	}
+
+	footer small:last-child {
+		text-align: right;
+	}
+
+	@media (max-width: 767.98px) {
+		h2 {
+			font-size: 1.3rem;
+		}
+
+		small {
+			font-size: 0.75rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.Work {
+			margin: 10px;
+			padding: 10px;
+		}
+
+		h2 {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 1rem;
+			width: fit-content;
+		}
+
+		.Work__description {
+			padding: 8px;
+			font-size: 0.8rem;
+		}
+
+		.Work__content section {
+			padding: 10px;
+			margin: 10px;
+			gap: 10px;
+		}
+
+		.Grade {
+			text-align: right;
+		}
+
+		small {
+			font-size: 0.65rem;
+		}
+	}
 </style>

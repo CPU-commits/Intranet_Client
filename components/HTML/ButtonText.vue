@@ -32,4 +32,11 @@ onMounted(() => {
 		transition: all 0.3s ease;
 		border-radius: 5px;
 	}
+
+	@media (max-width: 575.98px) {
+		button {
+			font-size: 0.9rem;
+			padding: 5px;
+		}
+	}
 </style>

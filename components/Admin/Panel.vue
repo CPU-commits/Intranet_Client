@@ -50,4 +50,25 @@ onMounted(() => {
 		width: 100%;
 		border: 2px solid var(--color-main);
 	}
+
+	// Media queries
+	@media (max-width: 767.98px) {
+		nav {
+			padding: 7px;
+		}
+
+		.Panel {
+			padding: 15px;
+		}
+
+		.Panel__content {
+			margin-top: 0px;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.Panel {
+			padding: 10px;
+		}
+	}
 </style>

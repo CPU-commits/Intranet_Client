@@ -287,4 +287,28 @@ function getPointsEvaluated(pattern: string) {
 	.Revise {
 		margin-top: 10px;
 	}
+
+    @media (max-width: 767.98px) {
+        .Form__Button a {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        span, .Grade span {
+            font-size: 0.8rem;
+        }
+
+        .Form__Button a {
+            font-size: 0.75rem;
+        }
+
+        .Grade {
+            margin-top: 10px;
+        }
+
+        small {
+            font-size: 0.7rem;
+        }
+    }
 </style>

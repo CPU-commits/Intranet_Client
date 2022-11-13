@@ -68,7 +68,7 @@ async function publishNews() {
                     accept=".jpg, .jpeg, .png"
                     type="file"
                 />
-                <HTMLRich @build-editor="(e) => editor = e" :have-background="false" />
+                <HTMLRich @build-editor="(e: Editor) => editor = e" :have-background="false" />
                 <button type="submit">Publicar noticia </button>
             </HTMLForm>
         </div>
@@ -112,6 +112,7 @@ async function publishNews() {
 		margin-top: 20px;
 		background: var(--color-news-black);
 		color: white;
+		border: none;
 		padding: 10px 15px;
 	}
 
@@ -133,5 +134,20 @@ async function publishNews() {
 		font-size: 1rem;
 		border-bottom: 2px solid #ebebeb;
 		margin-bottom: 25px;
+	}
+
+	@media (max-width: 575.98px) {
+		.News {
+			padding: 10px;
+		}
+
+		h1 {
+			padding-top: 10px;
+			font-size: 2.2rem;
+		}
+
+		p {
+			font-size: 0.9rem;
+		}
 	}
 </style>

@@ -159,4 +159,24 @@ function saveBook(saveValue: boolean, index: number) {
 	.Void img {
 		max-height: 300px;
 	}
+
+    @media (max-width: 767.98px) {
+        .Library {
+            grid-template-columns: 130px 5fr;
+            margin: 15px;
+            gap: 10px;
+        }
+
+        .Books {
+            padding: 12px 0;
+            gap: 15px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Library {
+            display: flex;
+            flex-direction: column;
+        }
+    }
 </style>

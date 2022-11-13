@@ -13,8 +13,6 @@ const {
 	$newsService,
 	$homeService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const auth = useAuthStore()
 
@@ -113,16 +111,14 @@ function deleteAnnoucement(index: number) {
 				v-if="auth.userTypeIs(UserTypesKeys.DIRECTIVE, UserTypesKeys.DIRECTOR)"
 				@newAnnoucement="(a) => newAnnoucement(a)"
 			/>
-			<LazyClientOnly>
-				<div class="Home__annoucements--content">
-					<HomeAnnoucement
-						v-for="(annoucement, i) in annoucements"
-						:key="annoucement._id"
-						:annoucement="annoucement"
-						@delete="() => deleteAnnoucement(i)"
-					/>
-				</div>
-			</LazyClientOnly>
+			<div class="Home__annoucements--content">
+				<LazyHomeAnnoucement
+					v-for="(annoucement, i) in annoucements"
+					:key="annoucement._id"
+					:annoucement="annoucement"
+					@delete="() => deleteAnnoucement(i)"
+				/>
+			</div>
 			
 			<SpinnerGet />
 			<Error v-if="error" :err="error" />
@@ -188,6 +184,7 @@ function deleteAnnoucement(index: number) {
 		box-shadow: var(--box-shadow);
 		border-radius: 15px;
 		padding: 15px;
+		width: 100%;
 	}
 
 	.Home__annoucements--content {
@@ -195,5 +192,22 @@ function deleteAnnoucement(index: number) {
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
+	}
+
+	@media (max-width: 767.98px) {
+		.Home {
+			display: flex;
+			margin: 15px;
+		}
+
+		.Home__last {
+			display: none;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.Home {
+			margin: 8px;
+		}
 	}
 </style>

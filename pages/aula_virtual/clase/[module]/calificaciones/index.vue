@@ -17,8 +17,6 @@ const {
     $gradesService,
     $fetchModule,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const auth = useAuthStore()
 // Router
@@ -66,7 +64,7 @@ onMounted(async () => {
     </NuxtLayout>
 </template>
 
-<style scoped>
+<style>
 	.Grades {
 		margin: 20px;
 		padding: 15px;
@@ -74,4 +72,30 @@ onMounted(async () => {
 		background-color: white;
 		box-shadow: var(--box-shadow);
 	}
+
+    @media (max-width: 767.98px) {
+        .GradeComponent h2 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .GradeComponent h3 {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Grades {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .GradeComponent h2 {
+            font-size: 1rem;
+        }
+
+        .GradeComponent h3 {
+            font-size: 0.9rem;
+        }
+    }
 </style>

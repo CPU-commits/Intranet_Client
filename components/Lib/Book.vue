@@ -137,4 +137,36 @@ async function saveBook() {
 		right: 10px;
 		bottom: 10px;
 	}
+
+	@media (max-width: 767.98px) {
+		.Book {
+			max-width: 160px;
+			padding: 10px;
+			border-radius: 5px;
+		}
+
+		header img {
+			height: 170px;
+			width: 100%;
+		}
+
+		small {
+			font-size: 0.75rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.Book {
+			max-width: 250px;
+		}
+
+		header img {
+			height: 200px;
+			width: 180px;
+		}
+
+		small {
+			font-size: 0.7rem;
+		}
+	}
 </style>

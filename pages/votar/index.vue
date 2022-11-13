@@ -153,4 +153,40 @@ async function voteForList() {
 	.ButtonVote i {
 		color: white;
 	}
+
+    @media (max-width: 767.98px) {
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+        }
+
+        .Voting {
+            margin: 20px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        h2 {
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-size: 0.9rem;
+        }
+
+        h4 {
+            font-size: 0.85rem;
+        }
+
+        .Voting {
+            margin: 10px;
+        }
+    }
 </style>

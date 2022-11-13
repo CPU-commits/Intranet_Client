@@ -7,8 +7,6 @@ const {
     $fetchModule,
     $userService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const auth = useAuthStore()
 
@@ -107,5 +105,18 @@ onMounted(async () => {
 
 	.ContentData {
 		max-width: 1000px;
+        width: 100%;
 	}
+
+    @media (max-width: 767.98px) {
+        .EmailInput {
+            gap: 0px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        h2 {
+            font-size: 1.2rem;
+        }
+    }
 </style>

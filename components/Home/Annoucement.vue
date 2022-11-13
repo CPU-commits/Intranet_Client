@@ -35,11 +35,13 @@ async function deleteAnnoucement() {
             <HTMLButtonIcon classItem="fa-solid fa-xmark" :click="() => modal = true" />
         </aside>
         <div class="Annoucement__body">
-            <HTMLRich
-                :readOnly="true"
-                :haveBackground="false"
-                :body="annoucement.annoucement"
-            />
+            <header>
+                <HTMLRich
+                    :readOnly="true"
+                    :haveBackground="false"
+                    :body="annoucement.annoucement"
+                />
+            </header>
             <footer class="Annoucement__body--footer">
                 <section v-for="(file, i) in annoucement?.files" :key="file._id.$oid">
                     <HomeFile :file="file" />
@@ -83,7 +85,7 @@ async function deleteAnnoucement() {
     </Modal>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 	aside {
 		position: absolute;
 		right: 10px;
@@ -100,6 +102,9 @@ async function deleteAnnoucement() {
 
 	.Annoucement__body {
 		margin-bottom: 10px;
+        header {
+            border-bottom: 1px solid var(--color-light);
+        }
 	}
 
 	.Annoucement__body--footer {
@@ -128,4 +133,19 @@ async function deleteAnnoucement() {
 		display: flex;
 		margin-top: 10px;
 	}
+
+    @media (max-width: 575.98px) {
+        .Annoucement {
+            padding: 5px;
+        }
+
+        footer small {
+            font-size: 0.7rem;
+            width: fit-content;
+        }
+
+        footer small:last-child {
+            text-align: right;
+        }
+    }
 </style>

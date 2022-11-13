@@ -20,7 +20,6 @@ const {
 } = useNuxtApp()
 // Composable
 const votingStatus = useVoting()
-const spinner = useSpinner()
 
 //Search
 const search = ref('')
@@ -195,7 +194,7 @@ async function changeStatus() {
                     <td>{{ student.registration_number }}</td>
                     <td>{{ student.status ? 'Activo' : 'Inactivo' }}</td>
                     <td>
-                        <HTMLButton
+                        <HTMLButtonIcon
                             :click="() => {
                                 studentEdit = Object.assign({}, student)
                                 studentPosition = i
@@ -203,9 +202,8 @@ async function changeStatus() {
                                 modalEdit = true
                             }"
                             type="button"
-                        >
-                            <i class="fa-solid fa-pen-to-square" />
-                        </HTMLButton>
+                            class-item="fa-solid fa-pen-to-square"
+                        />
                     </td>
                 </tr>
             </HTMLTable>
@@ -322,4 +320,10 @@ async function changeStatus() {
 			color: var(--color-main);
 		}
 	}
+
+    @media (max-width: 575.98px) {
+        .Form__button {
+            top: 45px;
+        }
+    }
 </style>

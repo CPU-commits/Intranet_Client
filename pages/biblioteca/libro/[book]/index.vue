@@ -123,11 +123,11 @@ function downloadBook() {
             </article>
         </section>
         <footer>
-            <h5>Editorial</h5>
             <NuxtImg
                 :src="(book.editorial as Editorial).image.url"
                 :alt="(book.editorial as Editorial).editorial"
             />
+            <h5>Editorial</h5>
         </footer>
     </section>
 </template>
@@ -144,6 +144,10 @@ function downloadBook() {
 	h1 {
 		font-size: 1.6rem;
 	}
+
+    h3 {
+        text-align: center;
+    }
 
 	pre {
 		white-space: normal;
@@ -227,7 +231,7 @@ function downloadBook() {
 	.Rating {
 		display: flex;
 		flex-direction: row-reverse;
-		justify-content: flex-end;
+        justify-content: center;
 	}
 
 	.Rating input {
@@ -250,4 +254,73 @@ function downloadBook() {
 	.Rating input:checked ~ label {
 		color: #fd4;
 	}
+
+    @media (max-width: 767.98px) {
+        .Book {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .Header {
+            grid-template-columns: 150px 1fr;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+        }
+
+        h3 {
+            font-size: 1rem;
+        }
+
+        pre, a {
+            font-size: 0.9rem;
+        }
+
+        figure img {
+            width: 150px;
+            height: 100%;
+        }
+
+        .Rating label {
+            font-size: 1.1rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Book {
+            padding: 5px;
+        }
+
+        .Header {
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .Header__image {
+            gap: 5px;
+        }
+
+        .Header__essentials {
+            gap: 10px;
+        }
+
+        h1 {
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-size: 0.9rem;
+        }
+
+        pre, a {
+            font-size: 0.8rem;
+        }
+
+        .Rating label {
+            font-size: 1rem;
+        }
+    }
 </style>

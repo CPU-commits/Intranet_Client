@@ -69,7 +69,7 @@ function deleteFile(index: number) {
     <div class="Annoucement_Write">
         <HTMLForm :form="uploadAnnoucement">
             <HTMLRich
-                @build-editor="(e) => editor = e"
+                @build-editor="(e: Editor) => editor = e"
                 :haveBackground="false"
                 placeholder="¿Algo que anunciar?"
             />
@@ -98,7 +98,7 @@ function deleteFile(index: number) {
         </footer>
 
         <!-- Modal Cloud -->
-        <Cloud v-model:modal="modal" @files="(f) => filesAttached = f" /> 
+        <Cloud v-model:modal="modal" @files="(f: Array<UserFile>) => filesAttached = f" /> 
     </div>
 </template>
 
@@ -125,5 +125,21 @@ function deleteFile(index: number) {
     .Annoucement_Write__attached--file {
         display: flex;
         gap: 5px;
+    }
+
+    .Annoucement_Write__attached--file span {
+        padding-left: 3px;
+    }
+
+    @media (max-width: 575.98px) {
+        .Annoucement_Write__attached {
+            margin-top: 5px;
+            gap: 5px;
+        }
+
+        .Annoucement_Write__attached--file{
+            gap: 0;
+            align-items: center;
+        }
     }
 </style>

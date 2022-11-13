@@ -129,7 +129,7 @@ async function logout() {
 							<i class="fa-solid fa-check-to-slot" /> <span>Votar</span>
 						</li>
 					</NuxtLink>
-					<NuxtLink class="NuxtLink" @click="ahref" to="/soporte">
+					<NuxtLink class="NuxtLink" @click="ahref" to="/soporte/app/aula_virtual">
 						<li :class="url.startsWith('/soporte')">
 							<i class="fa-solid fa-circle-info" /> <span>Soporte</span>
 						</li>

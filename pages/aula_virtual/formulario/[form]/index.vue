@@ -201,4 +201,24 @@ function sumAfters(index: number): number {
 	.Buttons {
 		display: flex;
 	}
+
+	@media (max-width: 767.98px) {
+		h3 {
+			font-size: 1.1rem;
+		}
+
+		span, button {
+			font-size: 0.9rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		h3 {
+			font-size: 1rem;
+		}
+
+		span, button {
+			font-size: 0.8rem;
+		}
+	}
 </style>

@@ -20,6 +20,9 @@ export class TeacherService {
                 method: 'get',
                 spinnerStatus: true,
                 token: this.authStore.getToken,
+                abort: {
+                    url: 'same',
+                },
             })
         return dataFetch.body
     }

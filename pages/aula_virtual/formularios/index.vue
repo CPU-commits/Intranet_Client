@@ -66,9 +66,9 @@ onMounted(async () => {
             <SpinnerGet />
             <Error v-if="error" :err="error" />
         </section>
-        <a href="/aula_virtual/formularios/nuevo"
-            ><i class="fa-solid fa-feather-pointed" /> Crear un nuevo formulario</a
-        >
+        <NuxtLink to="/aula_virtual/formularios/nuevo">
+            <i class="fa-solid fa-feather-pointed" /> Crear un nuevo formulario
+        </NuxtLink>
     </section>
 </template>
 
@@ -128,4 +128,61 @@ onMounted(async () => {
 	i {
 		color: var(--color-main);
 	}
+
+    @media (max-width: 767.98px) {
+        .Forms {
+            margin: 10px;
+            padding: 15px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+        }
+
+        a, span {
+            font-size: 0.9rem;
+        }
+
+        .UserForms a {
+            padding: 10px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Forms {
+            padding: 10px;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-size: 1rem;
+        }
+
+        h4 {
+            font-size: 0.9rem;
+        }
+
+        a, .Form span {
+            font-size: 0.8rem;
+        }
+
+        .Form small {
+            font-size: 0.75rem;
+        }
+
+        .UserForms {
+            justify-content: center;
+        }
+    }
 </style>

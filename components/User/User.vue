@@ -18,6 +18,13 @@ const route = useRoute()
                         classItem="fa-solid fa-address-card"
                     />
                 </li>
+                <li>
+                    <HTMLAIcon
+                        :active="route.path === '/usuario/notificaciones'"
+                        href="/usuario/notificaciones"
+                        classItem="fa-solid fa-bell"
+                    />
+                </li>
                 <li v-if="auth.userTypeNotIs(
                     UserTypesKeys.STUDENT,
                     UserTypesKeys.ATTORNEY,
@@ -72,5 +79,31 @@ const route = useRoute()
 		background-color: white;
 		padding: 20px;
 		box-shadow: var(--box-shadow);
+        border-radius: 8px;
 	}
+
+    @media (max-width: 767.98px) {
+        .User {
+            margin: 15px;
+        }
+
+        .Menu ul {
+            padding: 10px;
+        }
+
+        .Content {
+            padding: 10px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .User {
+            margin: 10px;
+        }
+
+        ul {
+            gap: 20px;
+
+        }
+    }
 </style>

@@ -59,8 +59,14 @@ function stringStatus(status: number) {
                             />
                         </h3>
                     </header>
-                    <p>Desde: {{ formatDate(work.date_start) }}</p>
-                    <p>Hasta: {{ formatDate(work.date_limit) }}</p>
+                    <small>
+                        <i title="Fecha apertura trabajo" class="fa-solid fa-door-open" />
+                        {{ formatDate(work.date_start) }}
+                    </small>
+                    <small>
+                        <i title="Fecha cierre trabajo" class="fa-solid fa-door-closed" />
+                        {{ formatDate(work.date_limit) }}
+                    </small>
                     <footer>
                         <small>Subido: {{ formatDate(work.date_upload) }}</small>
                         <small>
@@ -107,10 +113,10 @@ function stringStatus(status: number) {
 
 	h3 {
 		transition: all 0.4s;
+        margin-bottom: 10px;
 	}
 
 	.Work {
-		width: 100%;
 		display: flex;
 		flex-direction: column;
 		background-color: white;
@@ -128,4 +134,48 @@ function stringStatus(status: number) {
 		color: var(--color-main);
 		font-weight: bold;
 	}
+
+    footer {
+        margin-top: 10px;
+    }
+
+    @media (max-width: 767.98px) {
+        .Classroom__works {
+            padding: 15px;
+        }
+
+        .Work {
+            padding: 15px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+        }
+
+        small {
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Classroom {
+            padding: 10px;
+        }
+
+        .Classroom__works {
+            padding: 10px;
+        }
+
+        .Work {
+            padding: 10px;
+        }
+
+        h3 {
+            font-size: 1rem;
+        }
+
+        small {
+            font-size: 0.7rem;
+        }
+    }
 </style>

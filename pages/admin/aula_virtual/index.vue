@@ -153,7 +153,7 @@ async function getDirectives() {
                     </td>
                     <td>{{ !_module.status ? 'Activo' : 'Finalizado' }}</td>
                     <td>
-                        <HTMLButton
+                        <HTMLButtonIcon
                             type="button"
                             :click="() => {
                                 modalGrades = !modalGrades
@@ -161,20 +161,18 @@ async function getDirectives() {
                                 moduleSelected = _module
                                 getModuleGrades(_module._id)
                             }"
-                        >
-                            <i class="fa-solid fa-highlighter" />
-                        </HTMLButton>
+                            class-item="fa-solid fa-highlighter"
+                        />
                     </td>
                     <td>
-                        <HTMLButton
+                        <HTMLButtonIcon
                             type="button"
                             :click="() => {
                                 moduleSelected = _module
                                 getDirectivesModule(_module._id)
                             }"
-                        >
-                            <i class="fa-solid fa-gear" />
-                        </HTMLButton>
+                            class-item="fa-solid fa-gear"
+                        />
                     </td>
                 </tr>
             </HTMLTable>

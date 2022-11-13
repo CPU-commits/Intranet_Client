@@ -60,4 +60,20 @@ onUnmounted(() => {
 	i {
 		color: white;
 	}
+
+    @media (max-width: 767.98px) {
+		button {
+            height: 31px;
+        }
+	}
+
+    @media (max-width: 575.98px) {
+        button {
+            height: 27.5px;
+            width: 30px;
+            i {
+                font-size: 0.6rem;
+            }
+        }
+    }
 </style>

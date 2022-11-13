@@ -12,8 +12,6 @@ const {
     $fetchModule,
     $collegeService,
 } = useNuxtApp()
-// Compostable
-const spinner = useSpinner()
 
 // Data
 const college = reactive({
@@ -23,14 +21,13 @@ const college = reactive({
 })
 
 const error = ref<ErrorFetch | null>(null)
+
 onMounted(async () => {
     try {
         const dataFetch = await $collegeService.getCollege()
         college.direction = dataFetch.direction
         college.phone = dataFetch.phone
         college.email = dataFetch.email
-
-        console.log(college)
     } catch (err) {
         const _err = $fetchModule.handleError(err)
         error.value = _err

@@ -13,8 +13,6 @@ definePageMeta({
 })
 // Nuxtapp
 const { $studentsService, $fetchModule } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const toasts = useToastsStore()
 // Router

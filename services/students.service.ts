@@ -23,6 +23,9 @@ export class StudentsService {
                 URL,
                 method: 'get',
                 token: this.authStore.getToken,
+                abort: {
+                    url: 'same',
+                },
             })
         return data.body
     }

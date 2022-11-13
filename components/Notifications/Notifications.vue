@@ -194,4 +194,29 @@ function deleteNotification(index: number) {
 	.Notifications__container {
 		padding: 10px;
 	}
+
+    @media (max-width: 767.98px) {
+        .fa-bell {
+            font-size: 0.95rem;
+        }
+
+        .Notifications {
+            width: 300px;
+        }
+
+        h4 {
+            padding: 5px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Notifications {
+            width: 250px;
+        }
+
+        .fa-bell {
+            font-size: 0.90rem;
+        }
+    }
 </style>

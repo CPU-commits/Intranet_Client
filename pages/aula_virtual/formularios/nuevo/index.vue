@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
     </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 	.Forms {
 		margin: 20px;
 		background-color: white;
@@ -81,4 +81,28 @@ onBeforeUnmount(() => {
 		gap: 20px;
 		border: 2px solid var(--color-light);
 	}
+
+    @media (max-width: 767.98px) {
+        .Forms__items {
+            padding: 5px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Forms {
+            margin: 10px;
+            padding: 10px;
+            input:first-child {
+                font-size: 1.4rem;
+            }
+        }
+
+        h3 {
+            font-size: 1rem;
+        }
+
+        span {
+            font-size: 0.85rem;
+        }
+    }
 </style>

@@ -18,8 +18,6 @@ const {
     $fetchModule,
     $publicationsService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Stores
 const auth = useAuthStore()
 // Router
@@ -90,7 +88,7 @@ function deletePublication(index: number) {
 					<ClassPublicationWrite
 						v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"
 						:_section="_section"
-						@newPublication="(p) => newPublication(p)"
+						@newPublication="(p: Publication) => newPublication(p)"
 					/>
 				</div>
 				<ClassPublication
@@ -139,5 +137,15 @@ function deletePublication(index: number) {
 	.Empty img {
 		height: 300px;
 		margin-bottom: 30px;
+	}
+
+	@media (max-width: 575.98px) {
+		.Publications {
+			padding: 10px;
+		}
+
+		.Publications__content {
+			gap: 20px;
+		}
 	}
 </style>

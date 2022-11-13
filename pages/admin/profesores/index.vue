@@ -216,18 +216,17 @@ function getSubjectsInSections(courses: Array<Course>) {
                     <td>{{ teacher.user.rut }}</td>
                     <td>{{ teacher.user.status ? 'Activo' : 'Inactivo' }}</td>
                     <td>
-                        <HTMLButton
+                        <HTMLButtonIcon
                             type="button"
                             :click="() => {
                                 modalSubjects = true
                                 teacherPosition = i
                             }"
-                        >
-                            <i class="fa-solid fa-book-bookmark s-Ss2zncTxuoSI" />
-                        </HTMLButton>
+                            class-item="fa-solid fa-book-bookmark"
+                        />
                     </td>
                     <td>
-                        <HTMLButton
+                        <HTMLButtonIcon
                             :click="() => {
                                 teacherEdit = Object.assign({}, teacher)
                                 teacherPosition = i
@@ -235,9 +234,8 @@ function getSubjectsInSections(courses: Array<Course>) {
                                 modalEdit = true
                             }"
                             type="button"
-                        >
-                            <i class="fa-solid fa-pen-to-square" />
-                        </HTMLButton>
+                            class-item="fa-solid fa-pen-to-square"
+                        />
                     </td>
                 </tr>
             </HTMLTable>
@@ -380,4 +378,10 @@ function getSubjectsInSections(courses: Array<Course>) {
 			color: var(--color-main);
 		}
 	}
+
+    @media (max-width: 575.98px) {
+        .Form__button {
+            top: 45px;
+        }
+    }
 </style>

@@ -36,4 +36,16 @@ const { classItem, title, href, active, target } = withDefaults(defineProps<{
 	.Actived {
 		color: var(--color-main);
 	}
+
+	@media (max-width: 767.98px) {
+		i {
+			font-size: 0.8rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		i {
+			font-size: 0.72rem;
+		}
+	}
 </style>

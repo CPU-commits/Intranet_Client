@@ -232,4 +232,42 @@ function keyDown() {
 		color: var(--color-main);
 		font-weight: bold;
 	}
+
+    @media (max-width: 767.98px) {
+        .Question {
+            margin: 10px;
+        }
+
+        .Question h4 {
+            font-size: 0.9rem;
+            margin-top: 9px;
+        }
+
+        span, input, p {
+            font-size: 0.85rem;
+        }
+
+        small {
+            font-size: 0.78rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Question {
+            margin: 8px;
+        }
+
+        .Question h4 {
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        span, input, p {
+            font-size: 0.75rem;
+        }
+
+        small {
+            font-size: 0.7rem;
+        }
+    }
 </style>

@@ -124,4 +124,45 @@ async function uploadPublication() {
 		align-items: center;
 		gap: 15px;
 	}
+
+    @media (max-width: 767.98px) {
+        .Publication {
+            padding: 10px;
+        }
+
+        h4 {
+            font-size: 0.9rem;
+        }
+
+        .Publication__writting--footer {
+            gap: 15px;
+            padding: 8px;
+        }
+
+        .Publication--footer__button {
+		    max-width: 180px;
+	    }
+    }
+
+    @media (max-width: 575.98px) {
+        .Publication {
+            padding: 8px;
+        }
+
+        .Publication__writting--footer {
+            padding: 5px;
+        }
+
+        h4 {
+            font-size: 0.8rem;
+        }
+
+        ._Attached {
+            gap: 5px;
+        }
+
+        .Publication--footer__button {
+		    max-width: 120px;
+	    }
+    }
 </style>

@@ -644,4 +644,42 @@ function getValue(e: Event) {
 		gap: 10px;
 		padding: 10px;
 	}
+
+	@media (max-width: 767.98px) {
+		i {
+			font-size: 0.8rem;
+		}
+
+		small {
+			font-size: 0.75rem;
+		}
+
+		.Editor__footer {
+			margin-top: 5px;
+			gap: 6px;
+			padding: 8px;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.Editor__header {
+			padding: 0px;
+			gap: 8px;
+			padding-bottom: 5px;
+		}
+
+		i {
+			font-size: 0.7rem;
+		}
+
+		small {
+			font-size: 0.7rem;
+		}
+
+		.Editor__footer {
+			margin-top: 0px;
+			gap: 5px;
+			padding: 5px;
+		}
+	}
 </style>

@@ -172,9 +172,11 @@ async function deleteSubjectCourse(idSubject: string) {
                     <td>{{ subject.subject }}</td>
                     <td>{{ subject.specialty ? subject.specialty.specialty : 'Sin asignar' }}</td>
                     <td>
-                        <HTMLButton :click="() => deleteSubject(subject._id)" type="button">
-                            <i class="fa-solid fa-minus" />
-                        </HTMLButton>
+                        <HTMLButtonIcon
+                            :click="() => deleteSubject(subject._id)"
+                            type="button"
+                            classItem="fa-solid fa-minus"
+                        />
                     </td>
                 </tr>
             </HTMLTable>
@@ -239,9 +241,11 @@ async function deleteSubjectCourse(idSubject: string) {
                 <tr v-for="(course, i) in courses" :key="i">
                     <td>{{ course.course }}</td>
                     <td>
-                        <HTMLButton :click="() => toggleCourseSubjects(course._id, i)" type="button">
-                            <i class="fa-solid fa-book-bookmark" />
-                        </HTMLButton>
+                        <HTMLButtonIcon
+                            :click="() => toggleCourseSubjects(course._id, i)"
+                            type="button"
+                            classItem="fa-solid fa-book-bookmark"
+                        />
                     </td>
                 </tr>
             </HTMLTable>
@@ -298,4 +302,10 @@ async function deleteSubjectCourse(idSubject: string) {
 	i {
 		color: white;
 	}
+
+    @media (max-width: 575.98px) {
+        h2 i {
+            font-size: 1rem;
+        }
+    }
 </style>

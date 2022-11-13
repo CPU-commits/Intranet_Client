@@ -11,13 +11,15 @@ const {
     $fetchModule,
     $filesService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 
 // Modal
 const modalRef = ref(false)
 const modal = toRef(props, 'modal')
 
+watch(modalRef, () => {
+    // Emit
+    emits('update:modal', modalRef.value)
+})
 watch(modal, (newValue) => {
     if (newValue) getFiles()
     modalRef.value = newValue

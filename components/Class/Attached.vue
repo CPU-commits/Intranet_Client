@@ -60,7 +60,7 @@ function addLink() {
 		<!-- Modals -->
 		<Cloud
 			v-model:modal="cloud"
-			@files="(files) => $emit('newFile', files)"
+			@files="(files: Array<UserFile>) => $emit('newFile', files)"
 		/>
 
 		<Modal v-model:opened="link">

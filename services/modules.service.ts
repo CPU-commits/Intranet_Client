@@ -152,6 +152,9 @@ export class ModulesService {
             URL: `/api/c/classroom/modules/search/${idModule}?search=${search}`,
             spinnerStatus: true,
             token: this.authStore.getToken,
+            abort: {
+                url: 'same',
+            },
         })
 
         return dataFetch.body.hits

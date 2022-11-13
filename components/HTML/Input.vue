@@ -52,4 +52,25 @@ const { value, id, type, placeholder, keyup } = defineProps({
 	.Color {
 		padding: 0;
 	}
+
+	// Media queries
+	@media (max-width: 767.98px) {
+		input {
+			padding: 8px;
+			font-size: 0.8rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		input {
+			padding: 7px;
+			font-size: 0.75rem;
+			border-bottom: 1px var(--color-light) solid;
+		}
+
+		input:focus {
+			border-bottom: 1.5px var(--color-main) solid;
+			outline: none;
+		}
+	}
 </style>

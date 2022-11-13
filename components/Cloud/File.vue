@@ -140,4 +140,65 @@ async function downloadFile() {
 	.FileMin h4 {
 		transition: all 0.4s;
 	}
+
+	@media (max-width: 767.98px) {
+		.File__content {
+			padding: 5px;
+		}
+
+		h3 {
+			font-size: 1.1rem;
+		}
+
+		small {
+			font-size: 0.75rem;
+		}
+
+		.FileMin {
+			gap: 8px;
+		}
+
+		.FileMin i {
+			font-size: 1rem;
+		}
+
+		.FileMin h4 {
+			font-size: 0.9rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		header {
+			padding: 10px;
+		}
+
+		i {
+			font-size: 1.2rem;
+		}
+
+		h3 {
+			font-size: 0.95rem;
+		}
+
+		small {
+			font-size: 0.7rem;
+		}
+
+		aside {
+			top: 5px;
+			right: 4px;
+		}
+
+		.FileMin {
+			gap: 5px;
+		}
+
+		.FileMin i {
+			font-size: 0.9rem;
+		}
+
+		.FileMin h4 {
+			font-size: 0.75rem;
+		}
+	}
 </style>

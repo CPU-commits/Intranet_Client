@@ -17,8 +17,6 @@ const {
     $moduleService,
     $fetchModule,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 
 // Data
 const modules = ref<Array<ClassroomModule> | null>(null)
@@ -59,4 +57,20 @@ onMounted(async () => {
 		grid-template-columns: repeat(auto-fill, 220px);
 		gap: 15px;
 	}
+
+    @media (max-width: 767.98px) {
+        .Classroom {
+            padding: 15px;
+        }
+
+        .Classroom__modules {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Classroom {
+            padding: 10px;
+        }
+    }
 </style>

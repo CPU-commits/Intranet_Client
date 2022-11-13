@@ -94,4 +94,16 @@ async function downloadGrades() {
 	.Selected i {
 		color: var(--color-main);
 	}
+
+    @media (max-width: 767.98px) {
+        .Classroom__menu {
+            padding: 8px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        i {
+            font-size: 0.9rem;
+        }
+    }
 </style>

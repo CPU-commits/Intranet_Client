@@ -94,4 +94,19 @@ const { number, item } = defineProps<{
 	.Item__destroy {
 		margin-left: 20px;
 	}
+
+    @media (max-width: 575.98px) {
+        .Item {
+            gap: 5px;
+            padding: 8px;
+        }
+
+        .Item__destroy {
+            margin-left: 10px;
+        }
+
+        h4 {
+            font-size: 0.9rem;
+        }
+    }
 </style>

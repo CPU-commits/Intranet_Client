@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Types
 import type { Author } from '~~/models/library/author.model'
-import { UserTypesKeys } from '~~/models/user/user.model'
+/*import { UserTypesKeys } from '~~/models/user/user.model'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -10,7 +10,7 @@ definePageMeta({
         UserTypesKeys.DIRECTOR,
         UserTypesKeys.LIBRARIAN,
     ],
-})
+})*/
 // NuxtApp
 const {
     $fetchModule,
@@ -52,7 +52,7 @@ const toggleInfo = () => {
 }
 // Form
 const fileInput = ref<HTMLInputElement | null>(null)
-const src = ref(author.value.image?.url ?? '')
+const src = ref(author.value?.image?.url ?? '')
 const itemInfo = reactive({
     key: '',
     value: '',
@@ -275,5 +275,41 @@ async function updateAuthor() {
 
     .Reference__button {
         width: 0;
+    }
+
+    @media (max-width: 767.98px) {
+        .Header {
+            grid-template-columns: 1fr 150px;
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+        }
+
+        label, p {
+            font-size: 0.9rem;
+        }
+
+        small {
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Header {
+            grid-template-columns: 1fr 100px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
+        small, p {
+            text-align: center;
+        }
     }
 </style>

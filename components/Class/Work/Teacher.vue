@@ -310,4 +310,10 @@ async function uploadEvaluateFiles() {
 	.Fail {
 		color: var(--color-danger);
 	}
+
+    @media (max-width: 575.98px) {
+        .Revised {
+            font-size: 0.85rem;
+        }
+    }
 </style>

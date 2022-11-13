@@ -15,6 +15,12 @@ import {
     removeTime,
     secondsToHoursFormat,
 } from '~~/utils/format'
+
+type Link = {
+    title: string
+    link: string
+    _id_attached?: string
+}
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -61,11 +67,7 @@ const dates = reactive({
 })
 const timeAccess = ref('')
 // Attached
-const linksAttached = ref<Array<{
-    title: string
-    link: string
-    _id_attached?: string
-}>>([])
+const linksAttached = ref<Array<Link>>([])
 const filesAttached = ref<Array<UserFile & { _id_attached?: string }>>([])
 
 // Data
@@ -298,8 +300,8 @@ async function deleteLink(index: number) {
                     />
                 </section>
                 <ClassAttached
-                    @new-file="(f) => filesAttached = f"
-                    @new-link="(l) => linksAttached.push(l)"
+                    @new-file="(f: Array<UserFile>) => filesAttached = f"
+                    @new-link="(l: Link) => linksAttached.push(l)"
                 />
                 <HTMLButton type="submit">Editar trabajo</HTMLButton>
             </HTMLForm>
@@ -326,4 +328,33 @@ async function deleteLink(index: number) {
 		align-items: center;
 		gap: 10px;
 	}
+
+    @media (max-width: 767.98px) {
+        .NewWork {
+            margin: 15px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .NewWork {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+        }
+
+        h3 {
+            font-size: 0.95rem;
+        }
+    }
 </style>

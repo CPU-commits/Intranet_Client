@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const { title, click, selected, disabled } = withDefaults(defineProps<{
+const { title, click, selected, disabled } = defineProps<{
     title?: string
     click: () => any
     selected?: boolean
     disabled?: boolean
-}>(), { title: '', selected: false, disabled: false })
+}>()
 </script>
 
 <template>

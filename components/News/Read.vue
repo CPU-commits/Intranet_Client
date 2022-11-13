@@ -82,4 +82,19 @@ const { news } = defineProps<{
 		color: var(--color-main);
 		font-weight: bold;
 	}
+
+	@media (max-width: 575.98px) {
+		.News {
+			padding: 10px;
+		}
+
+		h1 {
+			padding-top: 10px;
+			font-size: 2.2rem;
+		}
+
+		p {
+			font-size: 0.9rem;
+		}
+	}
 </style>

@@ -7,9 +7,8 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 definePageMeta({
     middleware: 'role',
     roles: [
-        UserTypesKeys.TEACHER,
-        UserTypesKeys.DIRECTOR,
-        UserTypesKeys.DIRECTIVE,
+        UserTypesKeys.STUDENT,
+        UserTypesKeys.STUDENT_DIRECTIVE,
     ],
 })
 // Nuxtapp
@@ -21,8 +20,6 @@ const {
 } = useNuxtApp()
 // Stores
 const toasts = useToastsStore()
-// Composable
-const spinner = useSpinner()
 
 // Data
 const semesters = ref<Array<Semester> | null>(null)
@@ -76,4 +73,16 @@ async function getGrades(idSemester: string) {
 	i {
 		color: white;
 	}
+
+    @media (max-width: 767.98px) {
+        h2 {
+            font-size: 1.3rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        h2 {
+            font-size: 1.1rem;
+        }
+    }
 </style>

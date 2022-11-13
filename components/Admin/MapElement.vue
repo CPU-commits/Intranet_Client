@@ -45,4 +45,12 @@ const { course, grade, sections } = defineProps<{
 			color: white;
 		}
 	}
+
+    @media (max-width: 575.98px) {
+		article {
+            width: 200px;
+            height: 30px;
+            font-size: 0.8rem;
+        }
+	}
 </style>

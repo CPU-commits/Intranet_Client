@@ -80,9 +80,13 @@ async function deleteWork() {
                     Trabajo revisado
                 </small>
                 <p v-if="dateIsBefore(new Date(), work.date_start)">
-                    Fecha apertura trabajo: {{ formatDate(work.date_start) }}
+                    <i title="Fecha apertura trabajo" class="fa-solid fa-door-open" />
+					{{ formatDate(work.date_start) }}
                 </p>
-                <span>Fecha cierre trabajo: {{ formatDate(work.date_limit) }}</span>
+                <p v-if="!work.is_revised">
+					<i title="Fecha cierre trabajo" class="fa-solid fa-door-closed" />
+					{{ formatDate(work.date_limit) }}
+				</p>
             </section>
             <footer>
                 <small>
@@ -252,5 +256,50 @@ async function deleteWork() {
 
 	.Buttons {
 		display: flex;
+	}
+
+	footer small:last-child {
+		text-align: right;
+	}
+
+	@media (max-width: 767.98px) {
+		.Work {
+			padding: 10px;
+		}
+
+		h3 {
+			font-size: 1.1rem;
+		}
+
+		small {
+			font-size: 0.75rem;
+		}
+
+		p {
+			font-size: 0.9rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.Work {
+			padding: 8px;
+		}
+
+		h3 {
+			font-size: 0.95rem;
+		}
+
+		small {
+			font-size: 0.65rem;
+		}
+
+		p {
+			font-size: 0.75rem;
+		}
+
+		.Topleft {
+			top: 0;
+			right: -5px;
+		}
 	}
 </style>

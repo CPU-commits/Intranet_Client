@@ -80,6 +80,7 @@ onBeforeUpdate(() => {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		gap: 5px;
 	}
 
 	button:hover i,
@@ -96,5 +97,18 @@ onBeforeUpdate(() => {
 
 	.Selected {
 		color: var(--color-main) !important;
+	}
+
+	
+	@media (max-width: 767.98px) {
+		i {
+			font-size: 0.8rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		i {
+			font-size: 0.72rem;
+		}
 	}
 </style>

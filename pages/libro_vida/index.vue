@@ -102,4 +102,14 @@ const search = ref('')
 	h2 {
 		margin-bottom: 15px;
 	}
+
+    @media (max-width: 575.98px) {
+        h2 {
+            font-size: 1.2rem;
+        }
+
+        .BookLife {
+            margin: 10px;
+        }
+    }
 </style>

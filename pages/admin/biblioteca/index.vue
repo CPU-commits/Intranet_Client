@@ -278,7 +278,7 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 			<HTMLTable
 				:header="['', 'Nombre', 'Autor', 'Editorial', 'Ranking', 'Editar']"
 				:navigate="navigate"
-				@memo="(value) => books = value"
+				@memo="(value: Array<Book>) => books = value"
 			>
 				<tr v-for="(book, i) in books" :key="i">
 					<td><img :src="book.image.url" :alt="book.name" /></td>
@@ -325,7 +325,7 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 					<td>{{ librarian.rut }}</td>
 					<td>{{ librarian.status ? 'Activo' : 'Inactivo' }}</td>
 					<td>
-						<HTMLButton
+						<HTMLButtonIcon
 							:click="() => {
 								modalEditLibrarian = true
 								modalLibrarian = false
@@ -334,9 +334,8 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 								librarianIndex = i
 							}"
 							type="button"
-						>
-							<i class="fa-solid fa-pen-to-square" />
-						</HTMLButton>
+							class-item="fa-solid fa-pen-to-square"
+						/>
 					</td>
 				</tr>
 			</HTMLTable>
@@ -533,5 +532,24 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 		width: 150px;
 		height: 100px;
 		object-fit: cover;
+	}
+
+	// Media queries
+	@media (max-width: 767.98px) {
+		img {
+			width: 110px;
+			height: 70px;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		img {
+			width: 90px;
+			height: 60px;
+		}
+
+		.Form__button {
+			top: 58px;
+		}
 	}
 </style>

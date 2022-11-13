@@ -118,7 +118,6 @@ async function searchFunction() {
 		background-color: white;
 		padding: 20px;
 		border-radius: 15px;
-		width: 100%;
 		box-sizing: border-box;
 		box-shadow: var(--box-shadow);
 	}
@@ -153,5 +152,59 @@ async function searchFunction() {
 	.Mark {
 		color: var(--color-main);
 		font-weight: bold;
+	}
+
+	@media (max-width: 767.98px) {
+		.SearchContainer {
+			padding: 15px;
+			margin: 15px;
+		}
+
+		.Item {
+			padding: 8px;
+		}
+
+		a {
+			font-size: 0.95rem;
+		}
+
+		pre {
+			font-size: 0.95rem;
+		}
+
+		small {
+			font-size: 0.75rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.SearchContainer {
+			padding: 10px;
+			margin: 10px;
+		}
+
+		.Item {
+			padding: 5px;
+		}
+
+		a {
+			font-size: 0.85rem;
+		}
+
+		pre {
+			font-size: 0.8rem;
+		}
+
+		small {
+			font-size: 0.65rem;
+		}
+
+		small:last-child {
+			text-align: right;
+		}
+
+		footer {
+			gap: 10px;
+		}
 	}
 </style>

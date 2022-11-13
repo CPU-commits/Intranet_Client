@@ -115,4 +115,25 @@ function getClassroomIcon() {
 		border: none;
 		font-size: 10px;
 	}
+
+	@media (max-width: 767.98px) {
+		.Notification {
+			padding: 5px;
+
+		}
+
+		h3 {
+			font-size: 0.8rem;
+		}
+
+		small {
+			font-size: 0.58rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		span {
+			font-size: 0.7rem;
+		}
+	}
 </style>

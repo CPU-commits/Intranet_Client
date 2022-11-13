@@ -152,4 +152,14 @@ const { moduleData, isHistory } = defineProps<{
 	a {
 		text-decoration: none;
 	}
+
+	@media (max-width: 575.98px) {
+		header h3 {
+			font-size: 1rem;
+		}
+
+		small {
+			font-size: 0.8rem;
+		}
+	}
 </style>

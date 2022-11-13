@@ -1,6 +1,17 @@
+<script setup lang="ts">
+const menu = ref(false)
+</script>
+
 <template>
     <section class="Support">
-        <SuppMenu />
+        <HTMLButtonIcon
+            :class-item="'fa-solid fa-circle-info'"
+            :click="() => menu = !menu"
+        >
+            Menu
+        </HTMLButtonIcon>
+        <br />
+        <SuppMenu @menu-close="() => menu = false" :menu="menu" />
 
         <div class="Support__content">
             <slot />
@@ -10,17 +21,15 @@
 
 <style lang="scss">
     .Support {
-        margin-top: 2px;
-        display: grid;
-        width: 100%;
-        grid-template-columns: 300px 600px;
-        gap: 30px;
-        height: fit-content;
+        padding: 15px;
+    }
+
+    .Support button {
+        width: min-content;
     }
 
     .Support__content {
         margin-bottom: 300px;
-        padding-top: 10px;
 
         h1 {
             color: var(--color-main);
@@ -77,6 +86,22 @@
         }
         li {
             padding: 5px;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .Support__content {
+            font-size: 0.9rem;
+
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Support__content {
+            font-size: 0.85rem;
         }
     }
 </style>

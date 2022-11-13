@@ -184,7 +184,7 @@ async function selectNextSection(sectionData: Section | null = null) {
                             class="file"
                             accept=".jpg, .jpeg, .png"
                         />
-                        <img
+                        <LazyNuxtImg
                             @click="filesInput[i].click()"
                             :src="section.file.url"
                             :alt="section.section"
@@ -319,4 +319,11 @@ async function selectNextSection(sectionData: Section | null = null) {
 		gap: 15px;
 		justify-content: center;
 	}
+
+    @media (max-width: 575.98px) {
+        img {
+            width: 90px;
+            height: 60px;
+        }
+    }
 </style>

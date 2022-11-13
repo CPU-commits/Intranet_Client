@@ -42,4 +42,21 @@ if (typeof idStudent !== 'string')
 	h2 {
 		margin-bottom: 15px;
 	}
+
+    @media (max-width: 767.98px) {
+        .BookLife {
+            margin: 15px;
+            padding: 10px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        h2 {
+            font-size: 1.2rem;
+        }
+
+        .BookLife {
+            margin: 10px;
+        }
+    }
 </style>

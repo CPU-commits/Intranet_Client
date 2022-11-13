@@ -296,4 +296,38 @@ async function editPublication() {
 		display: flex;
 		gap: 20px;
 	}
+
+    @media (max-width: 767.98px) {
+        .Publication {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .Publication__content {
+            padding: 10px;
+        }
+
+        aside {
+            right: 10px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Publication {
+            padding: 8px;
+            font-size: 0.8rem;
+        }
+
+        .Publication__content {
+            padding: 8px;
+        }
+
+        aside {
+            right: 5px;
+        }
+
+        small {
+            font-size: 0.65rem;
+        }
+    }
 </style>

@@ -319,4 +319,21 @@ async function finishCurrentSemester() {
 		align-items: center;
 		gap: 5px;
 	}
+
+    @media (max-width: 767.98px) {
+        h4 {
+            margin-top: 7px;
+            margin-bottom: 7px;
+        }
+    }
+
+	@media (max-width: 575.98px) {
+        h4 {
+            font-size: 0.9rem;
+        }
+
+        span {
+            font-size: 0.75rem;
+        }
+    }
 </style>

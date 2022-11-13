@@ -17,8 +17,6 @@ const {
     $fetchModule,
     $publicationsService,
 } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 // Router
 const route = useRoute()
 

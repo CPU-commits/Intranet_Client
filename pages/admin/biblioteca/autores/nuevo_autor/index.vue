@@ -269,4 +269,40 @@ async function uploadAuthor() {
     .Reference__button {
         width: 0;
     }
+
+    @media (max-width: 767.98px) {
+        .Header {
+            grid-template-columns: 1fr 150px;
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+        }
+
+        label, p {
+            font-size: 0.9rem;
+        }
+
+        small {
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Header {
+            grid-template-columns: 1fr 100px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
+        small, p {
+            text-align: center;
+        }
+    }
 </style>

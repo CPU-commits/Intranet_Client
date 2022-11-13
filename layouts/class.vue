@@ -2,6 +2,10 @@
 // Types
 import type { ClassroomModule } from '~~/models/classroom/modules.model'
 import type { Panel } from '~~/models/classroom/panel.model'
+type Section = {
+    _id: string
+    name: string
+}
 // Nuxtapp
 const { $moduleService, $fetchModule } = useNuxtApp()
 // Router
@@ -35,6 +39,7 @@ try {
     const dataFetch = await $moduleService.getModule(idModule)
     _module.value = dataFetch
 } catch (err) {
+    console.log('Error!!', err)
     const _err = $fetchModule.handleError(err)
     throw createError({
         ..._err,
@@ -42,7 +47,7 @@ try {
     })
 }
 
-function addSection(section: { _id: string, name: string }) {
+function addSection(section: Section) {
     if (_module.value) _module.value.sub_sections.push(section)
 }
 </script>
@@ -53,7 +58,7 @@ function addSection(section: { _id: string, name: string }) {
             v-if="_module"
             :panel="panel"
             :_module="_module"
-            @newSection="(s) => addSection(s)"
+            @newSection="(s: Section) => addSection(s)"
         />
         <slot />
     </main>

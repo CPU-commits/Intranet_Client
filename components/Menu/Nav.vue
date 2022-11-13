@@ -111,6 +111,8 @@ watch(() => route.path, (newValue) => {
 
 	.Header__content--main {
 		display: flex;
+		justify-content: center;
+		width: 200px;
 	}
 
 	.Header__content--main ul {
@@ -137,6 +139,7 @@ watch(() => route.path, (newValue) => {
 		align-items: center;
 		gap: 20px;
 		width: 200px;
+		justify-content: center;
 	}
 
 	button {
@@ -148,15 +151,66 @@ watch(() => route.path, (newValue) => {
 	// Media queries
 	@media (max-width: 767.98px) {
 		.Header {
-			height: 55px;
+			height: 50px;
 		}
 
 		h2 {
-			font-size: 1.4rem;
+			font-size: 1.3rem;
 		}
 
 		a {
-			font-size: 0.95rem;
+			font-size: 0.85rem;
+		}
+
+		.Header__content--left {
+			width: fit-content;
+		}
+
+		.Header__content--right {
+			justify-content: flex-end;
+			width: 100px;
+			gap: 15px;
+			i {
+				font-size: 0.9rem;
+			}
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.Header {
+			height: 45px;
+		}
+
+		.Header__content {
+			padding: 0 8px;
+		}
+
+		h2 {
+			font-size: 1.1rem;
+		}
+
+		button i {
+			font-size: 0.9rem;
+		}
+
+		a {
+			font-size: 0.75rem;
+		}
+
+		.Header__content--left {			
+			gap: 5px;
+		}
+
+		.Header__content--main {
+			display: none;
+		}
+
+		.Header__content--right {
+			width: fit-content;
+			gap: 15px;
+			i {
+				font-size: 0.8rem;
+			}
 		}
 	}
 </style>

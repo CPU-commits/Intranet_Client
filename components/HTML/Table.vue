@@ -32,7 +32,7 @@ defineEmits<{
 	<slot name="footer" />
     <HTMLNav
 		v-if="navigate?.activate"
-		@memo="(value) => $emit('memo', value)"
+		@memo="(value: any) => $emit('memo', value)"
 		:navigate="navigate"
 	/>
 </template>
@@ -55,5 +55,12 @@ defineEmits<{
 	tr td {
 		color: var(--color-main);
 		font-weight: 700;
+	}
+
+	@media (max-width: 575.98px) {
+		tr td {
+			font-size: 0.9rem;
+			padding-bottom: 5px;
+		}
 	}
 </style>

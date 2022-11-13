@@ -147,4 +147,34 @@ function deleteNews(index: number) {
 			color: var(--color-news--black);
 		}
 	}
+
+    @media (max-width: 767.98px) {
+        .News {
+            padding: 20px;
+        }
+
+        .AddNews {
+            width: 40px;
+            height: 40px;
+            bottom: 10px;
+            right: 10px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .News {
+            padding: 10px;
+            gap: 20px;
+        }
+
+        .AddNews {
+            width: 35px;
+            height: 35px;
+            bottom: 10px;
+            right: 10px;
+            i {
+                font-size: 0.8rem;
+            }
+        }
+    }
 </style>

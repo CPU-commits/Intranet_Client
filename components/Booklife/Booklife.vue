@@ -175,9 +175,8 @@ async function deleteObservation(id: string) {
     </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 	.Booklife {
-        width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 4fr;
 		gap: 20px;
@@ -195,6 +194,10 @@ async function deleteObservation(id: string) {
 	ul {
 		list-style: none;
 	}
+
+    .Observations {
+        box-sizing: border-box;
+    }
 
 	.Observations header {
 		width: fit-content;
@@ -229,4 +232,42 @@ async function deleteObservation(id: string) {
 	.Observation footer span {
 		color: var(--color-main);
 	}
+
+    @media (max-width: 767.98px) {
+        .Booklife {
+            margin: 10px;
+            gap: 10px;
+            padding: 0;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Booklife {
+            margin: 0;
+            gap: 8px;
+        }
+
+        h3 {
+            font-size: 1rem;
+        }
+
+        .Semesters {
+            padding: 0px;
+        }
+
+        span {
+            font-size: 0.8rem;
+        }
+
+        footer small:last-child {
+            text-align: right;
+        }
+
+        small {
+            font-size: 0.75rem;
+            span {
+                font-size: 0.75rem;
+            }
+        }
+    }
 </style>

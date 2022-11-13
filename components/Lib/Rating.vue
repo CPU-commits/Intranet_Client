@@ -28,4 +28,10 @@ const { stars } = defineProps<{
 	.Without {
 		color: var(--color-light);
 	}
+
+	@media (max-width: 767.98px) {
+		i {
+			font-size: 0.9rem;
+		}
+	}
 </style>

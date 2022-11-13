@@ -32,7 +32,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <section>
+    <section class="GradeComponent">
         <h2>Calificaciones</h2>
         <HTMLTable :header="['Calificación', 'N°', 'Calificador', 'Fecha']">
             <template v-for="(grade, i) in grades" :key="i">

@@ -49,4 +49,11 @@ const spinnerGet = useSpinnerGet()
 			transform: rotate(360deg);
 		}
 	}
+
+	@media (max-width: 767.98px) {
+		.lds-ring div {
+			height: 60px;
+			width: 60px;
+		}
+	}
 </style>

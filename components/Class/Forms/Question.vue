@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // Types
+import { Editor } from '@tiptap/core';
 import type { ItemQuestionType, ItemType } from '~~/models/form/item.model'
 // Utils
 import { intToRoman } from '~~/utils/format';
@@ -43,7 +44,7 @@ const buildForm = useBuildFormStore()
             :fnBeforeMount="buildForm.setInitQuestion"
             placeholder="Pregunta"
             :haveBackground="false"
-            @build-editor="(e) => buildForm.setEditor(e)"
+            @build-editor="(e: Editor) => buildForm.setEditor(e)"
         />
         <div
             v-if="(
@@ -207,4 +208,21 @@ const buildForm = useBuildFormStore()
 	.Form__questions--points {
 		max-width: 150px;
 	}
+
+    @media (max-width: 767.98px) {
+        .Form__questions {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .Form__questions {
+            padding: 15px;
+        }
+
+        h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+    }
 </style>

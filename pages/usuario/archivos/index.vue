@@ -113,17 +113,18 @@ function changePermissions(index: number, idFile: string) {
                     </td>
                     <td>{{ formatDate(file.date) }}</td>
                     <td>
-                        <HTMLButton
+                        <HTMLButtonIcon
                             type="button"
                             :click="() => downloadFile(file._id.$oid)"
-                        >
-                            <i class="fa-solid fa-file-arrow-down" />
-                        </HTMLButton>
+                            class-item="fa-solid fa-file-arrow-down"
+                        />
                     </td>
                     <td>
-                        <HTMLButton type="button" :click="() => deleteFile(file._id.$oid)">
-                            <i class="fa-solid fa-minus" />
-                        </HTMLButton>
+                        <HTMLButtonIcon
+                            type="button"
+                            :click="() => deleteFile(file._id.$oid)"
+                            class-item="fa-solid fa-minus"
+                        />
                     </td>
                 </tr>
             </HTMLTable>
@@ -161,4 +162,16 @@ function changePermissions(index: number, idFile: string) {
 	.Content__button {
 		max-width: 200px;
 	}
+
+    @media (max-width: 767.98px) {
+        h2 {
+            font-size: 1.3rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        h2 {
+            font-size: 1.1rem;
+        }
+    }
 </style>

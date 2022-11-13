@@ -25,19 +25,27 @@ async function downloadFile() {
 </script>
 
 <template>
-    <article class="FileMin" @click="downloadFile">
-        <i :class="getIcon(file.type)" />
-        <small>{{ file.title }}</small>
-    </article>
-	<HTMLButtonIcon
-		v-if="editable"
-		:hover="'var(--color-main)'"
-		:class-item="'fa-solid fa-xmark'"
-		:click="() => $emit('delete')"
-	/>
+	<div>
+		<article class="FileMin" @click="downloadFile">
+			<i :class="getIcon(file.type)" />
+			<small>{{ file.title }}</small>
+		</article>
+		<HTMLButtonIcon
+			v-if="editable"
+			:hover="'var(--color-main)'"
+			:class-item="'fa-solid fa-xmark'"
+			:click="() => $emit('delete')"
+		/>
+	</div>
 </template>
 
 <style scoped>
+	div {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+	}
+
 	.FileMin {
 		display: flex;
 		align-items: center;
@@ -58,5 +66,11 @@ async function downloadFile() {
 	.FileMin small,
 	i {
 		transition: all 0.4s;
+	}
+
+	@media (max-width: 575.98px) {
+		.FileMin i {
+			font-size: 0.75rem;
+		}
 	}
 </style>

@@ -33,4 +33,21 @@ enum TypeButton {
 		-moz-box-shadow: 3px 3px 0 1.5px #3134e1;
 		box-shadow: 3px 3px 0 1.5px #3134e1;
 	}
+
+	// Media queries
+	@media (max-width: 767.98px) {
+		button {
+			padding: 6px;
+			border-radius: 3px;
+			font-size: 0.85rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		button {
+			padding: 5px;
+			border-radius: 2px;
+			font-size: 0.8rem;
+		}
+	}
 </style>

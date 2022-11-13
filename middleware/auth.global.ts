@@ -22,7 +22,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                     redirect: from.path,
                 },
             })
-    } else if (cookie.value && !auth.getIsAuth && process.server) {
+    } else if (process.server && cookie.value && !auth.getIsAuth) {
         const { createClientRedis } = await import('~~/utils/redis')
 
         const idSession = cookie.value

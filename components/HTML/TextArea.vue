@@ -31,4 +31,25 @@ const { value, placeholder, keydown } = defineProps<{
 		border-bottom: 3px var(--color-main) solid;
 		outline: none;
 	}
+
+	// Media queries
+	@media (max-width: 767.98px) {
+		textarea {
+			padding: 8px;
+			font-size: 0.8rem;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		textarea {
+			padding: 7px;
+			font-size: 0.75rem;
+			border-bottom: 1px var(--color-light) solid;
+		}
+
+		textarea:focus {
+			border-bottom: 1.5px var(--color-main) solid;
+			outline: none;
+		}
+	}
 </style>

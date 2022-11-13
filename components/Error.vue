@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Types
 import type { Ref } from 'vue'
-import type { ErrorFetch } from '~~/common/fetchModule'
+import { ErrorFetch, ERROR_ABORT } from '~~/common/fetchModule'
 
 const { err } = defineProps<{
     err: ErrorFetch
@@ -26,7 +26,7 @@ if (err.statusCode === 400) {
 </script>
 
 <template>
-    <section class="Error">
+    <section class="Error" v-if="err.message !== ERROR_ABORT">
         <h2>{{ message }}</h2>
 
         <span v-if="err.statusCode !== 404">{{ err.message }}</span>

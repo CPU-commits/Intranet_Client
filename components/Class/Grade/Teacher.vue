@@ -232,7 +232,7 @@ async function exportGrades() {
 </script>
 
 <template>
-	<section>
+	<section class="GradeComponent">
 		<header>
 			<Icons>
 				<HTMLButtonIcon

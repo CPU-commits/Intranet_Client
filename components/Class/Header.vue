@@ -71,7 +71,7 @@ async function addSection() {
                 :to="`/aula_virtual/clase/${_module._id}/buscar`"
                 :class="path.includes('buscar') ? 'Selected' : ''"
             >
-            <i class="fa-solid fa-magnifying-glass" />
+                <i class="fa-solid fa-magnifying-glass" />
             </NuxtLink>
         </nav>
         <section class="Header__subject">
@@ -214,4 +214,56 @@ async function addSection() {
 		right: 10px;
 		bottom: 10px;
 	}
+
+    @media (max-width: 767.98px) {
+        nav {
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
+        .Header__subject {
+            padding: 8px;
+        }
+
+        .Header__subject h2 {
+            font-size: 1.1rem;
+        }
+
+        .Header__subject--sub_sections {
+            gap: 15px;
+        }
+
+        .SubSection {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        nav {
+            padding: 5px;
+            font-size: 0.85rem;
+            i {
+                font-size: 0.75rem;
+            }
+        }
+
+        .Header__subject {
+            padding: 5px;
+        }
+
+        .Header__subject h2 {
+            font-size: 0.95rem;
+        }
+
+        .Header__subject--sub_sections {
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .SubSection {
+            font-size: 0.7rem;
+            padding: 2px 5px;
+        }
+    }
 </style>

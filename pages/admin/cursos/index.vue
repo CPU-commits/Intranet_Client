@@ -17,8 +17,6 @@ const {
     $fetchModule,
     $courseService,
 } = useNuxtApp()
-// Compostable
-const spinner = useSpinner()
 
 // Modal
 const modalCycle = ref(false)
@@ -211,16 +209,15 @@ async function deleteCourse(id: string) {
                         </td>
                         <td>{{ course.isFinal ? 'Final' : 'No' }}</td>
                         <td>
-                            <HTMLButton
+                            <HTMLButtonIcon
                                 :click="() => {
                                     courseEdit = Object.assign({}, course)
                                     courseEdit.isFinal = courseEdit.isFinal ? 'true' : 'false'
                                     toggleEdit(i)
                                 }"
                                 type="button"
-                            >
-                                <i class="fa-solid fa-pen-to-square White" />
-                            </HTMLButton>
+                                class-item="fa-solid fa-pen-to-square"
+                            />
                         </td>
                     </tr>
                 </HTMLTable>
@@ -332,10 +329,6 @@ async function deleteCourse(id: string) {
 </template>
 
 <style lang="scss" scoped>
-	.White {
-		color: white;
-	}
-
 	.Danger {
 		color: var(--color-danger);
 		margin-bottom: 20px;
@@ -369,5 +362,18 @@ async function deleteCourse(id: string) {
 
 	h3 {
 		margin-bottom: 10px;
+	}
+
+    @media (max-width: 575.98px) {
+		h3 {
+            font-size: 1rem;
+        }
+
+        .Map {
+            gap: 10px;
+            i {
+                font-size: 1rem;
+            }
+        }
 	}
 </style>
