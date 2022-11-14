@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     content: {
         watch: {
             ws: {
-                hostname: 'localhost'
+                hostname: 'localhost',
             },
         },
     },

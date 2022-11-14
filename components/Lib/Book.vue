@@ -36,7 +36,13 @@ async function saveBook() {
         <NuxtLink :to="`/biblioteca/libro/${book.slug}`">
             <header>
                 <h2>{{ book.name }}</h2>
-                <NuxtImg :src="book.image.url" :alt="book.name" loading="lazy" preload />
+                <NuxtImg
+					@error="$event.target.src= '/img/no_image.svg'"
+					:src="book.image.url"
+					:alt="book.name"
+					loading="lazy"
+					preload
+				/>
             </header>
         </NuxtLink>
         <section class="Ranking">

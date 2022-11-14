@@ -62,7 +62,11 @@ function copyLink() {
                 <pre>{{ author.biography }}</pre>
             </header>
             <picture>
-                <NuxtImg :src="author.image?.url" :alt="author.name" />
+                <NuxtImg
+                    @error="$event.target.src= '/img/no_image.svg'"
+                    :src="author.image?.url"
+                    :alt="author.name"
+                />
                 <HTMLTableSmall v-for="({key, value}, i) in author.table_info">
                     <tr :key="i">
                         <td>{{ key }}</td>

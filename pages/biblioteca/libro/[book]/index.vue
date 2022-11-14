@@ -138,6 +138,7 @@ function downloadBook() {
         </section>
         <footer>
             <NuxtImg
+                @error="$event.target.src= '/img/no_image.svg'"
                 :src="(book.editorial as Editorial).image.url"
                 :alt="(book.editorial as Editorial).editorial"
             />

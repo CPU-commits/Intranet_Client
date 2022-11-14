@@ -17,6 +17,7 @@ const { moduleData, isHistory } = defineProps<{
         <NuxtLink :to="`/aula_virtual/clase/${moduleData._id}`">
             <header>
                 <NuxtImg
+					@error="$event.target.src= '/img/no_image.svg'"
                     :class="isHistory ? 'IsHistoryImg' : ''"
                     :src="moduleData.section.file.url"
                     :alt="moduleData.section.section"

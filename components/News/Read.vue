@@ -23,7 +23,12 @@ const { news } = defineProps<{
                     </span>
                 </span>
             </header>
-			<NuxtImg :src="news.image.url" :alt="news.title" fit="cover" />
+			<NuxtImg
+				@error="$event.target.src= '/img/no_image.svg'"
+				:src="news.image.url"
+				:alt="news.title"
+				fit="cover"
+			/>
             <HTMLRich :haveBackground="false" :readOnly="true" :body="news.body" />
         </div>
     </section>
