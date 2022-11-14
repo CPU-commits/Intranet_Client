@@ -40,9 +40,11 @@ try {
 
 <template>
     <div>
+        <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
         </Head>
+        <!-- Body -->
         <NewsRead v-if="news" :news="news" />
     </div>
 </template>

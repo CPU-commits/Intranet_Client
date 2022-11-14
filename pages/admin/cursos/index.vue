@@ -5,14 +5,10 @@ import type { Course } from '~~/models/course/course.model'
 import type { Cycle } from '~~/models/course/cycle.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Cursos - Admin - ${schoolName} - Intranet`
-            : 'Cursos - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Cursos - Admin - ${schoolName} - Intranet`
+    : 'Cursos - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -173,6 +169,11 @@ async function deleteCourse(id: string) {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel>
             <template #nav>
                 <Icons>

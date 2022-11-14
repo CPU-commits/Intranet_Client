@@ -2,14 +2,7 @@
 // Guard
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Admin - ${schoolName} - Intranet`
-            : 'Admin - Intranet'
-    },
-})
+const title = 'Admin - Intranet'
 
 definePageMeta({
     middleware: 'role',
@@ -23,6 +16,11 @@ definePageMeta({
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <h1>Admin</h1>
     </NuxtLayout>
 </template>

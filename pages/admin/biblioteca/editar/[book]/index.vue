@@ -7,14 +7,10 @@ import type { Editorial } from '~~/models/library/editorial.model'
 import { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Editar libro - Biblioteca Virtual - Admin - ${schoolName} - Intranet`
-            : 'Editar libro - Biblioteca Virtual - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Editar libro - Biblioteca Virtual - Admin - ${schoolName} - Intranet`
+    : 'Editar libro - Biblioteca Virtual - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -134,6 +130,11 @@ async function updateBook() {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel :nav="false">
             <!-- Data -->
             <HTMLForm v-if="book" :form="updateBook">

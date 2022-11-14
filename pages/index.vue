@@ -1,13 +1,9 @@
 <script setup lang="ts">
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Iniciar sesión - ${schoolName} - Intranet`
-            : 'Iniciar sesión - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Iniciar sesión - ${schoolName} - Intranet`
+    : 'Iniciar sesión - Intranet'
 // Nuxt app
 const { $fetchModule } = useNuxtApp()
 // Stores
@@ -41,6 +37,11 @@ async function logIn() {
 
 <template>
     <section class="Session">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <div class="Session__content">
             <HTMLForm :form="logIn">
                 <label for="rut">RUT</label>

@@ -52,10 +52,11 @@ function downloadBook() {
 
 <template>
     <section v-if="book" class="Book">
+        <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
         </Head>
-
+        <!-- Body -->
         <section class="Header">
             <figure class="Header__image">
                 <img :src="book.image.url" :alt="book.name" />

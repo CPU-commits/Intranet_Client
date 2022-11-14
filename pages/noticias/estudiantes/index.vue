@@ -6,14 +6,10 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import onScroll from '~~/utils/onScroll'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Noticias estudiantes - ${schoolName} - Intranet`
-            : 'Noticias estudiantes - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Noticias estudiantes - ${schoolName} - Intranet`
+    : 'Noticias estudiantes - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -74,6 +70,11 @@ function deleteNews(index: number) {
 
 <template>
     <section class="News">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <ul class="News__type">
             <li>
                 <NuxtLink to="/noticias">

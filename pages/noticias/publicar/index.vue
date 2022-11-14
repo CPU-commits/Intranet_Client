@@ -3,14 +3,10 @@
 import type { Editor } from '@tiptap/core'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Publicar noticia - ${schoolName} - Intranet`
-            : 'Publicar noticia - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+	? `Publicar noticia - ${schoolName} - Intranet`
+	: 'Publicar noticia - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -65,6 +61,11 @@ async function publishNews() {
 
 <template>
     <section class="News">
+		<!-- Head -->
+		<Head>
+			<Title>{{ title }}</Title>
+		</Head>
+		<!-- Body -->
         <div class="News__contain">
             <HTMLForm :form="publishNews">
                 <input v-model="news.title" placeholder="Titulo" type="text" />

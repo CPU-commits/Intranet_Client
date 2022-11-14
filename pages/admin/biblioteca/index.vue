@@ -11,14 +11,10 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { formatDate } from '~~/utils/format'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Biblioteca Virtual - Admin - ${schoolName} - Intranet`
-            : 'Biblioteca Virtual - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+	? `Biblioteca Virtual - Admin - ${schoolName} - Intranet`
+	: 'Biblioteca Virtual - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -249,6 +245,11 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 
 <template>
 	<NuxtLayout name="admin">
+		<!-- Head -->
+		<Head>
+			<Title>{{ title }}</Title>
+		</Head>
+		<!-- Body -->
 		<AdminPanel>
 			<template #nav>
 				<Icons slot="nav">

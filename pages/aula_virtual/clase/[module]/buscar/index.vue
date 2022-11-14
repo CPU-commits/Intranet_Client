@@ -76,10 +76,11 @@ async function searchFunction() {
 <template>
 	<NuxtLayout name="class">
 		<section class="SearchContainer">
-			<Head>
-				<Title>{{ title }}</Title>
-			</Head>
-
+			<!-- Head -->
+            <Head>
+                <Title>{{ title }}</Title>
+            </Head>
+            <!-- Body -->
 			<HTMLSearch v-model:value="search" :search="searchFunction" />
 			<br />
 			<article v-for="work in works" :key="work._id" class="Item">

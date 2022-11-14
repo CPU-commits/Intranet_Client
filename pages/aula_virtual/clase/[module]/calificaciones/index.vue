@@ -56,10 +56,11 @@ onMounted(async () => {
 <template>
     <NuxtLayout name="class">
         <section class="Grades">
+            <!-- Head -->
             <Head>
                 <Title>{{ title }}</Title>
             </Head>
-
+            <!-- Body -->
             <component
                 v-if="gradePrograms"
                 :is="auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE)

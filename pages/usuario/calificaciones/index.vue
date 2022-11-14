@@ -4,14 +4,10 @@ import { ErrorFetch } from '~~/common/fetchModule';
 import { Semester } from '~~/models/semester/semester.model';
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Calificaciones - Usuario - ${schoolName} - Intranet`
-            : 'Calificaciones - Usuario - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Calificaciones - Usuario - ${schoolName} - Intranet`
+    : 'Calificaciones - Usuario - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -58,6 +54,11 @@ async function getGrades(idSemester: string) {
 
 <template>
     <User>
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <template #title>
             <h2>Calificaciones</h2>
         </template>

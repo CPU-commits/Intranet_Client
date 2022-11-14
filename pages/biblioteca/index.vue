@@ -5,14 +5,10 @@ import type { Book } from '~~/models/library/book.model'
 import type { BookFilters } from '~~/services/library.service'
 import onScroll from '~~/utils/onScroll'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Biblioteca Virtual - ${schoolName} - Intranet`
-            : 'Biblioteca Virtual - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Biblioteca Virtual - ${schoolName} - Intranet`
+    : 'Biblioteca Virtual - Intranet'
 // Nuxtapp
 const {
     $libraryService,
@@ -94,6 +90,11 @@ function saveBook(saveValue: boolean, index: number) {
 
 <template>
     <section class="Library">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <LibMenu
             v-model:filters="filters"
             :books="books ?? []"

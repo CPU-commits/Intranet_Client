@@ -3,14 +3,10 @@
 import type { User } from '~~/models/user/user.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Directivos - Masivo - Admin - ${schoolName} - Intranet`
-            : 'Directivos - Masivo - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Directivos - Masivo - Admin - ${schoolName} - Intranet`
+    : 'Directivos - Masivo - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -61,6 +57,11 @@ async function uploadDirectives() {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel>
             <template #nav>
                 <Icons slot="nav">

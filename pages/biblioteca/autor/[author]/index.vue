@@ -43,10 +43,11 @@ function copyLink() {
 
 <template>
     <section class="Author" v-if="author">
+        <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
         </Head>
-
+        <!-- Body -->
         <section class="AuthorTop">
             <header>
                 <h1>

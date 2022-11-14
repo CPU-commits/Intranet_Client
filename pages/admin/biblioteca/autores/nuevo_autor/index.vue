@@ -3,14 +3,10 @@
 import type { Author } from '~~/models/library/author.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Nuevo Autor - Biblioteca Virtual - Admin - ${schoolName} - Intranet`
-            : 'Nuevo Autor - Biblioteca Virtual - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Nuevo Autor - Biblioteca Virtual - Admin - ${schoolName} - Intranet`
+    : 'Nuevo Autor - Biblioteca Virtual - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -117,6 +113,11 @@ async function uploadAuthor() {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel :nav="false">
             <template #title>
                 <h2>Nuevo autor</h2>

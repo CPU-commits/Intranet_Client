@@ -4,14 +4,10 @@ import type { ErrorFetch } from '~~/common/fetchModule';
 import type { ClassroomModule } from '~~/models/classroom/modules.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Aula Virtual - ${schoolName} - Intranet`
-            : 'Aula Virtual - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Aula Virtual - ${schoolName} - Intranet`
+    : 'Aula Virtual - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -43,6 +39,11 @@ onMounted(async () => {
 
 <template>
     <section class="Classroom">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <ClassMenu />
         <section v-if="modules" class="Classroom__modules">
             <ClassModule v-for="(_module, i) in modules" :key="i" :moduleData="_module" />

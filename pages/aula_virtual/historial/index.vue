@@ -6,14 +6,10 @@ import { UserTypesKeys } from '~~/models/user/user.model';
 // Utils
 import onScroll from '~~/utils/onScroll'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Historial - Aula Virtual - ${schoolName} - Intranet`
-            : 'Historial - Aula Virtual - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Historial - Aula Virtual - ${schoolName} - Intranet`
+    : 'Historial - Aula Virtual - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -64,6 +60,11 @@ async function getModules(total: boolean = false, skip: number = 0) {
 
 <template>
     <section class="Classroom">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <ClassMenu />
         <section class="Classroom__modules">
             <ClassModule

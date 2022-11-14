@@ -79,10 +79,11 @@ async function updateNews() {
 
 <template>
     <section v-if="news" class="News">
+        <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
         </Head>
-
+        <!-- Body -->
         <div class="News__contain">
             <HTMLForm :form="updateNews">
                 <input v-model="news.title" placeholder="Titulo" type="text" />

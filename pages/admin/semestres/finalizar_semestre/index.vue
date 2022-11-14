@@ -8,14 +8,10 @@ import { ErrorFetch } from '~~/common/fetchModule';
 // Utils
 import { formatDate } from '~~/utils/format'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Finalizar Semestre - Admin - ${schoolName} - Intranet`
-            : 'Finalizar Semestre - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Finalizar Semestre - Admin - ${schoolName} - Intranet`
+    : 'Finalizar Semestre - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -181,6 +177,11 @@ async function finishCurrentSemester() {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel :nav="false">
             <h2>Finalizar semestre</h2>
             <br />

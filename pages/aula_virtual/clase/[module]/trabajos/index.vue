@@ -57,10 +57,11 @@ function deleteWork(index: number) {
 <template>
     <NuxtLayout name="class">
         <section class="Works">
+            <!-- Head -->
             <Head>
                 <Title>{{ title }}</Title>
             </Head>
-
+            <!-- Body -->
             <h2>Trabajos</h2>
             <NuxtLink
                 v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"

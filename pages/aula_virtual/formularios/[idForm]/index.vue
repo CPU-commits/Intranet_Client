@@ -58,10 +58,11 @@ async function deleteForm() {
 
 <template>
 	<section class="Forms">
+		<!-- Head -->
 		<Head>
 			<Title>{{ title }}</Title>
 		</Head>
-
+		<!-- Body -->
 		<input v-model="buildForm.form.title" type="text" placeholder="Titulo" />
 			<HTMLForm :form="updateForm">
 				<label for="score">Puntaje (Preguntas)</label>

@@ -8,14 +8,10 @@ import type { StudentGrade } from '~~/models/classroom/student_grade.model';
 import type { DirectiveModule } from '~~/models/classroom/modules.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Aula Virtual - Admin - ${schoolName} - Intranet`
-            : 'Aula Virtual - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Aula Virtual - Admin - ${schoolName} - Intranet`
+    : 'Aula Virtual - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -136,6 +132,11 @@ async function getDirectives() {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel>
             <template #nav>
                 <Icons>

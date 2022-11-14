@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Libro de Vida - Estudiante - ${schoolName} - Intranet`
-            : 'Libro de Vida - Estudiante - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Libro de Vida - Estudiante - ${schoolName} - Intranet`
+    : 'Libro de Vida - Estudiante - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -32,6 +28,11 @@ if (typeof idStudent !== 'string')
 
 <template>
     <section class="BookLife">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <h2>Libro de vida</h2>
         <Booklife :id-student="idStudent" />
     </section>

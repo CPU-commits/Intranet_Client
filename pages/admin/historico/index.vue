@@ -8,14 +8,10 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { formatDate } from '~~/utils/format'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Historico - Admin - ${schoolName} - Intranet`
-            : 'Historico - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Historico - Admin - ${schoolName} - Intranet`
+    : 'Historico - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -117,6 +113,11 @@ function applyFilters(getFilters = false) {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel>
             <template #nav>
                 <Icons slot="nav">

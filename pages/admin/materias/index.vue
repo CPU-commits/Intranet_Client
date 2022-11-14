@@ -6,14 +6,10 @@ import type { Course } from '~~/models/course/course.model'
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Materias - Admin - ${schoolName} - Intranet`
-            : 'Materias - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Materias - Admin - ${schoolName} - Intranet`
+    : 'Materias - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -153,6 +149,11 @@ async function deleteSubjectCourse(idSubject: string) {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel>
             <template #nav>
                 <Icons slot="nav">

@@ -3,14 +3,10 @@
 import { ErrorFetch } from '~~/common/fetchModule';
 import { AnyUser, UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Usuario - ${schoolName} - Intranet`
-            : 'Usuario - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Usuario - ${schoolName} - Intranet`
+    : 'Usuario - Intranet'
 // Nuxtapp
 const {
     $fetchModule,
@@ -39,6 +35,11 @@ onMounted(async () => {
 
 <template>
     <User>
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <template #title>
             <h2>Datos personales</h2>
         </template>

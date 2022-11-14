@@ -8,14 +8,10 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 import { formatDate } from '~~/utils/format';
 import { getIcon, getTypeFile } from '~~/utils/getIcon'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Archivos - Usuario - ${schoolName} - Intranet`
-            : 'Archivos - Usuario - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Archivos - Usuario - ${schoolName} - Intranet`
+    : 'Archivos - Usuario - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -86,6 +82,11 @@ function changePermissions(index: number, idFile: string) {
 
 <template>
     <User>
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <template #title>
             <h2>Archivos</h2>
         </template>

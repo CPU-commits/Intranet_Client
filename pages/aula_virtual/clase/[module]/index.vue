@@ -90,10 +90,11 @@ function deletePublication(index: number) {
 <template>
 	<NuxtLayout name="class">
 		<section class="Publications">
+			<!-- Head -->
 			<Head>
 				<Title>{{ title }}</Title>
 			</Head>
-
+			<!-- Body -->
 			<section class="Publications__content">
 				<div class="Publications__write">
 					<ClassPublicationWrite

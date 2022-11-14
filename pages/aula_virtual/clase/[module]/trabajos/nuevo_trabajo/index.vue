@@ -120,10 +120,11 @@ async function uploadWork() {
 <template>
     <NuxtLayout name="class">
         <section v-if="forms" class="NewWork">
+            <!-- Head -->
             <Head>
                 <Title>{{ title }}</Title>
             </Head>
-
+            <!-- Body -->
             <h2>Nuevo trabajo</h2>
             <br />
             <HTMLForm :form="uploadWork">

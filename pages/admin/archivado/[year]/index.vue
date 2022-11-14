@@ -7,15 +7,15 @@ import type { Student } from "~~/models/user/student.model"
 import type { StudentGrade } from '~~/models/classroom/student_grade.model'
 import type { GradeProgram } from '~~/models/classroom/grade.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
+// Router
+const route = useRoute()
+
+const year = route.params.year
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Archivado (${year}) - Admin - ${schoolName} - Intranet`
-            : `Archivado (${year}) - Admin - Intranet`
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Archivado (${year}) - Admin - ${schoolName} - Intranet`
+    : `Archivado (${year}) - Admin - Intranet`
 // Guard
 /*definePageMeta({
     middleware: 'role',
@@ -32,10 +32,6 @@ const {
     $filesService,
     $gradesService,
 } = useNuxtApp()
-// Router
-const route = useRoute()
-
-const year = route.params.year
 // Stores
 const toasts = useToastsStore()
 
@@ -110,6 +106,11 @@ async function exportGrades(idModule: string) {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel :nav="false">
             <h1><i class="fa-solid fa-folder-open" /> {{ year }} - Archivado</h1>
 

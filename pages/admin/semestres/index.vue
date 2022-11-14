@@ -4,14 +4,10 @@ import { ErrorFetch } from '~~/common/fetchModule';
 import type { Semester } from '~~/models/semester/semester.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Semestres - Admin - ${schoolName} - Intranet`
-            : 'Semestres - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+	? `Semestres - Admin - ${schoolName} - Intranet`
+	: 'Semestres - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -88,6 +84,11 @@ async function updateSemester() {
 
 <template>
 	<NuxtLayout name="admin">
+		<!-- Head -->
+		<Head>
+			<Title>{{ title }}</Title>
+		</Head>
+		<!-- Body -->
 		<AdminPanel>
 			<template #nav>
 				<Icons>

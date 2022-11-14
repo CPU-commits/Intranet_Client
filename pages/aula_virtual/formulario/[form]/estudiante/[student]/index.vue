@@ -55,10 +55,11 @@ try {
 
 <template>
     <ClassForm>
+		<!-- Head -->
 		<Head>
 			<Title>{{ title }}</Title>
 		</Head>
-
+		<!-- Body -->
         <template v-for="(item, i) in form.getItems" :key="i">
             <h3>
                 {{ intToRoman(i + 1) }}.

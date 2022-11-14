@@ -2,14 +2,10 @@
 // Types
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Nuevo Formulario - Aula Virtual - ${schoolName} - Intranet`
-            : 'Nuevo Formulario - Aula Virtual - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Nuevo Formulario - Aula Virtual - ${schoolName} - Intranet`
+    : 'Nuevo Formulario - Aula Virtual - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -27,6 +23,11 @@ onBeforeUnmount(() => {
 
 <template>
     <section class="Forms">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <input v-model="buildForm.form.title" type="text" placeholder="Titulo" />
         <HTMLForm :form="buildForm.uploadForm">
             <label for="score">Puntaje (Preguntas)</label>

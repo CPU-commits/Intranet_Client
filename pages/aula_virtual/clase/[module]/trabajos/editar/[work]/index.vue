@@ -175,10 +175,11 @@ async function deleteLink(index: number) {
 <template>
     <NuxtLayout name="class">
         <section v-if="work" class="NewWork">
+            <!-- Head -->
             <Head>
                 <Title>{{ title }}</Title>
             </Head>
-
+            <!-- Body -->
             <HTMLForm :form="updateWork">
                 <label for="title">Titulo trabajo</label>
                 <HTMLInput v-model:value="work.title" id="title" />

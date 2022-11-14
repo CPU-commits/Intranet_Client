@@ -5,14 +5,10 @@ import type { Course } from '~~/models/course/course.model'
 import type { Teacher, Teachers } from '~~/models/user/teacher.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Profesores - Admin - ${schoolName} - Intranet`
-            : 'Profesores - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Profesores - Admin - ${schoolName} - Intranet`
+    : 'Profesores - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -188,6 +184,11 @@ function getSubjectsInSections(courses: Array<Course>) {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel>
             <template #nav>
                 <Icons>

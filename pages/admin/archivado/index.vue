@@ -4,14 +4,10 @@ import type { Ref } from 'vue'
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Archivado - Admin - ${schoolName} - Intranet`
-            : 'Archivado - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Archivado - Admin - ${schoolName} - Intranet`
+    : 'Archivado - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -38,6 +34,11 @@ onMounted(async () => {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel :nav="false">
             <h1>Archivado</h1>
             <HTMLTable v-if="years" :header="['Año', 'Info.']">

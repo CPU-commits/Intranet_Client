@@ -4,14 +4,10 @@ import type { Student } from '~~/models/user/student.model'
 import { UserTypesKeys } from '~~/models/user/user.model';
 import { ErrorFetch } from '~~/common/fetchModule'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Libro de Vida - ${schoolName} - Intranet`
-            : 'Libro de Vida - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Libro de Vida - ${schoolName} - Intranet`
+    : 'Libro de Vida - Intranet'
 // Nuxtapp
 const {
     $fetchModule,
@@ -55,6 +51,11 @@ const search = ref('')
 
 <template>
     <section class="BookLife">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <h2>Libro de vida</h2>
         <section v-if="auth.userTypeNotIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE)">
             <HTMLSearch

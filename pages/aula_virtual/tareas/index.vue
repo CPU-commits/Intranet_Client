@@ -5,14 +5,10 @@ import { Work } from '~~/models/classroom/work.model';
 import { UserTypesKeys } from '~~/models/user/user.model';
 import { formatDate } from '~~/utils/format'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Tareas - Aula Virtual - ${schoolName} - Intranet`
-            : 'Tareas - Aula Virtual - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Tareas - Aula Virtual - ${schoolName} - Intranet`
+    : 'Tareas - Aula Virtual - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -46,6 +42,11 @@ function stringStatus(status: number) {
 
 <template>
     <section class="Classroom">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <ClassMenu />
         <section class="Classroom__works">
             <NuxtLink

@@ -4,14 +4,10 @@ import { ErrorFetch } from '~~/common/fetchModule';
 import type { Student, Students } from '~~/models/user/student.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Votaciones - Estudiantes - Admin - ${schoolName} - Intranet`
-            : 'Votaciones - Estudiantes - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Votaciones - Estudiantes - Admin - ${schoolName} - Intranet`
+    : 'Votaciones - Estudiantes - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -120,6 +116,11 @@ async function uploadVoting() {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel :nav="false">
             <h2>Votaciones</h2>
             <HTMLForm :form="uploadVoting">

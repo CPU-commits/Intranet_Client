@@ -115,10 +115,11 @@ onMounted(async () => {
 <template>
 	<NuxtLayout name="class">
 		<section class="Work">
-			<Head>
-				<Title>{{ title }}</Title>
-			</Head>
-
+			<!-- Head -->
+            <Head>
+                <Title>{{ title }}</Title>
+            </Head>
+            <!-- Body -->
 			<template v-if="work">
 				<header>
 					<h2>

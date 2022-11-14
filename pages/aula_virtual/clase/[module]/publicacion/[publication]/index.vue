@@ -57,10 +57,11 @@ try {
 
 <template>
     <section class="Publication">
+        <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
         </Head>
-
+        <!-- Body -->
         <ClassPublication
             v-if="publication"
             :publication="publication"

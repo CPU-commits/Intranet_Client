@@ -4,14 +4,10 @@ import type { Voting } from '~~/models/voting/voting.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 import { ErrorFetch } from '~~/common/fetchModule';
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Votar - ${schoolName} - Intranet`
-            : 'Votar - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Votar - ${schoolName} - Intranet`
+    : 'Votar - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -59,6 +55,11 @@ async function voteForList() {
 
 <template>
     <section class="Voting">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <SpinnerGet v-if="voting === 'waiting'" />
         <header class="Voting__content" v-else-if="myVote">
             <h2>Votaciones</h2>

@@ -8,14 +8,10 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 import { formatMiniDate } from '~~/utils/format'
 import onScroll from '~~/utils/onScroll'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Inicio - ${schoolName} - Intranet`
-            : 'Inicio - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+	? `Inicio - ${schoolName} - Intranet`
+	: 'Inicio - Intranet'
 // Nuxtapp
 const {
 	$fetchModule,
@@ -84,6 +80,11 @@ function deleteAnnoucement(index: number) {
 
 <template>
 	<section class="Home">
+		<!-- Head -->
+		<Head>
+			<Title>{{ title }}</Title>
+		</Head>
+		<!-- Body -->
 		<aside class="Home__last">
 			<NuxtLink
 				v-if="news"

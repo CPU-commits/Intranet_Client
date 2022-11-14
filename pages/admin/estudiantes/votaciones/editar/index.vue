@@ -5,14 +5,10 @@ import type { Voting } from '~~/models/voting/voting.model'
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Votaciones(editar) - Estudiantes - Admin - ${schoolName} - Intranet`
-            : 'Votaciones(editar) - Estudiantes - Admin - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Votaciones(editar) - Estudiantes - Admin - ${schoolName} - Intranet`
+    : 'Votaciones(editar) - Estudiantes - Admin - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -114,6 +110,11 @@ async function updateVoting() {
 
 <template>
     <NuxtLayout name="admin">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <AdminPanel :nav="false">
             <h2>Votaciones</h2>
             <!-- Data -->

@@ -5,14 +5,10 @@ import type { UserForm } from '~~/models/form/form.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 import { timeAgo } from '~~/utils/format'
 // Meta
-useHead({
-    titleTemplate: () => {
-        const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-        return schoolName
-            ? `Formularios - Aula Virtual - ${schoolName} - Intranet`
-            : 'Formularios - Aula Virtual - Intranet'
-    },
-})
+const schoolName = useRuntimeConfig().public.COLLEGE_NAME
+const title = schoolName
+    ? `Formularios - Aula Virtual - ${schoolName} - Intranet`
+    : 'Formularios - Aula Virtual - Intranet'
 // Guard
 definePageMeta({
     middleware: 'role',
@@ -44,6 +40,11 @@ onMounted(async () => {
 
 <template>
     <section class="Forms">
+        <!-- Head -->
+        <Head>
+            <Title>{{ title }}</Title>
+        </Head>
+        <!-- Body -->
         <ClassMenu />
         <br />
         <h2><i class="fa-solid fa-clipboard" /> Formularios</h2>
