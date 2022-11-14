@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@kevinmarrec/nuxt-pwa": "^0.10.0",
     "@nuxt/content": "^2.2.0",
     "@nuxt/image-edge": "^1.0.0-27769790.4b27db3",
     "@types/roman-numerals": "^0.3.0",

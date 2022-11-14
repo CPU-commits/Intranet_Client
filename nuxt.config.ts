@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     content: {
         watch: {
             ws: {
+                port: 6174,
                 hostname: 'localhost',
             },
         },
@@ -32,6 +33,7 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         '@nuxt/image-edge',
         '@nuxt/content',
+        '@kevinmarrec/nuxt-pwa',
     ],
     image: {
         domains: ['*.s3.amazonaws.com'],
@@ -58,5 +60,15 @@ export default defineNuxtConfig({
     },
     render: {
         csp: true,
+    },
+    pwa: {
+        manifest: {
+            name: `${process.env.COLLEGE_NAME} Intranet`,
+            short_name: `${process.env.COLLEGE_SHORT_NAME} Intr.`,
+            description: `Intranet del colegio ${process.env.COLLEGE_NAME}`,
+            theme_color: '#5867e8',
+            background_color: '#f8faff',
+            lang: 'es',
+        },
     },
 })
