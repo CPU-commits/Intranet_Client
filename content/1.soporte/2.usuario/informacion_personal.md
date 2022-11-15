@@ -1,5 +1,9 @@
 ---
 title: 'Información personal - Usuario - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Información personal
 * * *

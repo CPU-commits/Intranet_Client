@@ -178,6 +178,7 @@ async function deleteLink(index: number) {
             <!-- Head -->
             <Head>
                 <Title>{{ title }}</Title>
+                <Meta name="robots" content="noindex, nofollow" />
             </Head>
             <!-- Body -->
             <HTMLForm :form="updateWork">

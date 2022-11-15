@@ -31,6 +31,7 @@ if (typeof idStudent !== 'string')
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <h2>Libro de vida</h2>

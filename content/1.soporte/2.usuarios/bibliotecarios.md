@@ -1,5 +1,9 @@
 ---
 title: 'Bibliotecarios - Usuarios - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Bibliotecarios
 * * *

@@ -73,6 +73,7 @@ function deleteNews(index: number) {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <ul class="News__type">

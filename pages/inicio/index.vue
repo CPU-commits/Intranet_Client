@@ -83,6 +83,7 @@ function deleteAnnoucement(index: number) {
 		<!-- Head -->
 		<Head>
 			<Title>{{ title }}</Title>
+			<Meta name="robots" content="noindex, nofollow" />
 		</Head>
 		<!-- Body -->
 		<aside class="Home__last">

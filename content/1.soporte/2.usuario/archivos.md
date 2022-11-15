@@ -1,5 +1,9 @@
 ---
 title: 'Archivos - Usuario - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Archivos
 * * *

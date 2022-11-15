@@ -1,5 +1,9 @@
 ---
 title: 'Votaciones - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Votaciones
 * * *

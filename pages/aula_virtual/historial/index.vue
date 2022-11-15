@@ -20,8 +20,6 @@ definePageMeta({
 })
 // Nuxtapp
 const { $moduleService, $fetchModule } = useNuxtApp()
-// Composable
-const spinner = useSpinner()
 
 // Data
 const modules = ref<Array<ClassroomModule> | null>(null)
@@ -63,6 +61,7 @@ async function getModules(total: boolean = false, skip: number = 0) {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <ClassMenu />

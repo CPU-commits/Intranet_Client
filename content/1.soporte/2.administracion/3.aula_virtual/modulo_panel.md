@@ -1,5 +1,9 @@
 ---
 title: 'Módulo panel - Aula Virtual - Administración - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 <!-- Content -->
 # Aula virtual - Módulo panel

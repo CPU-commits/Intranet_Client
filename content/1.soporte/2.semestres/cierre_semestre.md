@@ -1,5 +1,9 @@
 ---
 title: 'Cierre de semestre - Semestres - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Cierre de semestre
 * * *

@@ -1,5 +1,9 @@
 ---
 title: 'Noticias - App - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Noticias
 * * *

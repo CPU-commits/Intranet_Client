@@ -85,6 +85,7 @@ function changePermissions(index: number, idFile: string) {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <template #title>

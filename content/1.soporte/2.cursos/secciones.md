@@ -1,5 +1,9 @@
 ---
 title: 'Secciones - Cursos - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Secciones
 * * *

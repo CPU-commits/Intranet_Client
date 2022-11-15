@@ -93,6 +93,7 @@ function saveBook(saveValue: boolean, index: number) {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <LibMenu

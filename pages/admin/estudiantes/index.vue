@@ -153,6 +153,7 @@ async function changeStatus() {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <AdminPanel>

@@ -1,5 +1,9 @@
 ---
 title: 'Vista - Aula Virtual - App - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Vista
 * * *

@@ -82,6 +82,7 @@ async function updateNews() {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <div class="News__contain">

@@ -1,5 +1,9 @@
 ---
 title: 'Noticias - Administración - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Noticias
 * * *

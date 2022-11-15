@@ -79,6 +79,7 @@ async function searchFunction() {
 			<!-- Head -->
             <Head>
                 <Title>{{ title }}</Title>
+				<Meta name="robots" content="noindex, nofollow" />
             </Head>
             <!-- Body -->
 			<HTMLSearch v-model:value="search" :search="searchFunction" />

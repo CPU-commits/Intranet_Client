@@ -248,6 +248,7 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 		<!-- Head -->
 		<Head>
 			<Title>{{ title }}</Title>
+			<Meta name="robots" content="noindex, nofollow" />
 		</Head>
 		<!-- Body -->
 		<AdminPanel>

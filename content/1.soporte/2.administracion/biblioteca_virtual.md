@@ -1,5 +1,9 @@
 ---
 title: 'Biblioteca Virtual - Administración - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Biblioteca virtual
 * * *

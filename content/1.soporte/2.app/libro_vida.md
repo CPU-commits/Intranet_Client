@@ -1,5 +1,9 @@
 ---
 title: 'Libro de Vida - App - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Libro de vida
 * * *

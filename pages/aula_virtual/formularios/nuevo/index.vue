@@ -26,6 +26,7 @@ onBeforeUnmount(() => {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <input v-model="buildForm.form.title" type="text" placeholder="Titulo" />

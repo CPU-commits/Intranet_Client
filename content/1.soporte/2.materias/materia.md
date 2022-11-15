@@ -1,5 +1,9 @@
 ---
 title: 'Materia - Materias - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Materia
 * * *

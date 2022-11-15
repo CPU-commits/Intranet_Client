@@ -1,5 +1,9 @@
 ---
 title: 'Formularios - Aula virtual - Administración - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 <!-- Content -->
 # Formularios

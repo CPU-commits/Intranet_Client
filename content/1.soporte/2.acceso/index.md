@@ -1,5 +1,9 @@
 ---
 title: 'Acceso - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 <!-- Content -->
 # Acceso a la Intranet

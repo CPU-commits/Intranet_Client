@@ -123,6 +123,7 @@ async function uploadWork() {
             <!-- Head -->
             <Head>
                 <Title>{{ title }}</Title>
+                <Meta name="robots" content="noindex, nofollow" />
             </Head>
             <!-- Body -->
             <h2>Nuevo trabajo</h2>

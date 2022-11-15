@@ -19,6 +19,7 @@ definePageMeta({
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <h1>Admin</h1>

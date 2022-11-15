@@ -1,5 +1,9 @@
 ---
 title: 'Directivas - Aula Virtual - Administración - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 <!-- Content -->
 # Directiva de módulos

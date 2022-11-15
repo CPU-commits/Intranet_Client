@@ -1,5 +1,9 @@
 ---
 title: 'Estado usuarios - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Estado usuarios
 * * *

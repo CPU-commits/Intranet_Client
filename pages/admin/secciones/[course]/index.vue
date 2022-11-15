@@ -160,6 +160,7 @@ async function selectNextSection(sectionData: Section | null = null) {
         <!-- Head -->
         <Head>
             <Title>{{ title }}</Title>
+            <Meta name="robots" content="noindex, nofollow" />
         </Head>
         <!-- Body -->
         <AdminPanel>

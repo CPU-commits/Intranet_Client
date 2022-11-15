@@ -1,5 +1,9 @@
 ---
 title: 'Historico - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Historico
 * * *

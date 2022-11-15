@@ -1,5 +1,9 @@
 ---
 title: 'Curso - Cursos - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Curso
 * * *

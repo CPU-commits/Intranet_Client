@@ -1,5 +1,9 @@
 ---
 title: 'Módulo trabajos - Aula Virtual - Administración - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Aula virtual - Módulo trabajos
 

@@ -1,5 +1,9 @@
 ---
 title: 'Calificaciones - Usuario - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Calificaciones
 * * *

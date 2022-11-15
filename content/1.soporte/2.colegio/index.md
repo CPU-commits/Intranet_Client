@@ -1,5 +1,9 @@
 ---
 title: 'Colegio - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Colegio
 * * *

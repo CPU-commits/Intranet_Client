@@ -1,5 +1,9 @@
 ---
 title: 'Anclaje - Materias - Soporte - Intranet'
+head:
+    meta:
+        - name: 'robots'
+          content: 'noindex, nofollow'
 ---
 # Anclaje
 * * *
