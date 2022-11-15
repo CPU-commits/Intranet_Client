@@ -51,13 +51,6 @@ export default defineNuxtConfig({
             },
         },
     },
-    app: {
-        head: {
-            htmlAttrs: {
-                lang: 'es',
-            },
-        },
-    },
     pwa: {
         manifest: {
             name: `${process.env.COLLEGE_NAME} Intranet`,
