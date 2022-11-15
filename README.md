@@ -10,6 +10,10 @@ Client PWA - SSR in Nuxt 3
 
 Exposed port: `3000`
 
+## Volumes
+
+- Logs: /app/logs
+
 ## Environment Variables
 
 | Variable              | Description                | Required     | Access  |
@@ -23,3 +27,4 @@ Exposed port: `3000`
 | `WS`                  | Public WebSocket Base URL  | **Required** | Public  |
 | `COLLEGE_NAME`        | College Name               | **Required** | Public  |
 | `COLLEGE_SHORT_NAME`  | College Short name         | **Required** | Public  |
+| `CLIENT_URL`          | Client URL                 | **Required** | Public  | 
