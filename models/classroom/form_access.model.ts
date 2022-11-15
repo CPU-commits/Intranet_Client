@@ -1,15 +1,15 @@
-import { User } from "../user/user.model"
+import { User } from '../user/user.model'
 
 export enum FormAccessStatus {
-    'opened',
-    'finished',
-    'revised',
+	'opened',
+	'finished',
+	'revised',
 }
 
 export type FormAccess = {
-    _id: string
-    student: string | User
-    work: string
-    date: string
-    status: keyof typeof FormAccessStatus
+	_id: string
+	student: string | User
+	work: string
+	date: string
+	status: keyof typeof FormAccessStatus
 }

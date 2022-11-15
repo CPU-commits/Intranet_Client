@@ -1,5 +1,5 @@
 <template>
-    <NuxtLayout name="support">
-        <ContentDoc />
-    </NuxtLayout>
+	<NuxtLayout name="support">
+		<ContentDoc />
+	</NuxtLayout>
 </template>

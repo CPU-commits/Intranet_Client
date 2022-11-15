@@ -1,21 +1,21 @@
 <template>
-    <section class="Table">
-        <table>
-            <tbody class="TbodySmall">
-                <slot />
-            </tbody>
-        </table>
-    </section>
+	<section class="Table">
+		<table>
+			<tbody class="TbodySmall">
+				<slot />
+			</tbody>
+		</table>
+	</section>
 </template>
 
 <style scoped>
-	.Table {
-		overflow-x: auto;
-		width: 100%;
-	}
+.Table {
+	overflow-x: auto;
+	width: 100%;
+}
 
-	table {
-		width: 100%;
-		border-collapse: collapse;
-	}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
 </style>

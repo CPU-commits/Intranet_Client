@@ -1,4 +1,4 @@
 export type Panel = {
-    isPanel: boolean
-    section: string
+	isPanel: boolean
+	section: string
 }

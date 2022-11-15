@@ -1,13 +1,13 @@
-import { EvaluateAnswer } from "./evaluate.model"
+import { EvaluateAnswer } from './evaluate.model'
 
 export type Answer = {
-    answer: number
-    date: string
-    question: string
-    response: string
+	answer: number
+	date: string
+	question: string
+	response: string
 }
 
 export type AnswerWEvaluate = {
-    answer: Answer
-    evaluate: EvaluateAnswer
+	answer: Answer
+	evaluate: EvaluateAnswer
 }

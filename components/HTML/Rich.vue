@@ -1,3 +1,6 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
+<!-- eslint-disable vue/require-default-prop -->
+<!-- eslint-disable import/no-named-as-default -->
 <script setup lang="ts">
 // Tiptap
 import { useEditor, EditorContent } from '@tiptap/vue-3'
@@ -29,19 +32,22 @@ const toasts = useToastsStore()
 const { $fetchModule } = useNuxtApp()
 
 // Props
-const { body, readOnly, haveBackground, placeholder, fnBeforeMount, fnFocusDown } = withDefaults(defineProps<{
-	body?: string
-	readOnly?: boolean
-	haveBackground?: boolean
-	placeholder?: string
-	fnBeforeMount?: () => any
-	fnFocusDown?: () => any
-}>(), {
-	body: '',
-	readOnly: false,
-	haveBackground: true,
-	placeholder: 'Escribe algo...',
-})
+const props = withDefaults(
+	defineProps<{
+		body?: string
+		readOnly?: boolean
+		haveBackground?: boolean
+		placeholder?: string
+		fnBeforeMount?: () => any
+		fnFocusDown?: () => any
+	}>(),
+	{
+		body: '',
+		readOnly: false,
+		haveBackground: true,
+		placeholder: 'Escribe algo...',
+	},
+)
 // Emits
 const emits = defineEmits<{
 	(e: 'buildEditor', editor: Editor): void
@@ -67,7 +73,7 @@ const editor = useEditor({
 			validate: (href) => /^https?:\/\//.test(href),
 		}),
 		Placeholder.configure({
-			placeholder,
+			placeholder: props.placeholder,
 		}),
 		Subscript,
 		Superscript,
@@ -105,31 +111,34 @@ const editor = useEditor({
 	editorProps: {
 		handleDOMEvents: {
 			focusout: () => {
-				if (fnFocusDown) fnFocusDown()
+				if (props.fnFocusDown) props.fnFocusDown()
 			},
 		},
 		attributes: {
-			class: !haveBackground && readOnly ? 'ProseMirrorNoBackground' : '',
+			class:
+				!props.haveBackground && props.readOnly
+					? 'ProseMirrorNoBackground'
+					: '',
 		},
 	},
-	onCreate: (props) => {
+	onCreate: (propsEditor) => {
 		// Emit build
-		emits('buildEditor', props.editor)
+		emits('buildEditor', propsEditor.editor)
 		// Functions
-		if (fnBeforeMount) fnBeforeMount()
+		if (props.fnBeforeMount) props.fnBeforeMount()
 		if (editor?.value?.options.editorProps?.handleDOMEvents)
 			editor.value.options.editorProps.handleDOMEvents.focusout = () => {
-				if (fnFocusDown) fnFocusDown()
+				if (props.fnFocusDown) props.fnFocusDown()
 			}
 	},
-	content: body,
+	content: props.body,
 	autofocus: true,
-	editable: !readOnly,
+	editable: !props.readOnly,
 })
 
-onMounted(async () => {
+onMounted(() => {
 	if (editorElement.value)
-		if (!haveBackground) {
+		if (!props.haveBackground) {
 			editorElement.value.style.setProperty('--background', 'transparent')
 			editorElement.value.style.setProperty('--box-shadow', 'transparent')
 			editorElement.value.style.setProperty('--padding', '0')
@@ -154,7 +163,7 @@ const src = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
 
 function blobToBase64(blob: Blob) {
-	return new Promise((resolve, _) => {
+	return new Promise((resolve) => {
 		const reader = new FileReader()
 		reader.onloadend = () => resolve(reader.result)
 		reader.readAsDataURL(blob)
@@ -163,11 +172,17 @@ function blobToBase64(blob: Blob) {
 
 async function addImage() {
 	try {
-		if (fileInput.value?.files && fileInput.value.files.length === 1 && editor) {
+		if (
+			fileInput.value?.files &&
+			fileInput.value.files.length === 1 &&
+			editor
+		) {
 			const file = fileInput.value.files[0]
-			if (!file.type.includes('image')) throw new Error('Debe seleccionar una imagen')
+			if (!file.type.includes('image'))
+				throw new Error('Debe seleccionar una imagen')
 			const base64 = await blobToBase64(file)
-			editor?.value?.chain()
+			editor?.value
+				?.chain()
 				.focus()
 				.setImage({
 					src: base64 as string,
@@ -185,7 +200,8 @@ async function addImage() {
 
 function addUrlImage() {
 	if (editor)
-		editor?.value?.chain()
+		editor?.value
+			?.chain()
 			.focus()
 			.setImage({
 				src: src.value,
@@ -210,10 +226,15 @@ function setLink() {
 	}
 
 	// update link
-	editor?.value?.chain().focus().extendMarkRange('link').setLink({
-		href: href.value,
-		target: '_blank',
-	}).run()
+	editor?.value
+		?.chain()
+		.focus()
+		.extendMarkRange('link')
+		.setLink({
+			href: href.value,
+			target: '_blank',
+		})
+		.run()
 
 	linkModal.value = false
 }
@@ -237,11 +258,18 @@ function getValue(e: Event) {
 </script>
 
 <template>
-	<section class="Editor" ref="editorElement">
+	<section ref="editorElement" class="Editor">
 		<header v-if="!readOnly" class="Editor__header">
 			<!-- Heading -->
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().toggleHeading({ level: 1 }).run()"
+				:click="
+					() =>
+						editor
+							?.chain()
+							.focus()
+							.toggleHeading({ level: 1 })
+							.run()
+				"
 				:selected="editor?.isActive('heading', { level: 1 })"
 				title="Titulo 1"
 			>
@@ -249,7 +277,14 @@ function getValue(e: Event) {
 				<span class="HNumber">1</span>
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().toggleHeading({ level: 2 }).run()"
+				:click="
+					() =>
+						editor
+							?.chain()
+							.focus()
+							.toggleHeading({ level: 2 })
+							.run()
+				"
 				:selected="editor?.isActive('heading', { level: 2 })"
 				title="Titulo 2"
 			>
@@ -257,7 +292,14 @@ function getValue(e: Event) {
 				<span class="HNumber">2</span>
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().toggleHeading({ level: 3 }).run()"
+				:click="
+					() =>
+						editor
+							?.chain()
+							.focus()
+							.toggleHeading({ level: 3 })
+							.run()
+				"
 				:selected="editor?.isActive('heading', { level: 3 })"
 				title="Titulo 3"
 			>
@@ -265,7 +307,14 @@ function getValue(e: Event) {
 				<span class="HNumber">3</span>
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().toggleHeading({ level: 4 }).run()"
+				:click="
+					() =>
+						editor
+							?.chain()
+							.focus()
+							.toggleHeading({ level: 4 })
+							.run()
+				"
 				:selected="editor?.isActive('heading', { level: 4 })"
 				title="Titulo 4"
 			>
@@ -273,7 +322,14 @@ function getValue(e: Event) {
 				<span class="HNumber">4</span>
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().toggleHeading({ level: 5 }).run()"
+				:click="
+					() =>
+						editor
+							?.chain()
+							.focus()
+							.toggleHeading({ level: 5 })
+							.run()
+				"
 				:selected="editor?.isActive('heading', { level: 5 })"
 				title="Titulo 5"
 			>
@@ -295,8 +351,11 @@ function getValue(e: Event) {
 			</HTMLButtonRichInput>
 			<input
 				type="color"
-				@input="(event) => editor?.chain().focus().setColor(getValue(event)).run()"
 				:value="editor?.getAttributes('textStyle').color ?? '#3d3d3d'"
+				@input="
+					(event) =>
+						editor?.chain().focus().setColor(getValue(event)).run()
+				"
 			/>
 			|
 			<!-- Bold -->
@@ -354,28 +413,36 @@ function getValue(e: Event) {
 			|
 			<!-- Align -->
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().setTextAlign('left').run()"
+				:click="
+					() => editor?.chain().focus().setTextAlign('left').run()
+				"
 				:selected="editor?.isActive({ textAlign: 'left' })"
 				title="Izquierda"
 			>
 				<i class="fa-solid fa-align-left" />
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().setTextAlign('center').run()"
+				:click="
+					() => editor?.chain().focus().setTextAlign('center').run()
+				"
 				:selected="editor?.isActive({ textAlign: 'center' })"
 				title="Derecha"
 			>
 				<i class="fa-solid fa-align-center" />
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().setTextAlign('right').run()"
+				:click="
+					() => editor?.chain().focus().setTextAlign('right').run()
+				"
 				:selected="editor?.isActive({ textAlign: 'right' })"
 				title="Centrado"
 			>
 				<i class="fa-solid fa-align-right" />
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().setTextAlign('justify').run()"
+				:click="
+					() => editor?.chain().focus().setTextAlign('justify').run()
+				"
 				:selected="editor?.isActive({ textAlign: 'justify' })"
 				title="Justificado"
 			>
@@ -405,14 +472,18 @@ function getValue(e: Event) {
 				<i class="fa-solid fa-list-check" />
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().sinkListItem('listItem').run()"
+				:click="
+					() => editor?.chain().focus().sinkListItem('listItem').run()
+				"
 				:disabled="!editor?.can().sinkListItem('listItem')"
 				title="Adentrar lista"
 			>
 				<i class="fa-solid fa-angles-right" />
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().liftListItem('listItem').run()"
+				:click="
+					() => editor?.chain().focus().liftListItem('listItem').run()
+				"
 				:disabled="!editor?.can().liftListItem('listItem')"
 				title="Retroceder lista"
 			>
@@ -421,11 +492,18 @@ function getValue(e: Event) {
 			|
 			<!-- Table -->
 			<HTMLButtonRichInput
-				:click="() =>
-					editor?.chain()
-						.focus()
-						.insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-						.run()"
+				:click="
+					() =>
+						editor
+							?.chain()
+							.focus()
+							.insertTable({
+								rows: 3,
+								cols: 3,
+								withHeaderRow: true,
+							})
+							.run()
+				"
 				title="Crear tabla"
 			>
 				<i class="fa-solid fa-table" />
@@ -470,7 +548,9 @@ function getValue(e: Event) {
 				<i class="fa-solid fa-table" />
 			</HTMLButtonRichInput>
 			<HTMLButtonRichInput
-				:click="() => editor?.chain().focus().toggleHeaderColumn().run()"
+				:click="
+					() => editor?.chain().focus().toggleHeaderColumn().run()
+				"
 				title="Encabezar columna"
 			>
 				<i class="fa-solid fa-heading" />
@@ -499,16 +579,22 @@ function getValue(e: Event) {
 				<i class="fa-solid fa-code" />
 			</HTMLButtonRichInput>
 			<!-- Image -->
-			<HTMLButtonRichInput :click="() => fileInput?.click()" title="Añadir imagen">
+			<HTMLButtonRichInput
+				:click="() => fileInput?.click()"
+				title="Añadir imagen"
+			>
 				<i class="fa-solid fa-file-image" />
 			</HTMLButtonRichInput>
 			<input
+				ref="fileInput"
 				type="file"
 				accept="image/png, image/gif, image/jpeg"
-				ref="fileInput"
 				@change="addImage"
 			/>
-			<HTMLButtonRichInput :click="toggleModalImage" title="Añadir imagen desde URL">
+			<HTMLButtonRichInput
+				:click="toggleModalImage"
+				title="Añadir imagen desde URL"
+			>
 				<i class="fa-solid fa-image" />
 			</HTMLButtonRichInput>
 			<!-- Link -->
@@ -556,9 +642,14 @@ function getValue(e: Event) {
 			|
 		</header>
 		<editor-content :editor="editor" />
-		
+
 		<footer v-if="editor && !readOnly" class="Editor__footer">
-			<small>{{ editor.storage.characterCount.characters() }} C&aacute;racteres</small>
+			<small
+				>{{
+					editor.storage.characterCount.characters()
+				}}
+				C&aacute;racteres</small
+			>
 			<small>{{ editor.storage.characterCount.words() }} Palabras</small>
 		</footer>
 
@@ -569,7 +660,7 @@ function getValue(e: Event) {
 			</template>
 			<HTMLForm :form="addUrlImage">
 				<label for="image">Imagen</label>
-				<HTMLInput v-model:value="src" id="image" />
+				<HTMLInput id="image" v-model:value="src" />
 				<HTMLButton type="submit">Agregar</HTMLButton>
 			</HTMLForm>
 		</Modal>
@@ -580,7 +671,7 @@ function getValue(e: Event) {
 			</template>
 			<HTMLForm :form="setLink">
 				<label for="link">Enlace</label>
-				<HTMLInput v-model:value="href" id="link" />
+				<HTMLInput id="link" v-model:value="href" />
 				<HTMLButton type="submit">Agregar</HTMLButton>
 			</HTMLForm>
 		</Modal>
@@ -591,7 +682,7 @@ function getValue(e: Event) {
 			</template>
 			<HTMLForm :form="setYoutube">
 				<label for="youtube">Enlace</label>
-				<HTMLInput v-model:value="srcYoutube" id="youtube" />
+				<HTMLInput id="youtube" v-model:value="srcYoutube" />
 				<HTMLButton type="submit">Agregar</HTMLButton>
 			</HTMLForm>
 		</Modal>
@@ -599,87 +690,87 @@ function getValue(e: Event) {
 </template>
 
 <style scoped>
-	.Editor {
-		width: 100%;
-		box-sizing: border-box;
-		background-color: var(--background);
-		border-radius: 15px;
-		padding: var(--padding);
-		box-shadow: var(--box-shadow);
-	}
+.Editor {
+	width: 100%;
+	box-sizing: border-box;
+	background-color: var(--background);
+	border-radius: 15px;
+	padding: var(--padding);
+	box-shadow: var(--box-shadow);
+}
 
-	.Editor__header {
-		padding: 10px;
-		display: flex;
-		gap: 10px;
-		flex-wrap: wrap;
-		border-bottom: 2px solid var(--color-main);
-		color: var(--color-light);
-	}
+.Editor__header {
+	padding: 10px;
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	border-bottom: 2px solid var(--color-main);
+	color: var(--color-light);
+}
 
-	.HNumber {
-		font-size: 0.9rem;
-		font-weight: bold;
-		transition: all 0.4s ease;
-	}
+.HNumber {
+	font-size: 0.9rem;
+	font-weight: bold;
+	transition: all 0.4s ease;
+}
 
+i {
+	font-size: 14px;
+}
+
+input[type='file'] {
+	display: none;
+}
+
+input[type='color'] {
+	width: 20px;
+	height: 20px;
+	background-color: transparent;
+	border: none;
+}
+
+.Editor__footer {
+	margin-top: 10px;
+	display: flex;
+	gap: 10px;
+	padding: 10px;
+}
+
+@media (max-width: 767.98px) {
 	i {
-		font-size: 14px;
+		font-size: 0.8rem;
 	}
 
-	input[type='file'] {
-		display: none;
-	}
-
-	input[type='color'] {
-		width: 20px;
-		height: 20px;
-		background-color: transparent;
-		border: none;
+	small {
+		font-size: 0.75rem;
 	}
 
 	.Editor__footer {
-		margin-top: 10px;
-		display: flex;
-		gap: 10px;
-		padding: 10px;
+		margin-top: 5px;
+		gap: 6px;
+		padding: 8px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.Editor__header {
+		padding: 0px;
+		gap: 8px;
+		padding-bottom: 5px;
 	}
 
-	@media (max-width: 767.98px) {
-		i {
-			font-size: 0.8rem;
-		}
-
-		small {
-			font-size: 0.75rem;
-		}
-
-		.Editor__footer {
-			margin-top: 5px;
-			gap: 6px;
-			padding: 8px;
-		}
+	i {
+		font-size: 0.7rem;
 	}
 
-	@media (max-width: 575.98px) {
-		.Editor__header {
-			padding: 0px;
-			gap: 8px;
-			padding-bottom: 5px;
-		}
-
-		i {
-			font-size: 0.7rem;
-		}
-
-		small {
-			font-size: 0.7rem;
-		}
-
-		.Editor__footer {
-			margin-top: 0px;
-			gap: 5px;
-			padding: 5px;
-		}
+	small {
+		font-size: 0.7rem;
 	}
+
+	.Editor__footer {
+		margin-top: 0px;
+		gap: 5px;
+		padding: 5px;
+	}
+}
 </style>

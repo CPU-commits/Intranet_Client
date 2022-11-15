@@ -4,15 +4,15 @@ import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-const title = ref(schoolName
-	? `Editar formulario - ${schoolName} - Intranet`
-	: 'Editar formulario - Intranet')
+const title = ref(
+	schoolName
+		? `Editar formulario - ${schoolName} - Intranet`
+		: 'Editar formulario - Intranet',
+)
 // Guard
 definePageMeta({
-    middleware: 'role',
-    roles: [
-        UserTypesKeys.TEACHER,
-    ],
+	middleware: 'role',
+	roles: [UserTypesKeys.TEACHER],
 })
 // Nuxtapp
 const { $fetchModule } = useNuxtApp()
@@ -64,52 +64,55 @@ async function deleteForm() {
 			<Meta name="robots" content="noindex, nofollow" />
 		</Head>
 		<!-- Body -->
-		<input v-model="buildForm.form.title" type="text" placeholder="Titulo" />
-			<HTMLForm :form="updateForm">
-				<label for="score">Puntaje (Preguntas)</label>
-				<HTMLSelect v-model:value="buildForm.form.has_points" id="score">
-					<option value="">Seleccionar tipo de puntaje</option>
-					<option value="true">Con puntaje</option>
-					<option value="false">Sin puntaje</option>
-				</HTMLSelect>
-				<h3><i class="fa-solid fa-cube" /> Items</h3>
-				<section class="Forms__items">
-					<ClassFormsItem
-						v-for="(item, i) in buildForm.getItems"
-						:key="i"
-						:item="item"
-						:number="i"
-					/>
-					<span v-if="buildForm.getItems.length === 0">
-						Sin items
-					</span>
-					<HTMLButtonIcon
-						title="Nuevo item"
-						:click="buildForm.newItem"
-						classItem="fa-solid fa-plus"
-					/>
-				</section>
-				<ClassFormsQuestion
-					v-if="buildForm.getItems.length > 0 && buildForm.checked !== undefined"
-					:item="buildForm.getCheckedItem"
+		<input
+			v-model="buildForm.form.title"
+			type="text"
+			placeholder="Titulo"
+		/>
+		<HTMLForm :form="updateForm">
+			<label for="score">Puntaje (Preguntas)</label>
+			<HTMLSelect id="score" v-model:value="buildForm.form.has_points">
+				<option value="">Seleccionar tipo de puntaje</option>
+				<option value="true">Con puntaje</option>
+				<option value="false">Sin puntaje</option>
+			</HTMLSelect>
+			<h3><i class="fa-solid fa-cube" /> Items</h3>
+			<section class="Forms__items">
+				<ClassFormsItem
+					v-for="(item, i) in buildForm.getItems"
+					:key="i"
+					:item="item"
+					:number="i"
 				/>
-				<HTMLButton type="submit">
-					Actualizar formulario
-				</HTMLButton>
-				<div>
-					<HTMLButtonIcon
-						color="var(--color-danger)"
-						hover="var(--color-danger)"
-						classItem="fa-solid fa-trash-can"
-						title="Eliminar formulario"
-						:click="() => modal = true"
-					/>
-				</div>
-			</HTMLForm>
+				<span v-if="buildForm.getItems.length === 0"> Sin items </span>
+				<HTMLButtonIcon
+					title="Nuevo item"
+					:click="buildForm.newItem"
+					class-item="fa-solid fa-plus"
+				/>
+			</section>
+			<ClassFormsQuestion
+				v-if="
+					buildForm.getItems.length > 0 &&
+					buildForm.checked !== undefined
+				"
+				:item="buildForm.getCheckedItem"
+			/>
+			<HTMLButton type="submit"> Actualizar formulario </HTMLButton>
+			<div>
+				<HTMLButtonIcon
+					color="var(--color-danger)"
+					hover="var(--color-danger)"
+					class-item="fa-solid fa-trash-can"
+					title="Eliminar formulario"
+					:click="() => (modal = true)"
+				/>
+			</div>
+		</HTMLForm>
 
 		<SpinnerGet />
 		<Error v-if="error" :err="error" />
-		
+
 		<!-- Modals -->
 		<Modal v-model:opened="modal">
 			<template #title>
@@ -119,14 +122,11 @@ async function deleteForm() {
 			<div class="Container">
 				<HTMLButtonText
 					color="var(--color-dark)"
-					:click="() => modal = false"
+					:click="() => (modal = false)"
 				>
 					No, no eliminar formulario
 				</HTMLButtonText>
-				<HTMLButtonText
-					color="var(--color-danger)"
-					:click="deleteForm"
-				>
+				<HTMLButtonText color="var(--color-danger)" :click="deleteForm">
 					S&iacute;, eliminar formulario
 				</HTMLButtonText>
 			</div>
@@ -135,65 +135,65 @@ async function deleteForm() {
 </template>
 
 <style scoped lang="scss">
-	.Forms {
-		margin: 20px;
-		background-color: white;
-		padding: 20px;
-		box-shadow: var(--box-shadow);
-		border-radius: 10px;
-		margin-bottom: 95vh;
-		width: 100%;
-	}
+.Forms {
+	margin: 20px;
+	background-color: white;
+	padding: 20px;
+	box-shadow: var(--box-shadow);
+	border-radius: 10px;
+	margin-bottom: 95vh;
+	width: 100%;
+}
 
-	.Forms input:first-child {
-		border: none;
-		margin-bottom: 20px;
-		font-size: 1.6rem;
-		font-family: 'Karla', sans-serif;
-	}
+.Forms input:first-child {
+	border: none;
+	margin-bottom: 20px;
+	font-size: 1.6rem;
+	font-family: 'Karla', sans-serif;
+}
 
-	.Forms input:first-child:focus {
-		outline: none;
-	}
+.Forms input:first-child:focus {
+	outline: none;
+}
 
+.Forms__items {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	gap: 20px;
+	border: 2px solid var(--color-light);
+}
+
+span {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.Container {
+	display: flex;
+}
+
+@media (max-width: 767.98px) {
 	.Forms__items {
-		display: flex;
-		flex-direction: column;
+		padding: 5px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.Forms {
+		margin: 10px;
 		padding: 10px;
-		gap: 20px;
-		border: 2px solid var(--color-light);
+		input:first-child {
+			font-size: 1.4rem;
+		}
+	}
+
+	h3 {
+		font-size: 1rem;
 	}
 
 	span {
-		text-align: center;
-		margin-bottom: 20px;
+		font-size: 0.85rem;
 	}
-
-	.Container {
-		display: flex;
-	}
-
-	@media (max-width: 767.98px) {
-        .Forms__items {
-            padding: 5px;
-        }
-    }
-
-    @media (max-width: 575.98px) {
-        .Forms {
-            margin: 10px;
-            padding: 10px;
-            input:first-child {
-                font-size: 1.4rem;
-            }
-        }
-
-        h3 {
-            font-size: 1rem;
-        }
-
-        span {
-            font-size: 0.85rem;
-        }
-    }
+}
 </style>

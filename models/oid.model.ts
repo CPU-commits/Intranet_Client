@@ -1,3 +1,3 @@
 export interface OID {
-    $oid: string
+	$oid: string
 }

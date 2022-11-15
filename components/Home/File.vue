@@ -1,26 +1,23 @@
 <script setup lang="ts">
 // Types
-import { UserFile } from '~~/models/file/file.model';
+import { UserFile } from '~~/models/file/file.model'
 // Utils
 import { getIcon } from '@@/utils/getIcon'
 // Props
-const { file, editable } = defineProps<{
-    file: UserFile
+const props = defineProps<{
+	file: UserFile
 	editable?: boolean
 }>()
 // Nuxtapp
-const {
-    $filesService,
-} = useNuxtApp()
+const { $filesService } = useNuxtApp()
 // Emits
 defineEmits<{
 	(e: 'delete', v: void): void
 }>()
 
 async function downloadFile() {
-    const urlToken = await $filesService.downloadFile(file._id.$oid)
-    if (urlToken !== undefined)
-        $filesService.downloadFileUrl(urlToken)
+	const urlToken = await $filesService.downloadFile(props.file._id.$oid)
+	if (urlToken !== undefined) $filesService.downloadFileUrl(urlToken)
 }
 </script>
 
@@ -40,37 +37,37 @@ async function downloadFile() {
 </template>
 
 <style scoped>
-	div {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-	}
+div {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
 
-	.FileMin {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-		cursor: pointer;
-		width: fit-content;
-	}
+.FileMin {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	cursor: pointer;
+	width: fit-content;
+}
 
+.FileMin i {
+	font-size: 1.1rem;
+}
+
+.FileMin:hover small,
+.FileMin:hover i {
+	color: var(--color-main);
+}
+
+.FileMin small,
+i {
+	transition: all 0.4s;
+}
+
+@media (max-width: 575.98px) {
 	.FileMin i {
-		font-size: 1.1rem;
+		font-size: 0.75rem;
 	}
-
-	.FileMin:hover small,
-	.FileMin:hover i {
-		color: var(--color-main);
-	}
-
-	.FileMin small,
-	i {
-		transition: all 0.4s;
-	}
-
-	@media (max-width: 575.98px) {
-		.FileMin i {
-			font-size: 0.75rem;
-		}
-	}
+}
 </style>

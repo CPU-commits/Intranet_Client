@@ -1,6 +1,7 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 // Types
-import type { Ref } from 'vue';
+import type { Ref } from 'vue'
 
 type Navigate = {
 	activate: boolean
@@ -8,7 +9,7 @@ type Navigate = {
 	max?: number
 }
 
-const { navigate } = defineProps<{
+const props = defineProps<{
 	navigate: Navigate
 }>()
 
@@ -21,7 +22,7 @@ if (!total)
 		statusCode: 500,
 		fatal: true,
 	})
-const pages = ref(Math.ceil(total.value / (navigate?.max ?? 1)))
+const pages = ref(Math.ceil(total.value / (props.navigate?.max ?? 1)))
 const selected = ref(0)
 
 // Mount and watch
@@ -29,7 +30,7 @@ onMounted(() => {
 	memo.value = new Array(pages.value)
 })
 watch(total, (newValue) => {
-	pages.value = Math.ceil(newValue / (navigate?.max ?? 1))
+	pages.value = Math.ceil(newValue / (props.navigate?.max ?? 1))
 	// Init memo
 	memo.value = new Array(pages.value)
 })
@@ -43,15 +44,11 @@ const emits = defineEmits<{
 const memo = ref<Array<any> | null>(null)
 // Set page selected
 async function setSelected(toSet: number) {
-	if (navigate.fn && memo.value) {
+	if (props.navigate.fn && memo.value) {
 		if (!search.value && memo.value[toSet]) {
 			emits('memo', memo.value[toSet])
-		} else if (search.value && memo.value.every((v) => v !== null)) {
-			memo.value.filter(() => {
-				
-			})
 		} else {
-			const value = await navigate.fn(toSet)
+			const value = await props.navigate.fn(toSet)
 			if (value !== undefined) memo.value[toSet] = value
 		}
 	}
@@ -59,39 +56,45 @@ async function setSelected(toSet: number) {
 }
 
 function getIndex(index: number) {
-	return pages.value > 5 ?
-		(selected.value + 4 > pages.value - 1
+	return pages.value > 5
+		? selected.value + 4 > pages.value - 1
 			? index + (pages.value - 5)
-			: index + selected.value)
+			: index + selected.value
 		: index
 }
 </script>
 
 <template>
 	<nav class="Table__nav">
-		<button @click="() => setSelected(0)" :disabled="selected === 0">
+		<button :disabled="selected === 0" @click="() => setSelected(0)">
 			<i class="fa-solid fa-angles-left" />
 		</button>
-		<button @click="() => setSelected(selected - 1)" :disabled="selected === 0">
+		<button
+			:disabled="selected === 0"
+			@click="() => setSelected(selected - 1)"
+		>
 			<i class="fa-solid fa-angle-left" />
 		</button>
 		<button
-			v-for="index in (pages > 5 ? 5 : pages)"
+			v-for="index in pages > 5 ? 5 : pages"
+			:key="index"
+			:class="getIndex(index) - 1 === selected ? 'Selected' : ''"
 			@click="() => setSelected(getIndex(index) - 1)"
-			:class="(getIndex(index) - 1) === selected ? 'Selected' : ''"
 		>
 			{{ getIndex(index) }}
 		</button>
-		<span v-if="selected + 5 < pages"><i class="fa-solid fa-ellipsis" /></span>
+		<span v-if="selected + 5 < pages"
+			><i class="fa-solid fa-ellipsis"
+		/></span>
 		<button
-			@click="() => setSelected(selected + 1)"
 			:disabled="pages === selected + 1 || pages === 0"
+			@click="() => setSelected(selected + 1)"
 		>
 			<i class="fa-solid fa-angle-right" />
 		</button>
 		<button
-			@click="() => setSelected(pages - 1)"
 			:disabled="pages === selected + 1 || pages === 0"
+			@click="() => setSelected(pages - 1)"
 		>
 			<i class="fa-solid fa-angles-right" />
 		</button>
@@ -99,37 +102,37 @@ function getIndex(index: number) {
 </template>
 
 <style scoped>
-	.Table__nav {
-		margin-top: 10px;
-		display: flex;
-		gap: 5px;
-		justify-content: center;
-		align-items: flex-end;
-		flex-wrap: wrap;
-	}
+.Table__nav {
+	margin-top: 10px;
+	display: flex;
+	gap: 5px;
+	justify-content: center;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
 
-	.Selected {
-		background-color: var(--color-main) !important;
-		color: white !important;
-	}
+.Selected {
+	background-color: var(--color-main) !important;
+	color: white !important;
+}
 
-	.Table__nav button {
-		background-color: white;
-		border: none;
-		width: 25px;
-		height: 25px;
-		color: var(--color-main);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
+.Table__nav button {
+	background-color: white;
+	border: none;
+	width: 25px;
+	height: 25px;
+	color: var(--color-main);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-	button:disabled,
-	button:disabled i {
-		color: var(--color-light) !important;
-	}
+button:disabled,
+button:disabled i {
+	color: var(--color-light) !important;
+}
 
-	i {
-		color: var(--color-main);
-	}
+i {
+	color: var(--color-main);
+}
 </style>

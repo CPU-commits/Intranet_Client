@@ -1,3 +1,3 @@
 export default () => {
-    return useState('search', () => false)
+	return useState('search', () => false)
 }

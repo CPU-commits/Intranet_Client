@@ -17,31 +17,25 @@ const title = schoolName
 	: 'Biblioteca Virtual - Admin - Intranet'
 // Guard
 definePageMeta({
-    middleware: 'role',
-    roles: [
-        UserTypesKeys.DIRECTIVE,
-        UserTypesKeys.DIRECTOR,
-        UserTypesKeys.LIBRARIAN,
-    ],
+	middleware: 'role',
+	roles: [
+		UserTypesKeys.DIRECTIVE,
+		UserTypesKeys.DIRECTOR,
+		UserTypesKeys.LIBRARIAN,
+	],
 })
 // NuxtApp
-const {
-	$libraryService,
-	$fetchModule,
-	$directivesService,
-} = useNuxtApp()
-// Composable
-const spinner = useSpinner()
+const { $libraryService, $fetchModule, $directivesService } = useNuxtApp()
 // Stores
 const auth = useAuthStore()
 
 const search = ref('')
 // Form
 let librarianForm = {
-    name: '',
-    first_lastname: '',
-    second_lastname: '',
-    rut: '',
+	name: '',
+	first_lastname: '',
+	second_lastname: '',
+	rut: '',
 }
 const why = ref('')
 const librarianEdit = ref<User>({} as User)
@@ -50,12 +44,16 @@ const librarianIndex = ref(0)
 const navigate = {
 	activate: true,
 	max: 20,
-	async fn (n: number) {
+	async fn(n: number) {
 		try {
 			// Clean error
 			error.value = null
 			// Get data
-			const dataFetch = await $libraryService.getBooks(false, n * 20, search.value)
+			const dataFetch = await $libraryService.getBooks(
+				false,
+				n * 20,
+				search.value,
+			)
 			books.value = dataFetch.books
 
 			return dataFetch.books
@@ -105,7 +103,7 @@ async function searchFunction() {
 
 		books.value = dataFetch.books
 		total.value = dataFetch.total
-	}catch(err){
+	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		error.value = _err
 	}
@@ -122,21 +120,21 @@ const modalEditEditorial = ref(false)
 
 // Librarian
 function initForm(newLibrarian: User) {
-    modalAddLibrarian.value = false
-    librarianForm = {
-        name: '',
-        first_lastname: '',
-        second_lastname: '',
-        rut: '',
-    }
-	if (librarians.value)
-    	librarians.value.push(newLibrarian)
+	modalAddLibrarian.value = false
+	librarianForm = {
+		name: '',
+		first_lastname: '',
+		second_lastname: '',
+		rut: '',
+	}
+	if (librarians.value) librarians.value.push(newLibrarian)
 }
 
 async function uploadLibrarian() {
-	const librarian = await $libraryService.uploadLibrarian(librarianForm as User)
-	if (librarian)
-		initForm(librarian)
+	const librarian = await $libraryService.uploadLibrarian(
+		librarianForm as User,
+	)
+	if (librarian) initForm(librarian)
 }
 
 async function editLibrarian() {
@@ -149,19 +147,22 @@ async function editLibrarian() {
 		const index = librarianIndex.value
 
 		modalEditLibrarian.value = false
-		if(librarians.value)
-			librarians.value[index] = librarianEdit.value
+		if (librarians.value) librarians.value[index] = librarianEdit.value
 	}
 }
 
 async function changeStatus() {
 	const index = librarianIndex.value
-	const dataFetch = await $directivesService.changeStatus(why.value, librarianEdit.value._id)
+	const dataFetch = await $directivesService.changeStatus(
+		why.value,
+		librarianEdit.value._id,
+	)
 	if (dataFetch && librarians.value) {
 		why.value = ''
 		modalStatus.value = false
 
-		librarians.value[index].status = librarians.value[index].status === 1 ? 0 : 1
+		librarians.value[index].status =
+			librarians.value[index].status === 1 ? 0 : 1
 	}
 }
 // Tags
@@ -176,11 +177,9 @@ async function uploadCategory() {
 }
 
 async function deleteTag(idTag: string) {
-    const dataFetch = await $libraryService.deleteTag(idTag)
+	const dataFetch = await $libraryService.deleteTag(idTag)
 	if (dataFetch && tags.value)
-		tags.value = tags.value.filter((tag) => {
-            if (tag._id !== idTag) return tag
-        })
+		tags.value = tags.value.filter((tag) => tag._id !== idTag)
 }
 // Editorial
 const editorial = ref('')
@@ -193,10 +192,7 @@ async function uploadEditorial() {
 		files.value,
 	)
 	if (dataFetch && editorials.value) {
-		editorials.value = [
-			dataFetch,
-			...editorials.value,
-		]
+		editorials.value = [dataFetch, ...editorials.value]
 		files.value = null
 		editorial.value = ''
 	}
@@ -212,8 +208,12 @@ async function updateEditorial() {
 		files.value ?? null,
 		idEditorial.value,
 	)
-    // Update
-	if (dataFetch !== undefined && editorials.value !== null && index !== undefined) {
+	// Update
+	if (
+		dataFetch !== undefined &&
+		editorials.value !== null &&
+		index !== undefined
+	) {
 		editorials.value[index].editorial = editorial.value
 		if (files.value && files.value?.length > 0)
 			editorials.value[index].image.url = dataFetch
@@ -225,22 +225,21 @@ async function updateEditorial() {
 async function deleteEditorial(idEditorial: string) {
 	const dataFetch = await $libraryService.deleteEditorial(idEditorial)
 	if (dataFetch && editorials.value)
-		editorials.value = editorials.value.filter((editorial) => {
-			if (editorial._id !== idEditorial) return editorial
-		})
+		editorials.value = editorials.value.filter(
+			(editorial) => editorial._id !== idEditorial,
+		)
 }
 
 async function deleteBook(idBook: string) {
 	const dataFetch = await $libraryService.deleteBook(idBook)
 	if (dataFetch && books.value)
-		books.value = books.value.filter((book) => {
-			if (book._id !== idBook) return book
-		})
+		books.value = books.value.filter((book) => book._id !== idBook)
 }
 
 // Reflect type
 const returnAuthor = (author: string | Author): Author => author as Author
-const returnEd = (editorial: string | Editorial): Editorial => editorial as Editorial
+const returnEd = (editorial: string | Editorial): Editorial =>
+	editorial as Editorial
 </script>
 
 <template>
@@ -253,32 +252,32 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 		<!-- Body -->
 		<AdminPanel>
 			<template #nav>
-				<Icons slot="nav">
+				<Icons>
 					<HTMLAIcon
 						title="Añadir libro"
-						classItem="fa-solid fa-plus"
+						class-item="fa-solid fa-plus"
 						href="/admin/biblioteca/nuevo_libro"
 					/>
 					<HTMLAIcon
 						title="Autores"
-						classItem="fa-solid fa-pen-nib"
+						class-item="fa-solid fa-pen-nib"
 						href="/admin/biblioteca/autores"
 					/>
 					<HTMLButtonIcon
 						title="Editoriales/publicadores"
-						classItem="fa-solid fa-bullhorn"
-						:click="() => modalEditorials = true"
+						class-item="fa-solid fa-bullhorn"
+						:click="() => (modalEditorials = true)"
 					/>
 					<HTMLButtonIcon
 						title="Categorias"
-						classItem="fa-solid fa-tags"
-						:click="() => modalTags = true"
+						class-item="fa-solid fa-tags"
+						:click="() => (modalTags = true)"
 					/>
 					<HTMLButtonIcon
 						v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
 						title="Bibliotecarios"
-						classItem="fa-solid fa-user-graduate"
-						:click="() => modalLibrarian = true"
+						class-item="fa-solid fa-user-graduate"
+						:click="() => (modalLibrarian = true)"
 					/>
 				</Icons>
 			</template>
@@ -287,14 +286,24 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 			<br />
 			<!-- Data -->
 			<HTMLTable
-				:header="['', 'Nombre', 'Autor', 'Editorial', 'Ranking', 'Editar']"
+				:header="[
+					'',
+					'Nombre',
+					'Autor',
+					'Editorial',
+					'Ranking',
+					'Editar',
+				]"
 				:navigate="navigate"
 				@memo="(value: Array<Book>) => books = value"
 			>
 				<tr v-for="(book, i) in books" :key="i">
 					<td><img :src="book.image.url" :alt="book.name" /></td>
 					<td>
-						<NuxtLink class="Link" :to="`/biblioteca/libro/${book.slug}`">
+						<NuxtLink
+							class="Link"
+							:to="`/biblioteca/libro/${book.slug}`"
+						>
 							{{ book.name }}
 						</NuxtLink>
 					</td>
@@ -303,14 +312,14 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 					<td>{{ book.ranking ? book.ranking : 'Sin raking' }}</td>
 					<td>
 						<HTMLAIcon
-							classItem="fa-solid fa-pen-to-square"
+							class-item="fa-solid fa-pen-to-square"
 							:href="`/admin/biblioteca/editar/${book.slug}`"
 						/>
 					</td>
 					<td>
 						<HTMLButtonIcon
 							title="Eliminar libro"
-							classItem="fa-solid fa-circle-minus"
+							class-item="fa-solid fa-circle-minus"
 							:click="() => deleteBook(book._id)"
 						/>
 					</td>
@@ -328,7 +337,9 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 			<template #title>
 				<h2>Bibliotecarios</h2>
 			</template>
-			<HTMLTable :header="['Nombre', 'Ap. P.', 'Ap. M.', 'RUT', 'Estado', '']">
+			<HTMLTable
+				:header="['Nombre', 'Ap. P.', 'Ap. M.', 'RUT', 'Estado', '']"
+			>
 				<tr v-for="(librarian, i) in librarians" :key="librarian._id">
 					<td>{{ librarian.name }}</td>
 					<td>{{ librarian.first_lastname }}</td>
@@ -337,47 +348,68 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 					<td>{{ librarian.status ? 'Activo' : 'Inactivo' }}</td>
 					<td>
 						<HTMLButtonIcon
-							:click="() => {
-								modalEditLibrarian = true
-								modalLibrarian = false
+							:click="
+								() => {
+									modalEditLibrarian = true
+									modalLibrarian = false
 
-								librarianEdit = librarian
-								librarianIndex = i
-							}"
+									librarianEdit = librarian
+									librarianIndex = i
+								}
+							"
 							type="button"
 							class-item="fa-solid fa-pen-to-square"
 						/>
 					</td>
 				</tr>
 			</HTMLTable>
-			<span v-if="librarians && librarians.length === 0">Sin bibliotecarios...</span>
+			<span v-if="librarians && librarians.length === 0"
+				>Sin bibliotecarios...</span
+			>
 			<br />
-			<HTMLButton :click="() => {
-				modalAddLibrarian = true
-				modalLibrarian = false
-			}" type="button">
+			<HTMLButton
+				:click="
+					() => {
+						modalAddLibrarian = true
+						modalLibrarian = false
+					}
+				"
+				type="button"
+			>
 				Nuevo bibliotecario
 			</HTMLButton>
 		</Modal>
 
-		<Modal v-model:opened="modalAddLibrarian" :fn="() => modalLibrarian = true">
+		<Modal
+			v-model:opened="modalAddLibrarian"
+			:fn="() => (modalLibrarian = true)"
+		>
 			<template #title>
 				<h2>Nuevo bibliotecario</h2>
 			</template>
 			<HTMLForm :form="uploadLibrarian">
 				<label for="name">Nombre</label>
-				<HTMLInput v-model:value="librarianForm.name" id="name" />
+				<HTMLInput id="name" v-model:value="librarianForm.name" />
 				<label for="fln">Apellido Paterno</label>
-				<HTMLInput v-model:value="librarianForm.first_lastname" id="fln" />
+				<HTMLInput
+					id="fln"
+					v-model:value="librarianForm.first_lastname"
+				/>
 				<label for="sln">Apellido Materno</label>
-				<HTMLInput v-model:value="librarianForm.second_lastname" id="sln" />
+				<HTMLInput
+					id="sln"
+					v-model:value="librarianForm.second_lastname"
+				/>
 				<label for="rut">RUT</label>
-				<HTMLInput v-model:value="librarianForm.rut" id="rut" />
+				<HTMLInput id="rut" v-model:value="librarianForm.rut" />
 				<HTMLButton type="submit">Agregar bibliotecario</HTMLButton>
 			</HTMLForm>
 		</Modal>
 
-		<Modal v-model:opened="modalEditLibrarian" :fn="() => modalLibrarian = true">
+		<Modal
+			v-model:opened="modalEditLibrarian"
+			:fn="() => (modalLibrarian = true)"
+		>
 			<template #title>
 				<h2 v-if="librarians">
 					Editar bibliotecario
@@ -387,45 +419,66 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 			</template>
 			<HTMLForm :form="editLibrarian">
 				<label for="nameE">Nombre</label>
-				<HTMLInput v-model:value="librarianEdit.name" id="nameE" />
+				<HTMLInput id="nameE" v-model:value="librarianEdit.name" />
 				<label for="flnE">Apellido Paterno</label>
-				<HTMLInput v-model:value="librarianEdit.first_lastname" id="flnE" />
+				<HTMLInput
+					id="flnE"
+					v-model:value="librarianEdit.first_lastname"
+				/>
 				<label for="slnE">Apellido Materno</label>
-				<HTMLInput v-model:value="librarianEdit.second_lastname" id="slnE" />
+				<HTMLInput
+					id="slnE"
+					v-model:value="librarianEdit.second_lastname"
+				/>
 				<label for="rutE">RUT</label>
-				<HTMLInput v-model:value="librarianEdit.rut" id="rutE" />
+				<HTMLInput id="rutE" v-model:value="librarianEdit.rut" />
 				<HTMLButton type="submit">Editar bibliotecario</HTMLButton>
 			</HTMLForm>
 			<button
 				v-if="librarianEdit.status === 1"
-				@click="() => {
-					modalStatus = true
-					modalEditLibrarian = false
-				}"
 				class="Form__button Down"
-				type="button">
+				type="button"
+				@click="
+					() => {
+						modalStatus = true
+						modalEditLibrarian = false
+					}
+				"
+			>
 				<i class="fa-solid fa-angles-down" /> Dar de baja bibliotecario
 			</button>
-			<button v-else @click="() => {
-				modalStatus = true
-				modalEditLibrarian = false
-			}" class="Form__button Up" type="button">
+			<button
+				v-else
+				class="Form__button Up"
+				type="button"
+				@click="
+					() => {
+						modalStatus = true
+						modalEditLibrarian = false
+					}
+				"
+			>
 				<i class="fa-solid fa-angles-up" /> Reintegrar bibliotecario
 			</button>
 		</Modal>
 
-		<Modal v-model:opened="modalStatus" :fn="() => modalEditLibrarian = true">
+		<Modal
+			v-model:opened="modalStatus"
+			:fn="() => (modalEditLibrarian = true)"
+		>
 			<template #title>
 				<h2>
-					Cambiar estado bibliotecario - {{ librarianEdit.status === 1
-						? 'Dar de baja'
-						: 'Reintegrar'
+					Cambiar estado bibliotecario -
+					{{
+						librarianEdit.status === 1
+							? 'Dar de baja'
+							: 'Reintegrar'
 					}}
 				</h2>
 			</template>
 			<HTMLForm :form="changeStatus">
 				<label for="why">Motivo</label>
-				<HTMLTextArea v-model:value="why" id="why" />
+				<HTMLTextArea id="why" v-model:value="why" />
 				<HTMLButton type="submit">Cambiar estado</HTMLButton>
 			</HTMLForm>
 		</Modal>
@@ -441,13 +494,14 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 			</HTMLForm>
 			<br />
 			<HTMLTable :header="['Categoria', 'Fecha', '']">
+				<!-- eslint-disable-next-line vue/no-template-shadow -->
 				<tr v-for="tag in tags" :key="tag._id">
 					<td>{{ tag.tag }}</td>
 					<td>{{ formatDate(tag.date) }}</td>
 					<td>
 						<HTMLButtonIcon
 							:click="() => deleteTag(tag._id)"
-							classItem="fa-solid fa-circle-minus"
+							class-item="fa-solid fa-circle-minus"
 						/>
 					</td>
 				</tr>
@@ -459,12 +513,16 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 			<template #title>
 				<h2>Editoriales</h2>
 			</template>
-			
+
 			<HTMLForm :form="uploadEditorial">
 				<label for="editorial">Editorial</label>
 				<HTMLInput id="editorial" v-model:value="editorial" />
 				<label for="image">Imagen</label>
-				<HTMLInputFiles id="image" v-model:files="files" accept="image/png, image/gif, image/jpeg" />
+				<HTMLInputFiles
+					id="image"
+					v-model:files="files"
+					accept="image/png, image/gif, image/jpeg"
+				/>
 				<HTMLButton type="submit">Subir editorial</HTMLButton>
 			</HTMLForm>
 			<br />
@@ -477,36 +535,47 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 					<td>{{ formatDate(_editorial.date) }}</td>
 					<td>
 						<HTMLButtonIcon
-							:click="() => {
-								modalEditEditorial = true
-								modalEditorials = false
-								
-								idEditorial = _editorial._id
-								editorial = _editorial.editorial
-							}"
-							classItem="fa-solid fa-pen-to-square"
+							:click="
+								() => {
+									modalEditEditorial = true
+									modalEditorials = false
+
+									idEditorial = _editorial._id
+									editorial = _editorial.editorial
+								}
+							"
+							class-item="fa-solid fa-pen-to-square"
 						/>
 					</td>
 					<td>
 						<HTMLButtonIcon
 							:click="() => deleteEditorial(_editorial._id)"
-							classItem="fa-solid fa-circle-minus"
+							class-item="fa-solid fa-circle-minus"
 						/>
 					</td>
 				</tr>
 			</HTMLTable>
-			<span v-if="editorials && editorials.length === 0">Sin editoriales...</span>
+			<span v-if="editorials && editorials.length === 0"
+				>Sin editoriales...</span
+			>
 		</Modal>
 
-		<Modal v-model:opened="modalEditEditorial" :fn="() => modalEditorials = true">
+		<Modal
+			v-model:opened="modalEditEditorial"
+			:fn="() => (modalEditorials = true)"
+		>
 			<template #title>
 				<h2>Editar editorial</h2>
 			</template>
 			<HTMLForm :form="updateEditorial">
 				<label for="editorial">Editorial</label>
-				<HTMLInput v-model:value="editorial" id="editorial" />
+				<HTMLInput id="editorial" v-model:value="editorial" />
 				<label for="image">Imagen</label>
-				<HTMLInputFiles id="image" v-model:files="files" accept="image/png, image/gif, image/jpeg" />
+				<HTMLInputFiles
+					id="image"
+					v-model:files="files"
+					accept="image/png, image/gif, image/jpeg"
+				/>
 				<HTMLButton type="submit">Subir editorial</HTMLButton>
 			</HTMLForm>
 		</Modal>
@@ -514,53 +583,53 @@ const returnEd = (editorial: string | Editorial): Editorial => editorial as Edit
 </template>
 
 <style lang="scss" scoped>
+i {
+	color: white;
+}
+
+.Form__button {
+	position: absolute;
+	top: 75px;
+	background: transparent;
+	border: none;
+}
+
+.Down {
+	color: var(--color-danger);
 	i {
-		color: white;
+		color: var(--color-danger);
+	}
+}
+
+.Up {
+	color: var(--color-main);
+	i {
+		color: var(--color-main);
+	}
+}
+
+img {
+	width: 150px;
+	height: 100px;
+	object-fit: cover;
+}
+
+// Media queries
+@media (max-width: 767.98px) {
+	img {
+		width: 110px;
+		height: 70px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	img {
+		width: 90px;
+		height: 60px;
 	}
 
 	.Form__button {
-		position: absolute;
-		top: 75px;
-		background: transparent;
-		border: none;
+		top: 58px;
 	}
-
-	.Down {
-		color: var(--color-danger);
-		i {
-			color: var(--color-danger);
-		}
-	}
-
-	.Up {
-		color: var(--color-main);
-		i {
-			color: var(--color-main);
-		}
-	}
-
-	img {
-		width: 150px;
-		height: 100px;
-		object-fit: cover;
-	}
-
-	// Media queries
-	@media (max-width: 767.98px) {
-		img {
-			width: 110px;
-			height: 70px;
-		}
-	}
-
-	@media (max-width: 575.98px) {
-		img {
-			width: 90px;
-			height: 60px;
-		}
-
-		.Form__button {
-			top: 58px;
-		}
-	}
+}
 </style>

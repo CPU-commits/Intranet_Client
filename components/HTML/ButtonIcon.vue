@@ -3,15 +3,7 @@
 import type { Ref } from 'vue'
 
 // Props
-const {
-	classItem,
-	title,
-	click,
-	color,
-	selected,
-	hover,
-	oneHundred
-} = defineProps({
+const props = defineProps({
 	classItem: {
 		type: String,
 		required: true,
@@ -45,70 +37,69 @@ const {
 const btn = ref(null) as Ref<HTMLButtonElement | null>
 
 onMounted(() => {
-	if (color) btn.value?.style.setProperty('--color-i', color)
-	if (hover) btn.value?.style.setProperty('--hover-i', hover)
-	if (oneHundred)
-		btn.value?.style.setProperty('--one-hundred', '100%')
+	if (props.color) btn.value?.style.setProperty('--color-i', props.color)
+	if (props.hover) btn.value?.style.setProperty('--hover-i', props.hover)
+	if (props.oneHundred) btn.value?.style.setProperty('--one-hundred', '100%')
 	else btn.value?.style.setProperty('--one-hundred', 'min-content')
 })
 
 onBeforeUpdate(() => {
-	if (btn && btn.value && color) btn.value.style.setProperty('--color-i', color)
+	if (btn && btn.value && props.color)
+		btn.value.style.setProperty('--color-i', props.color)
 })
 </script>
 
 <template>
-    <button
-        ref="btn"
-        :class="selected ? 'Selected' : ''"
-        :title="title"
-        @click="() => click()"
-        type="button"
-    >
-        <i :class="classItem" />
-        <span class="Text">
-            <slot />
-        </span>
-    </button>
+	<button
+		ref="btn"
+		:class="selected ? 'Selected' : ''"
+		:title="title"
+		type="button"
+		@click="() => click()"
+	>
+		<i :class="classItem" />
+		<span class="Text">
+			<slot />
+		</span>
+	</button>
 </template>
 
 <style scoped>
-	button {
-		background: transparent;
-		border: none;
-		width: var(--one-hundred);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 5px;
-	}
+button {
+	background: transparent;
+	border: none;
+	width: var(--one-hundred);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+}
 
-	button:hover i,
-	button:hover .Text {
-		color: var(--hover-i);
-	}
+button:hover i,
+button:hover .Text {
+	color: var(--hover-i);
+}
 
-	i,
-	.Text {
-		font-size: 1rem;
-		transition: all 0.4s ease;
-		color: var(--color-i);
-	}
+i,
+.Text {
+	font-size: 1rem;
+	transition: all 0.4s ease;
+	color: var(--color-i);
+}
 
-	.Selected {
-		color: var(--color-main) !important;
-	}
+.Selected {
+	color: var(--color-main) !important;
+}
 
-	
-	@media (max-width: 767.98px) {
-		i {
-			font-size: 0.8rem;
-		}
+@media (max-width: 767.98px) {
+	i {
+		font-size: 0.8rem;
 	}
+}
 
-	@media (max-width: 575.98px) {
-		i {
-			font-size: 0.72rem;
-		}
+@media (max-width: 575.98px) {
+	i {
+		font-size: 0.72rem;
 	}
+}
 </style>

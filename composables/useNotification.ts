@@ -1,3 +1,3 @@
 export default () => {
-    return useState('notifications', () => 0)
+	return useState('notifications', () => 0)
 }

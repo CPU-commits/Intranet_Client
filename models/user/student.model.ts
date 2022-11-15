@@ -1,12 +1,12 @@
-import type { User } from './user.model'
 import type { Section } from '../course/course.model'
+import type { User } from './user.model'
 
 export interface Student extends User {
-    course: Section
-    registration_number?: string
+	course: Section
+	registration_number?: string
 }
 
 export interface Students {
-    users: Array<Student>
-    total?: number
+	users: Array<Student>
+	total?: number
 }

@@ -1,21 +1,21 @@
+<!-- eslint-disable import/no-named-as-default-member -->
 <script setup lang="ts">
-// Types
-import { UserTypesKeys } from '~~/models/user/user.model'
-import { intToRoman } from '~~/utils/format';
 // Moment
 import moment from 'moment'
+// Types
+import { UserTypesKeys } from '~~/models/user/user.model'
+import { intToRoman } from '~~/utils/format'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-const title = ref(schoolName
-	? `Formulario - Aula Virtual - ${schoolName} - Intranet`
-	: 'Formulario - Aula Virtual - Intranet')
+const title = ref(
+	schoolName
+		? `Formulario - Aula Virtual - ${schoolName} - Intranet`
+		: 'Formulario - Aula Virtual - Intranet',
+)
 // Guard
 definePageMeta({
-    middleware: 'role',
-    roles: [
-        UserTypesKeys.STUDENT,
-        UserTypesKeys.STUDENT_DIRECTIVE,
-    ],
+	middleware: 'role',
+	roles: [UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE],
 })
 // Nuxtapp
 const { $fetchModule } = useNuxtApp()
@@ -35,10 +35,10 @@ if (typeof idForm !== 'string')
 
 // Init form store
 try {
-    await form.getForm(idForm)
+	await form.getForm(idForm)
 } catch (err) {
-    const _err = $fetchModule.handleError(err)
-    throw createError({
+	const _err = $fetchModule.handleError(err)
+	throw createError({
 		..._err,
 		fatal: true,
 	})
@@ -55,22 +55,23 @@ const seconds = ref('')
 // Called
 const called = ref(false)
 
-if (form.isWTime && form.getWorkStatus === 'opened')
-	sleep()
+if (form.isWTime && form.getWorkStatus === 'opened') sleep()
 
 async function sleep() {
-    seconds.value = moment.utc(moment(form.getDateLimit).diff(moment(new Date()))).format('HH:mm:ss')
-    while (seconds.value !== '00:00:00') {
-        seconds.value = moment
-            .utc(moment(form.getDateLimit).diff(moment(new Date())))
-            .format('HH:mm:ss')
-        await setSeconds()
-    }
-    finishForm()
+	seconds.value = moment
+		.utc(moment(form.getDateLimit).diff(moment(new Date())))
+		.format('HH:mm:ss')
+	while (seconds.value !== '00:00:00') {
+		seconds.value = moment
+			.utc(moment(form.getDateLimit).diff(moment(new Date())))
+			.format('HH:mm:ss')
+		await setSeconds()
+	}
+	finishForm()
 }
 
 function setSeconds() {
-    return new Promise((resolve) => setTimeout(resolve, 1000))
+	return new Promise((resolve) => setTimeout(resolve, 1000))
 }
 
 async function finishForm() {
@@ -84,13 +85,13 @@ async function finishForm() {
 }
 
 function sumAfters(index: number): number {
-    if (index === 0) return 0
-    let counter = 0
-    while (index !== 0) {
-        counter += form.getItems[index].questions.length
-        index -= 1
-    }
-    return counter
+	if (index === 0) return 0
+	let counter = 0
+	while (index !== 0) {
+		counter += form.getItems[index].questions.length
+		index -= 1
+	}
+	return counter
 }
 </script>
 
@@ -102,6 +103,7 @@ function sumAfters(index: number): number {
 			<Meta name="robots" content="noindex, nofollow" />
 		</Head>
 		<!-- Body -->
+		<!-- eslint-disable-next-line vue/no-v-for-template-key -->
 		<template v-for="(item, i) in form.getItems" :key="i">
 			<h3>
 				{{ intToRoman(i + 1) }}.
@@ -109,19 +111,23 @@ function sumAfters(index: number): number {
 			</h3>
 			<LazyClassFormQuestion
 				v-for="(question, j) in item.questions"
+				:key="j"
 				:question="question"
-				:idWork="idForm"
+				:id-work="idForm"
 				:number="sumAfters(i) + j + 1"
 			/>
 		</template>
 		<template #questions>
-			<div slot="questions" class="Questions">
+			<div class="Questions">
 				<span v-if="form.isWTime && form.getWorkStatus === 'opened'">
 					{{ seconds }}
 				</span>
 				<div class="Questions__content">
 					<NuxtLink
-						v-for="(question, i) in form.getItems.flatMap((i) => i.questions)"
+						v-for="(question, i) in form.getItems.flatMap(
+							(i) => i.questions,
+						)"
+						:key="i"
 						:class="question.answer !== '' ? 'Done' : ''"
 						:to="`#pregunta${i}`"
 					>
@@ -131,7 +137,7 @@ function sumAfters(index: number): number {
 				<HTMLButtonText
 					v-if="form.getWorkStatus === 'opened'"
 					color="white"
-					:click="() => modal = true"
+					:click="() => (modal = true)"
 				>
 					<i class="fa-solid fa-flag" /> Finalizar formulario
 				</HTMLButtonText>
@@ -152,7 +158,7 @@ function sumAfters(index: number): number {
 				<HTMLButtonText :click="finishForm">
 					S&iacute;, cerrar formulario
 				</HTMLButtonText>
-				<HTMLButtonText :click="() => modal = false">
+				<HTMLButtonText :click="() => (modal = false)">
 					No, no cerrar formulario
 				</HTMLButtonText>
 			</div>
@@ -161,75 +167,77 @@ function sumAfters(index: number): number {
 </template>
 
 <style scoped>
-	.Questions__content {
-		margin: 10px 0;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 3px;
+.Questions__content {
+	margin: 10px 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+}
+
+.Done {
+	background-color: white;
+	color: var(--color-main) !important;
+}
+
+.Questions__content a {
+	border: 1px solid white;
+	height: 15px;
+	width: 15px;
+	display: flex;
+	font-size: 0.9rem;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	color: white;
+}
+
+.Questions {
+	position: sticky;
+	top: 10px;
+	background-color: var(--color-main);
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: fit-content;
+	border-radius: 5px;
+}
+
+.Questions span {
+	color: white;
+}
+
+i {
+	color: white;
+}
+
+span {
+	text-align: center;
+}
+
+.Buttons {
+	display: flex;
+}
+
+@media (max-width: 767.98px) {
+	h3 {
+		font-size: 1.1rem;
 	}
 
-	.Done {
-		background-color: white;
-		color: var(--color-main) !important;
-	}
-
-	.Questions__content a {
-		border: 1px solid white;
-		height: 15px;
-		width: 15px;
-		display: flex;
+	span,
+	button {
 		font-size: 0.9rem;
-		justify-content: center;
-		align-items: center;
-		text-decoration: none;
-		color: white;
+	}
+}
+
+@media (max-width: 575.98px) {
+	h3 {
+		font-size: 1rem;
 	}
 
-	.Questions {
-		position: sticky;
-		top: 10px;
-		background-color: var(--color-main);
-		padding: 5px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		height: fit-content;
-		border-radius: 5px;
+	span,
+	button {
+		font-size: 0.8rem;
 	}
-
-	.Questions span {
-		color: white;
-	}
-
-	i {
-		color: white;
-	}
-
-	span {
-		text-align: center;
-	}
-
-	.Buttons {
-		display: flex;
-	}
-
-	@media (max-width: 767.98px) {
-		h3 {
-			font-size: 1.1rem;
-		}
-
-		span, button {
-			font-size: 0.9rem;
-		}
-	}
-
-	@media (max-width: 575.98px) {
-		h3 {
-			font-size: 1rem;
-		}
-
-		span, button {
-			font-size: 0.8rem;
-		}
-	}
+}
 </style>

@@ -1,4 +1,4 @@
 export default defineNuxtPlugin((nuxtApp) => {
-    nuxtApp.hook('app:error', (err) => {
-    })
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	nuxtApp.hook('app:error', () => {})
 })

@@ -1,3 +1,3 @@
-export default function() {
-    return useState('spinnerGet', () => false)
+export default function () {
+	return useState('spinnerGet', () => false)
 }

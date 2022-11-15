@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Types
-import { ErrorFetch } from '~~/common/fetchModule';
+import { ErrorFetch } from '~~/common/fetchModule'
 import type { Semester } from '~~/models/semester/semester.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
@@ -10,19 +10,11 @@ const title = schoolName
 	: 'Semestres - Admin - Intranet'
 // Guard
 definePageMeta({
-    middleware: 'role',
-    roles: [
-        UserTypesKeys.DIRECTOR,
-        UserTypesKeys.DIRECTIVE,
-    ],
+	middleware: 'role',
+	roles: [UserTypesKeys.DIRECTOR, UserTypesKeys.DIRECTIVE],
 })
 // Nuxtapp
-const {
-	$semesterService,
-	$fetchModule,
-} = useNuxtApp()
-// Composable
-const spinner = useSpinner()
+const { $semesterService, $fetchModule } = useNuxtApp()
 
 // Modal
 const modalSemester = ref(false)
@@ -30,8 +22,8 @@ const modalEdit = ref(false)
 
 // Form
 const semesterForm = reactive({
-    semester: '',
-    year: '',
+	semester: '',
+	year: '',
 })
 
 // Data
@@ -41,13 +33,13 @@ const semesterData = ref<Semester | null>(null)
 
 const error = ref<ErrorFetch | null>(null)
 onMounted(async () => {
-    try {
-        const dataFetch = await $semesterService.getSemesters()
-        semesters.value = dataFetch
-    } catch (err) {
-        const _err = $fetchModule.handleError(err)
+	try {
+		const dataFetch = await $semesterService.getSemesters()
+		semesters.value = dataFetch
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
 		error.value = _err
-    }
+	}
 })
 
 // Functions
@@ -94,14 +86,14 @@ async function updateSemester() {
 			<template #nav>
 				<Icons>
 					<HTMLButtonIcon
-						:click="() => modalSemester = true"
+						:click="() => (modalSemester = true)"
 						title="Agregar semestre"
-						classItem="fa-solid fa-plus"
+						class-item="fa-solid fa-plus"
 					/>
 					<HTMLAIcon
 						href="/admin/semestres/finalizar_semestre"
 						title="Finalizar semestre vigente"
-						classItem="fa-solid fa-flag"
+						class-item="fa-solid fa-flag"
 					/>
 				</Icons>
 			</template>
@@ -110,44 +102,59 @@ async function updateSemester() {
 			<!-- Data -->
 			<HTMLTable
 				v-if="semesters"
-				:header="['Año', 'Semestre', 'Estado', 'Inicializar semestre', 'Editar']"
+				:header="[
+					'Año',
+					'Semestre',
+					'Estado',
+					'Inicializar semestre',
+					'Editar',
+				]"
 			>
 				<tr v-for="(semester, i) in semesters" :key="semester._id">
 					<td>{{ semester.year }}</td>
 					<td>{{ semester.semester }}°</td>
 					<td>
-						{{ semester.status === 0
-							? 'Finalizado'
-							: semester.status === 1
-							? 'En espera'
-							: 'Vigente' }}
+						{{
+							semester.status === 0
+								? 'Finalizado'
+								: semester.status === 1
+								? 'En espera'
+								: 'Vigente'
+						}}
 					</td>
 					<td>
 						<HTMLButtonIcon
-							:click="() => {
-								positionSemester = i
-								initSemester()
-							}"
+							:click="
+								() => {
+									positionSemester = i
+									initSemester()
+								}
+							"
 							type="button"
 							class-item="fa-solid fa-rocket"
 						/>
 					</td>
 					<td>
 						<HTMLButtonIcon
-							:click="() => {
-								modalEdit = true
-								positionSemester = i
-								semesterData = semester
-								semesterData.semester = semesterData.semester.toString()
-							}"
+							:click="
+								() => {
+									modalEdit = true
+									positionSemester = i
+									semesterData = semester
+									semesterData.semester =
+										semesterData.semester.toString()
+								}
+							"
 							type="button"
 							class-item="fa-solid fa-pen-to-square"
 						/>
 					</td>
 				</tr>
 			</HTMLTable>
-			<span v-if="semesters && semesters.length === 0">No hay semestres...</span>
-			
+			<span v-if="semesters && semesters.length === 0"
+				>No hay semestres...</span
+			>
+
 			<SpinnerGet />
 			<Error v-if="error" :err="error" />
 		</AdminPanel>
@@ -159,9 +166,13 @@ async function updateSemester() {
 			</template>
 			<HTMLForm :form="addSemester">
 				<label for="year">Año</label>
-				<HTMLInput v-model:value="semesterForm.year" id="year" type="number" />
+				<HTMLInput
+					id="year"
+					v-model:value="semesterForm.year"
+					type="number"
+				/>
 				<label for="semester">Semestre</label>
-				<HTMLSelect v-model:value="semesterForm.semester" id="semester">
+				<HTMLSelect id="semester" v-model:value="semesterForm.semester">
 					<option value="">Seleccione un semestre</option>
 					<option value="1">1°</option>
 					<option value="2">2°</option>
@@ -180,9 +191,13 @@ async function updateSemester() {
 			</template>
 			<HTMLForm v-if="semesterData" :form="updateSemester">
 				<label for="year">Año</label>
-				<HTMLInput v-model:value="semesterData.year" id="year" type="number" />
+				<HTMLInput
+					id="year"
+					v-model:value="semesterData.year"
+					type="number"
+				/>
 				<label for="semester">Semestre</label>
-				<HTMLSelect v-model:value="semesterData.semester" id="semester">
+				<HTMLSelect id="semester" v-model:value="semesterData.semester">
 					<option value="1">1°</option>
 					<option value="2">2°</option>
 				</HTMLSelect>
@@ -193,7 +208,7 @@ async function updateSemester() {
 </template>
 
 <style scoped>
-	td i {
-		color: white;
-	}
+td i {
+	color: white;
+}
 </style>

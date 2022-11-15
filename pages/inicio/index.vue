@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Types
-import type { ErrorFetch } from '~~/common/fetchModule';
+import type { ErrorFetch } from '~~/common/fetchModule'
 import type { Annoucement } from '~~/models/home/annoucement.model'
 import type { News } from '~~/models/news/news.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
@@ -13,11 +13,7 @@ const title = schoolName
 	? `Inicio - ${schoolName} - Intranet`
 	: 'Inicio - Intranet'
 // Nuxtapp
-const {
-	$fetchModule,
-	$newsService,
-	$homeService,
-} = useNuxtApp()
+const { $fetchModule, $newsService, $homeService } = useNuxtApp()
 // Stores
 const auth = useAuthStore()
 
@@ -57,13 +53,9 @@ onMounted(async () => {
 })
 
 async function getAnnoucements(total = false, skip = 0, limit = 20) {
-    const dataFetch = await $homeService.getAnnoucements(
-		total,
-		skip,
-		limit,
-	)
-    if (total || !annoucements.value)
-        annoucements.value = dataFetch.annoucements
+	const dataFetch = await $homeService.getAnnoucements(total, skip, limit)
+	if (total || !annoucements.value)
+		annoucements.value = dataFetch.annoucements
 	else annoucements.value.push(...dataFetch.annoucements)
 	return dataFetch
 }
@@ -87,6 +79,8 @@ function deleteAnnoucement(index: number) {
 		</Head>
 		<!-- Body -->
 		<aside class="Home__last">
+			<!-- eslint-disable vue/no-use-v-if-with-v-for -->
+			<!-- eslint-disable vue/attributes-order -->
 			<NuxtLink
 				v-if="news"
 				v-for="(_news, i) in news"
@@ -97,10 +91,10 @@ function deleteAnnoucement(index: number) {
 					<header>
 						<h2>{{ _news.title }}</h2>
 						<NuxtImg
-							@error="$event.target.src= '/img/no_image.svg'"
-							:src="_news.image.url"
 							:alt="_news.title"
 							preload
+							:src="_news.image.url"
+							@error="$event.target.src = '/img/no_image.svg'"
 						/>
 					</header>
 					<footer>
@@ -112,7 +106,8 @@ function deleteAnnoucement(index: number) {
 									{{ _news.author.first_lastname }}
 								</span>
 								<span v-else>
-									<i class="fa-solid fa-robot" /> Noticia autom&aacute;tica
+									<i class="fa-solid fa-robot" /> Noticia
+									autom&aacute;tica
 								</span>
 							</span>
 						</small>
@@ -123,8 +118,14 @@ function deleteAnnoucement(index: number) {
 			<Error v-else-if="errorNews" :err="errorNews" />
 		</aside>
 		<section class="Home__annoucements">
+			<!-- eslint-disable vue/v-on-event-hyphenation -->
 			<HomeAWrite
-				v-if="auth.userTypeIs(UserTypesKeys.DIRECTIVE, UserTypesKeys.DIRECTOR)"
+				v-if="
+					auth.userTypeIs(
+						UserTypesKeys.DIRECTIVE,
+						UserTypesKeys.DIRECTOR,
+					)
+				"
 				@newAnnoucement="(a) => newAnnoucement(a)"
 			/>
 			<div class="Home__annoucements--content">
@@ -135,7 +136,7 @@ function deleteAnnoucement(index: number) {
 					@delete="() => deleteAnnoucement(i)"
 				/>
 			</div>
-			
+
 			<SpinnerGet />
 			<Error v-if="error" :err="error" />
 		</section>
@@ -143,87 +144,87 @@ function deleteAnnoucement(index: number) {
 </template>
 
 <style scoped>
-	a {
-		text-decoration: none;
-	}
+a {
+	text-decoration: none;
+}
 
-	a:hover h2 {
-		color: var(--color-main);
+a:hover h2 {
+	color: var(--color-main);
+}
+
+.Home__last {
+	gap: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.News {
+	background-color: white;
+	box-shadow: var(--box-shadow);
+	padding: 10px;
+	border-radius: 8px;
+	box-sizing: border-box;
+}
+
+.News h2 {
+	font-size: 1.1rem;
+	text-align: center;
+	transition: all 0.4s;
+}
+
+.News img {
+	width: 100%;
+}
+
+.News footer {
+	display: flex;
+	flex-direction: column;
+}
+
+.News__author,
+.News__author i {
+	color: var(--color-main);
+	font-weight: bold;
+}
+
+.Home {
+	margin: 30px;
+	display: grid;
+	width: 100%;
+	grid-template-columns: 180px 1fr;
+	gap: 20px;
+}
+
+.Home__annoucements {
+	background-color: white;
+	box-shadow: var(--box-shadow);
+	border-radius: 15px;
+	padding: 15px;
+	width: 100%;
+}
+
+.Home__annoucements--content {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+@media (max-width: 767.98px) {
+	.Home {
+		display: flex;
+		margin: 15px;
 	}
 
 	.Home__last {
-		gap: 20px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+		display: none;
 	}
+}
 
-	.News {
-		background-color: white;
-		box-shadow: var(--box-shadow);
-		padding: 10px;
-		border-radius: 8px;
-		box-sizing: border-box;
-	}
-
-	.News h2 {
-		font-size: 1.1rem;
-		text-align: center;
-		transition: all 0.4s;
-	}
-
-	.News img {
-		width: 100%;
-	}
-
-	.News footer {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.News__author,
-	.News__author i {
-		color: var(--color-main);
-		font-weight: bold;
-	}
-
+@media (max-width: 575.98px) {
 	.Home {
-		margin: 30px;
-		display: grid;
-		width: 100%;
-		grid-template-columns: 180px 1fr;
-		gap: 20px;
+		margin: 8px;
 	}
-
-	.Home__annoucements {
-		background-color: white;
-		box-shadow: var(--box-shadow);
-		border-radius: 15px;
-		padding: 15px;
-		width: 100%;
-	}
-
-	.Home__annoucements--content {
-		margin-top: 10px;
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-
-	@media (max-width: 767.98px) {
-		.Home {
-			display: flex;
-			margin: 15px;
-		}
-
-		.Home__last {
-			display: none;
-		}
-	}
-
-	@media (max-width: 575.98px) {
-		.Home {
-			margin: 8px;
-		}
-	}
+}
 </style>

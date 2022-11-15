@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const { form } = defineProps<{
-    form: () => any
+defineProps<{
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	form: () => any
 }>()
 </script>
 
@@ -11,16 +12,16 @@ const { form } = defineProps<{
 </template>
 
 <style>
-	.FormClass {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		gap: 15px;
-	}
+.FormClass {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 15px;
+}
 
-	@media (max-width: 575.98px) {
-		.FormClass label {
-			font-size: 0.9rem;
-		}
+@media (max-width: 575.98px) {
+	.FormClass label {
+		font-size: 0.9rem;
 	}
+}
 </style>
