@@ -30,10 +30,10 @@ export default defineNuxtConfig({
         "@/assets/scss/main.scss",
     ],
     modules: [
-        '@pinia/nuxt',
         '@nuxt/image-edge',
         '@nuxt/content',
         '@kevinmarrec/nuxt-pwa',
+        '@pinia/nuxt',
     ],
     image: {
         domains: ['*.s3.amazonaws.com'],
@@ -58,9 +58,6 @@ export default defineNuxtConfig({
             },
         },
     },
-    render: {
-        csp: true,
-    },
     pwa: {
         manifest: {
             name: `${process.env.COLLEGE_NAME} Intranet`,
@@ -70,5 +67,8 @@ export default defineNuxtConfig({
             background_color: '#f8faff',
             lang: 'es',
         },
+    },
+    render: {
+        csp: true,
     },
 })
