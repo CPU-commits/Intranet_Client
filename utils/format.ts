@@ -1,6 +1,7 @@
 import moment from 'moment'
-import { toRoman } from 'roman-numerals'
+import pkg from 'roman-numerals'
 import { UserTypes, UserTypesKeys } from '~~/models/user/user.model'
+const { toRoman } = pkg
 
 export function formatDate(date: string | Date) {
     return moment(date).locale('es').utc().format('LLL')
