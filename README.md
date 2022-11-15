@@ -1,42 +1,25 @@
-# Nuxt 3 Minimal Starter
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+# Client - Intranet
 
-## Setup
+Client PWA - SSR in Nuxt 3
+## Installation
 
-Make sure to install the dependencies:
+### Docker
 
-```bash
-# yarn
-yarn install
+`Dockerfile` **Only for production** 
 
-# npm
-npm install
+Exposed port: `3000`
 
-# pnpm
-pnpm install --shamefully-hoist
-```
+## Environment Variables
 
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+| Variable              | Description                | Required     | Access  |
+| :-------------------- | :--------------------------| :------------| :-------|
+| `NUXT_REDIS_USER`     | Redis User                 | **Required** | Private |
+| `NUXT_REDIS_HOST`     | Redis Host                 | **Required** | Private |
+| `NUXT_REDIS_PORT`     | Redis Port                 | **Required** | Private |
+| `NUXT_REDIS_PASSWORD` | Redis Password             | **Required** | Private |
+| `API`                 | Public API Base URL        | **Required** | Public  |
+| `NODE_ENV`            | env - prod                 | **Required** | Public  |
+| `WS`                  | Public WebSocket Base URL  | **Required** | Public  |
+| `COLLEGE_NAME`        | College Name               | **Required** | Public  |
+| `COLLEGE_SHORT_NAME`  | College Short name         | **Required** | Public  |
