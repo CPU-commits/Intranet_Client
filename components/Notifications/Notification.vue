@@ -35,10 +35,12 @@ function getClassroomIcon() {
 <template>
 	<article class="Notification">
 		<NuxtLink :to="notification.notification.url" @click="toggleMenu">
-			<img
+			<NuxtImg
 				v-if="notification.notification?.img"
 				:src="notification.notification.img"
 				:alt="notification.notification.title"
+				loading="lazy"
+				@error="$event.target.src = '/img/no_image.svg'"
 			/>
 			<div class="Notification__text">
 				<h3>

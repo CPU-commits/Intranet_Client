@@ -15,6 +15,11 @@ export default defineEventHandler(async (event) => {
 				password: Type.String(),
 			}),
 		)
+		/* useNuxtApp().$logger.info({
+			context: 'nitro:server',
+			message: `User ${body.rut} try to login`,
+			labels: ['nitro', 'login'],
+		}) */
 		// Get authData
 		const dataFetch = await $fetch<AuthData & DefaultResponse>(
 			'api/authentication',
@@ -29,6 +34,10 @@ export default defineEventHandler(async (event) => {
 		// Set cookie
 		setCookie(event, 'INT_SESSION', idSession, cookieConfig(0))
 		// Return response
+		/* useNuxtApp().$logger.info({
+			context: 'nitro:server',
+			message: `Success login ${body.rut}`,
+		}) */
 		return dataFetch
 	} catch (err) {
 		throw createError(err as Error)

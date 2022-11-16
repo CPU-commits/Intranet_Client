@@ -50,13 +50,13 @@ if (err.value.statusCode === 400) {
 			<span v-if="err.statusCode !== 404">
 				{{ err.message }}
 			</span>
-			<button @click="reload">
+			<button type="button" @click="reload">
 				<i class="fa-solid fa-rotate-right" /> Recargar p&aacute;gina
 			</button>
-			<button @click="back">
+			<button type="button" @click="back">
 				<i class="fa-solid fa-circle-arrow-left" /> Volver atras
 			</button>
-			<button @click="handleError">
+			<button type="button" @click="handleError">
 				<i class="fa-solid fa-house" /> Volver a la p&aacute;gina
 				principal
 			</button>

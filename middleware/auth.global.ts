@@ -7,7 +7,9 @@ function inPublicPath(path: string) {
 }
 
 export default defineNuxtRouteMiddleware(async (_to, from) => {
-	if (useError().value) return
+	if (useError().value) {
+		return
+	}
 
 	const cookie = useCookie('INT_SESSION')
 	const auth = useAuthStore()
