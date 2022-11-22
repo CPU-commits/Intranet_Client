@@ -4,6 +4,7 @@
 import { v4 as uuidv4 } from 'uuid'
 // Types
 import type { FetchError } from 'ohmyfetch'
+import { capitalizeFirstLetter } from '~~/utils/format'
 
 enum HTTPMethods {
 	'post',
@@ -86,15 +87,16 @@ export class Fetch {
 
 	handleError(error: unknown): ErrorFetch {
 		if (this.isFetchError(error)) {
+			const message = error.data?.message ?? error.message
 			return {
 				success: false,
-				message: error.data?.message ?? error.message,
+				message: capitalizeFirstLetter(message),
 				statusCode: error.response?.status ?? 500,
 			}
 		} else if (error instanceof Error) {
 			return {
 				success: false,
-				message: error.message,
+				message: capitalizeFirstLetter(error.message),
 				statusCode: 500,
 			}
 		}

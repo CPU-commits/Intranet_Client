@@ -99,3 +99,7 @@ export function formatUserType(userType: keyof typeof UserTypes) {
 	if (userType === UserTypesKeys.STUDENT_DIRECTIVE) return 'Estudiante'
 	return ''
 }
+
+export function capitalizeFirstLetter(string: string) {
+	return string.charAt(0).toUpperCase() + string.slice(1)
+}
