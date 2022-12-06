@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
 	title?: string
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 	click: () => any
 	selected?: boolean
 	disabled?: boolean

@@ -201,7 +201,7 @@ export class WorkService {
 	) {
 		try {
 			this.validateWork(newWork)
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 			const work: any = {
 				title: newWork.title,
 				is_qualified: newWork.is_qualified === 'true',

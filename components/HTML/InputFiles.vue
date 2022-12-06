@@ -13,7 +13,7 @@ const props = withDefaults(
 		id?: string
 		accept?: string
 		filter?: Filter
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any, vue/require-default-prop
+		// eslint-disable-next-line vue/require-default-prop
 		onChange?: () => any
 		multiple?: boolean
 	}>(),

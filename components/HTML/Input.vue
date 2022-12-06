@@ -23,7 +23,6 @@ defineProps({
 })
 
 defineEmits<{
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(e: 'update:value', value: any): void
 }>()
 </script>

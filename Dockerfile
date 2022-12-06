@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --only-production
+RUN npm install
 # STAGE 1 -> Nuxt build
 FROM node:16.18.1-alpine3.16
 

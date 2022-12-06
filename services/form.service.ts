@@ -213,11 +213,9 @@ export class FormService {
 			title: form.title,
 			has_points: form.has_points,
 			items: form.items.map((item) => {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const itemData: any = {
 					title: item.title,
 					questions: item.questions.map((question) => {
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
 						const questionData: any = {
 							question: question.question,
 							type: question.type,
@@ -390,7 +388,6 @@ export class FormService {
 		}
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async finishForm(formAnswers: Array<any> | undefined, idWork: string) {
 		try {
 			await this.nuxtApp.$fetchModule.fetchData({

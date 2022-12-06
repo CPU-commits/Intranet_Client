@@ -17,7 +17,6 @@ export function cookieConfig(maxAge: number): CookieOptions {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function setCookieSession(userData: any) {
 	const id = `id_session_${uuidv4()}`
 	const redisClient = await createClientRedis()

@@ -6,11 +6,11 @@ const router = useRouter()
 
 const originalError = useError().value
 const err = ref<ErrorFetch>({
-	message: originalError.message,
+	message: originalError?.message ?? 'Error inesperado',
 	statusCode: 500,
 	success: false,
 })
-if ('statusCode' in originalError) {
+if (originalError && 'statusCode' in originalError) {
 	err.value.statusCode = Number(originalError.statusCode)
 }
 

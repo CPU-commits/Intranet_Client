@@ -4,7 +4,7 @@ import { Ref } from 'vue'
 
 const props = defineProps<{
 	opened: boolean
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 	fn?: () => any
 }>()
 

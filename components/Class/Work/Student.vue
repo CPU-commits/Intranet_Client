@@ -60,7 +60,7 @@ async function uploadFiles() {
 }
 
 // $oid undefined, id is the real _id
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 async function deleteFile(id: any) {
 	const deleted = await $workService.deleteFileWork(id, work._id)
 	if (deleted)

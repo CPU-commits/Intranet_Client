@@ -16,7 +16,7 @@ enum HTTPMethods {
 interface ConfigFetch {
 	method: keyof typeof HTTPMethods
 	URL: string
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 	body?: BodyInit | null | undefined | Record<string, any>
 	spinnerStatus?: boolean
 	headers?: HeadersInit

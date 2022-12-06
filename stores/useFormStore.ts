@@ -71,7 +71,6 @@ const formStore = defineStore('form', {
 			const { $formService } = useNuxtApp()
 			const formAnswers = this.form?.items.flatMap((item) => {
 				return item.questions.map((question: ItemQuestion) => {
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					const answer: any = {
 						question: question._id,
 					}

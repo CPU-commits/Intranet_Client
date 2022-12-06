@@ -7,7 +7,7 @@ enum TypeButton {
 
 defineProps<{
 	type: keyof typeof TypeButton
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 	click?: () => any
 }>()
 </script>

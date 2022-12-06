@@ -1,5 +1,4 @@
 const validator = {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	dv: (T: any) => {
 		let M = 0
 		let S = 1

@@ -102,12 +102,6 @@ export default defineNuxtConfig({
 			},
 			route: '/**',
 		},
-		corsHandler: {
-			value: {
-				origin: process.env.CLIENT_URL,
-				methods: ['GET', 'POST'],
-			},
-		},
 		headers: {
 			contentSecurityPolicy: {
 				// img-src * 'self' data: https:
@@ -123,8 +117,5 @@ export default defineNuxtConfig({
 			value: ['GET', 'POST'],
 			route: '/**',
 		},
-	},
-	render: {
-		csp: true,
 	},
 })

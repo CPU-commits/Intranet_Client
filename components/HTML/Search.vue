@@ -5,7 +5,7 @@ import type { ComponentPublicInstance } from 'vue'
 const props = withDefaults(
 	defineProps<{
 		value: string
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 		search: () => any
 		placeholder?: string
 	}>(),
@@ -33,7 +33,6 @@ onUnmounted(() => {
 })
 
 defineEmits<{
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(e: 'update:value', value: any): void
 }>()
 </script>

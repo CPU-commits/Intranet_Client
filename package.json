@@ -6,7 +6,8 @@
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"pretty": "prettier --write \"./**/*.{js,jsx,json,vue,ts}\""
+		"pretty": "prettier --write \"./**/*.{js,jsx,json,vue,ts}\"",
+		"lint": "eslint . --ext .ts --ext .vue --fix"
 	},
 	"devDependencies": {
 		"@kevinmarrec/nuxt-pwa": "^0.13.0",

@@ -2,12 +2,11 @@
 defineProps<{
 	value: string | undefined
 	placeholder?: string
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 	keydown?: () => any
 }>()
 
 defineEmits<{
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(e: 'update:value', value: any): void
 }>()
 </script>

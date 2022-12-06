@@ -30,7 +30,6 @@ const modal = ref(false)
 const studentE = ref<StudentAccess | null>(null)
 const index = ref(0)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const evaluateFiles: any = reactive({})
 
 function initEvaluateFiles() {

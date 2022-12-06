@@ -5,7 +5,6 @@ import { Ref } from 'vue'
 // Props
 const props = withDefaults(
 	defineProps<{
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		click: () => any
 		color?: string
 	}>(),
