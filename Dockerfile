@@ -20,8 +20,6 @@ ENV PORT=3000
 
 RUN npm run build
 
-RUN mkdir /app/logs
-
 EXPOSE 3000
 
 CMD [ "node", ".output/server/index.mjs" ]
