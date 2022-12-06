@@ -20,3 +20,4 @@ updates:
       - "CPU-commits"
     target-branch: "master"
     versioning-strategy: "auto"
+    
