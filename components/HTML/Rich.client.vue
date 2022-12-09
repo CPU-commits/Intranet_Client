@@ -136,7 +136,8 @@ const editor = useEditor({
 	editable: !props.readOnly,
 })
 
-onMounted(() => {
+onMounted(async () => {
+	await nextTick()
 	if (editorElement.value)
 		if (!props.haveBackground) {
 			editorElement.value.style.setProperty('--background', 'transparent')
