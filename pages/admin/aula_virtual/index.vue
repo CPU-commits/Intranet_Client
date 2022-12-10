@@ -93,10 +93,19 @@ async function getDirectivesModule(idModule: string) {
 	try {
 		const dataFetch = await $moduleService.getDirectivesModule(idModule)
 
-		// Assign
-		directives.all_grades = dataFetch.all_grades
-		directives.continuous = dataFetch.continuous
-		directives.min_grades = dataFetch.min_grades
+		if (dataFetch) {
+			// Assign
+			directives.all_grades = dataFetch.all_grades
+			directives.continuous = dataFetch.continuous
+			directives.min_grades = dataFetch.min_grades
+		} else {
+			directives.all_grades = false
+			directives.continuous = false
+			directives.min_grades = {
+				actived: false,
+				min_grade: 0,
+			}
+		}
 
 		modalConfg.value = !modalConfg.value
 	} catch (err) {

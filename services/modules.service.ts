@@ -116,7 +116,9 @@ export class ModulesService {
 		}
 	}
 
-	async getDirectivesModule(idModule: string) {
+	async getDirectivesModule(
+		idModule: string,
+	): Promise<DirectiveModule | null> {
 		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
 			{
 				body: { directives: DirectiveModule }
