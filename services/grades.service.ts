@@ -142,7 +142,7 @@ export class GradesService {
 
 			await this.nuxtApp.$fetchModule.fetchData({
 				method: 'post',
-				URL: `/api/c/classroom/update_grades_config`,
+				URL: `/api/classroom/update_grades_config`,
 				body: gradeConfig,
 				spinnerStatus: true,
 				token: this.authStore.getToken,
