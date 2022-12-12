@@ -97,7 +97,7 @@ async function deleteNews() {
 				</div>
 			</section>
 			<NuxtImg
-				src="news.image.url"
+				:src="news.image.url"
 				:alt="news.title"
 				loading="lazy"
 				preload
