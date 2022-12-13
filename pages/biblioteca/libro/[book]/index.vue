@@ -185,6 +185,7 @@ function downloadBook() {
 	border-radius: 15px;
 	box-shadow: var(--box-shadow);
 	padding: 15px;
+	width: 100%;
 }
 
 h1 {

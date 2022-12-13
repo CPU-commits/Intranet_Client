@@ -60,7 +60,7 @@ function copyLink() {
 					</span>
 					{{ author.name }}
 				</h1>
-				<pre>{{ author.biography }}</pre>
+				<p>{{ author.biography }}</p>
 			</header>
 			<picture>
 				<NuxtImg
@@ -197,7 +197,7 @@ ol {
 		font-size: 1.1rem;
 	}
 
-	pre,
+	p,
 	span,
 	summary,
 	td {
