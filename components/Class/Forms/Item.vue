@@ -29,13 +29,13 @@ defineProps<{
 				<h4>{{ intToRoman(number + 1) }}.</h4>
 				<HTMLInput
 					id="title"
-					:value="item.title"
+					v-model:value="item.title"
 					placeholder="Titulo"
 				/>
 			</header>
 			<template v-if="buildForm.getType === 'true'">
 				<label for="score">Asignaci&oacute;n de puntaje</label>
-				<HTMLSelect id="score" value="item.points_type">
+				<HTMLSelect id="score" v-model:value="item.points_type">
 					<option value="">
 						Seleccionar una distribuci&oacute;n
 					</option>
@@ -47,7 +47,7 @@ defineProps<{
 				<div v-if="item.points_type === 'equal'" class="Equal">
 					<HTMLInput
 						id="points"
-						value="item.points"
+						v-model:value="item.points"
 						type="number"
 						placeholder="Puntaje total a distribuir"
 					/>

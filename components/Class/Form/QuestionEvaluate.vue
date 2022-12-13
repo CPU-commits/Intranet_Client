@@ -52,7 +52,9 @@ if (props.question.type === 'written' && form.getAnswers[index]?.evaluate)
 		</header>
 		<template v-if="!question.type.includes('alternatives')">
 			<pre>
-R\: {{ question.answer !== '' ? question.answer : 'Sin respuesta' }}</pre
+				R\:
+				{{ question.answer !== '' ? question.answer : 'Sin respuesta' }}
+			</pre
 			>
 			<br />
 			<template v-if="form.hasPoints">

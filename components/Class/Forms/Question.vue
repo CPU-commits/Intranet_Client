@@ -32,7 +32,7 @@ const buildForm = useBuildFormStore()
 		<label for="question__type">Tipo de pregunta</label>
 		<HTMLSelect
 			id="question__type"
-			:value="item.questions[buildForm.getQuestion].type"
+			v-model:value="item.questions[buildForm.getQuestion].type"
 		>
 			<option value="">Seleccionar tipo de pregunta</option>
 			<option value="alternatives_correct">
@@ -66,7 +66,7 @@ const buildForm = useBuildFormStore()
 		>
 			<HTMLInput
 				id="points"
-				:value="item.questions[buildForm.getQuestion].points"
+				v-model:value="item.questions[buildForm.getQuestion].points"
 				placeholder="Puntaje pregunta"
 				type="number"
 			/>
@@ -113,7 +113,7 @@ const buildForm = useBuildFormStore()
 					/>
 					<HTMLInput
 						id="alternative"
-						:value="
+						v-model:value="
 							item.questions[buildForm.getQuestion].answers[i]
 						"
 						placeholder="Alternativa"
@@ -145,7 +145,7 @@ const buildForm = useBuildFormStore()
 				>
 					<HTMLInput
 						id="answer"
-						:value="
+						v-model:value="
 							item.questions[buildForm.getQuestion].answers[i]
 						"
 						placeholder="Respuesta"

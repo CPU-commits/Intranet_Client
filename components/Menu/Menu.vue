@@ -99,34 +99,54 @@ async function logout() {
 				</header>
 				<ul>
 					<NuxtLink class="NuxtLink" to="/inicio" @click="ahref">
-						<li :class="url === '/inicio'">
-							<i class="fa-solid fa-house" /> <span>Inicio</span>
+						<li :class="url === '/inicio' ? 'selected' : ''">
+							<i class="fa-solid fa-house" />
+							<span>Inicio</span>
 						</li>
 					</NuxtLink>
 					<NuxtLink
+						v-if="auth.userTypeNotIs(UserTypesKeys.DIRECTOR)"
 						class="NuxtLink"
 						to="/aula_virtual"
 						@click="ahref"
 					>
-						<li :class="url.startsWith('/aula_virtual')">
+						<li
+							:class="
+								url.startsWith('/aula_virtual')
+									? 'selected'
+									: ''
+							"
+						>
 							<i class="fa-solid fa-chalkboard" />
 							<span>Aula virtual</span>
 						</li>
 					</NuxtLink>
 					<NuxtLink class="NuxtLink" to="/noticias" @click="ahref">
-						<li :class="url.startsWith('/noticias')">
+						<li
+							:class="
+								url.startsWith('/noticias') ? 'selected' : ''
+							"
+						>
 							<i class="fa-solid fa-newspaper" />
 							<span>Noticias</span>
 						</li>
 					</NuxtLink>
 					<NuxtLink class="NuxtLink" to="/biblioteca" @click="ahref">
-						<li :class="url.startsWith('/biblioteca')">
+						<li
+							:class="
+								url.startsWith('/biblioteca') ? 'selected' : ''
+							"
+						>
 							<i class="fa-solid fa-book-bookmark" />
 							<span>Biblioteca virtual</span>
 						</li>
 					</NuxtLink>
 					<NuxtLink class="NuxtLink" to="/libro_vida" @click="ahref">
-						<li :class="url.startsWith('/libro_vida')">
+						<li
+							:class="
+								url.startsWith('/libro_vida') ? 'selected' : ''
+							"
+						>
 							<i class="fa-solid fa-book-open" />
 							<span>Libro de vida</span>
 						</li>
@@ -142,7 +162,7 @@ async function logout() {
 						to="/votar"
 						@click="ahref"
 					>
-						<li :class="url.startsWith('/votar')">
+						<li :class="url.startsWith('/votar') ? 'selected' : ''">
 							<i class="fa-solid fa-check-to-slot" />
 							<span>Votar</span>
 						</li>
@@ -152,7 +172,11 @@ async function logout() {
 						to="/soporte/app/aula_virtual"
 						@click="ahref"
 					>
-						<li :class="url.startsWith('/soporte')">
+						<li
+							:class="
+								url.startsWith('/soporte') ? 'selected' : ''
+							"
+						>
 							<i class="fa-solid fa-circle-info" />
 							<span>Soporte</span>
 						</li>
@@ -258,6 +282,8 @@ button {
 	font-size: 1.1rem;
 	border-left: 3px solid transparent;
 	transition: color 0.4s ease;
+	display: flex;
+	gap: 10px;
 }
 
 .Menu li a {

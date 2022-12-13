@@ -110,7 +110,7 @@ function keyDown() {
 		<template v-if="!question.type.includes('alternatives')">
 			<HTMLTextArea
 				v-if="form.getWorkStatus === 'opened'"
-				:value="question.answer"
+				v-model:value="question.answer"
 				:keydown="keyDown"
 				placeholder="Respuesta..."
 			/>
