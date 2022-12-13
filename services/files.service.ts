@@ -15,14 +15,14 @@ export class FilesService {
 
 	async getFiles() {
 		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
-			BodyFetch<Array<UserFile>> & DefaultResponse
+			BodyFetch<Array<UserFile> | null> & DefaultResponse
 		>({
 			method: 'get',
 			URL: '/api/files/get_files',
 			spinnerStatus: true,
 			token: this.authStore.getToken,
 		})
-		return dataFetch.body
+		return dataFetch.body ?? []
 	}
 
 	async downloadFile(idFile: string) {
@@ -97,6 +97,7 @@ export class FilesService {
 			// Generate form
 			const form = new FormData()
 			if (files) form.append('file', files[0])
+			form.append('title', fileForm.title)
 			// Send request
 			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
 				BodyFetch<UserFile> & DefaultResponse
