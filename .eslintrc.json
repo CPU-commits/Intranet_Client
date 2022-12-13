@@ -38,7 +38,8 @@
 		"vue/no-v-model-argument": "off",
 		"security-node/detect-unhandled-async-errors": "off",
 		"vue/no-use-v-if-with-v-for": "off",
-		"vue/no-template-shadow": "off"
+		"vue/no-template-shadow": "off",
+		"vue/no-mutating-props": "off"
 	},
 	"overrides": [
 		{
