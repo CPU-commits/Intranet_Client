@@ -36,6 +36,7 @@ export default defineNuxtConfig({
 		'@kevinmarrec/nuxt-pwa',
 		'@pinia/nuxt',
 		'nuxt-security',
+		'@sidebase/nuxt-session',
 		// '@nuxtjs/html-validator',
 		// '@nuxtjs/web-vitals' -> Integrate GA and party town -> https://github.com/nuxt-modules/partytown
 	],
@@ -44,6 +45,23 @@ export default defineNuxtConfig({
 	},
 	imports: {
 		dirs: ['stores'],
+	},
+	session: {
+		isEnabled: true,
+		session: {
+			cookieSameSite: 'strict',
+			storageOptions: {
+				driver: 'redis',
+				options: {
+					base: '',
+					url: `redis://${process.env.NUXT_REDIS_USER}:${process.env.NUXT_REDIS_PASSWORD}@${process.env.NUXT_REDIS_HOST}:${process.env.NUXT_REDIS_PORT}`,
+				},
+			},
+			expiryInSeconds: 60 * 60,
+		},
+		api: {
+			isEnabled: true,
+		},
 	},
 	ssr: true,
 	vite: {

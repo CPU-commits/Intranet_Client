@@ -6,6 +6,7 @@ import type { Semester } from '~~/models/semester/semester.model'
 import type { Student } from '~~/models/user/student.model'
 import type { StudentGrade } from '~~/models/classroom/student_grade.model'
 import type { GradeProgram } from '~~/models/classroom/grade.model'
+import { UserTypesKeys } from '~~/models/user/user.model'
 // Router
 const route = useRoute()
 
@@ -16,13 +17,10 @@ const title = schoolName
 	? `Archivado (${year}) - Admin - ${schoolName} - Intranet`
 	: `Archivado (${year}) - Admin - Intranet`
 // Guard
-/* definePageMeta({
-    middleware: 'role',
-    roles: [
-        UserTypesKeys.DIRECTIVE,
-        UserTypesKeys.DIRECTOR,
-    ],
-}) */
+definePageMeta({
+	middleware: 'role',
+	roles: [UserTypesKeys.DIRECTIVE, UserTypesKeys.DIRECTOR],
+})
 // Nuxtapp
 const {
 	$fetchModule,

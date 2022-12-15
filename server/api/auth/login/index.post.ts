@@ -1,8 +1,6 @@
 // Fetch
 import { validateBody, Type } from 'h3-typebox'
 import { DefaultResponse } from '~~/common/fetchModule'
-// Server
-import { cookieConfig, setCookieSession } from '~~/server/common/cookie'
 // Types
 import type { AuthData } from '~~/stores/useAuthStore'
 
@@ -29,15 +27,11 @@ export default defineEventHandler(async (event) => {
 				baseURL: useRuntimeConfig().public.API,
 			},
 		)
-		// Set session in Redis
-		const idSession = await setCookieSession(dataFetch)
-		// Set cookie
-		setCookie(event, 'INT_SESSION', idSession, cookieConfig(0))
-		// Return response
-		/* useNuxtApp().$logger.info({
-			context: 'nitro:server',
-			message: `Success login ${body.rut}`,
-		}) */
+		// Set session
+		event.context.session.refresh_token = dataFetch.refresh_token
+		event.context.session.access_token = dataFetch.access_token
+		event.context.session.user = dataFetch.user
+
 		return dataFetch
 	} catch (err) {
 		throw createError(err as Error)

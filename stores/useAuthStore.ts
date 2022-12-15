@@ -7,6 +7,7 @@ type KeysUserTypes = keyof typeof UserTypes
 
 export interface AuthData {
 	access_token: string
+	refresh_token: string
 	user: {
 		_id: string
 		name: string
@@ -27,13 +28,8 @@ async function logIn(userForm: { rut: string; password: string }) {
 }
 
 async function logOut() {
-	const { $fetchModule } = useNuxtApp()
-	await $fetchModule.fetchData({
-		method: 'post',
-		URL: '/api/auth/close_session',
-		spinnerStatus: true,
-		nuxt: true,
-	})
+	const { remove } = await useSession()
+	await remove()
 }
 
 const useAuthStore = defineStore('auth', {
@@ -75,6 +71,7 @@ const useAuthStore = defineStore('auth', {
 			this.setAuth({
 				user: dataFetch.user,
 				access_token: dataFetch.access_token,
+				refresh_token: dataFetch.refresh_token,
 			})
 		},
 		async logOut() {

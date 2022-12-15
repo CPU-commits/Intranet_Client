@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+	auth: false,
+})
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = schoolName
