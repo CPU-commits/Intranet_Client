@@ -91,6 +91,7 @@ export default defineNuxtConfig({
 				context: 'nuxt:app',
 				labels: ['init', 'server', 'client'],
 			})
+			console.log(process.env)
 		},
 		close() {
 			const logger = new Logger()
