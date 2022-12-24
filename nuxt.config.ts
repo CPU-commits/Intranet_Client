@@ -15,10 +15,18 @@ export default defineNuxtConfig({
 			session: {
 				storageOptions: {
 					options: {
-						password: process.env.NUXT_REDIS_PASSWORD,
-						host: process.env.NUXT_REDIS_HOST,
+						username:
+							process.env
+								.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_USERNAME,
+						password:
+							process.env
+								.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_PASSWORD,
+						host: process.env
+							.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_HOST,
 						port: parseInt(
-							process.env.NUXT_REDIS_PORT ?? '6379',
+							process.env
+								.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_PORT ??
+								'6379',
 							10,
 						),
 					},
