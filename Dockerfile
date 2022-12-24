@@ -34,4 +34,6 @@ RUN echo "NUXT_REDIS_PORT=6379" >> /.env
 
 EXPOSE 3000
 
-CMD [ "source /.env && node", ".output/server/index.mjs" ]
+RUN echo "source /.env && node /app/.output/server/index.mjs" > /script.sh
+
+CMD [ "sh", "/script.sh" ]
