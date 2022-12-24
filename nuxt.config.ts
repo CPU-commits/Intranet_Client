@@ -83,6 +83,8 @@ export default defineNuxtConfig({
 				context: 'nuxt:app',
 				labels: ['init', 'server', 'client'],
 			})
+			// @ts-ignore
+			nuxt.options.session?.session.storageOptions?.options.url = `redis://${process.env.NUXT_REDIS_USER}:${process.env.NUXT_REDIS_PASSWORD}@${process.env.NUXT_REDIS_HOST}:${process.env.NUXT_REDIS_PORT}`
 		},
 		listen() {
 			const logger = new Logger()
@@ -91,7 +93,6 @@ export default defineNuxtConfig({
 				context: 'nuxt:app',
 				labels: ['init', 'server', 'client'],
 			})
-			console.log(process.env)
 		},
 		close() {
 			const logger = new Logger()
