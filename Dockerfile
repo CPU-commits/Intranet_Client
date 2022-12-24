@@ -22,7 +22,7 @@ FROM node:16.18.1-alpine3.16
 
 WORKDIR /app
 
-COPY --from=builder /app/.output ./
+COPY --from=builder /app/.output ./.output
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
