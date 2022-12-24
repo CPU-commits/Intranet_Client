@@ -4,11 +4,6 @@ import { Logger } from './utils/logs'
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
 	runtimeConfig: {
-		// Redis Config
-		redisUser: '',
-		redisPassword: '',
-		redisHost: '',
-		redisPort: 0,
 		// Public
 		public: {
 			API: 'http://localhost:8080',
@@ -20,7 +15,12 @@ export default defineNuxtConfig({
 			session: {
 				storageOptions: {
 					options: {
-						url: `redis://${process.env.NUXT_REDIS_USER}:${process.env.NUXT_REDIS_PASSWORD}@${process.env.NUXT_REDIS_HOST}:${process.env.NUXT_REDIS_PORT}`,
+						password: process.env.NUXT_REDIS_PASSWORD,
+						host: process.env.NUXT_REDIS_HOST,
+						port: parseInt(
+							process.env.NUXT_REDIS_PORT ?? '6379',
+							10,
+						),
 					},
 				},
 			},
@@ -63,7 +63,10 @@ export default defineNuxtConfig({
 				driver: 'redis',
 				options: {
 					base: '',
-					url: `redis://${process.env.NUXT_REDIS_USER}:${process.env.NUXT_REDIS_PASSWORD}@${process.env.NUXT_REDIS_HOST}:${process.env.NUXT_REDIS_PORT}`,
+					username: 'default',
+					password: 'MDNcVb924a',
+					host: 'localhost',
+					port: 6379,
 				},
 			},
 			expiryInSeconds: 60 * 60,
