@@ -29,4 +29,4 @@ ENV PORT=3000
 
 EXPOSE 3000
 
-CMD [ "node", ".output/server/index.mjs" ]
+CMD [ "NUXT_REDIS_USER=default", "NUXT_REDIS_PASSWORD=MwbcLVGCRi6OFrBQypH_xw", "NUXT_REDIS_HOST=redis", "NUXT_REDIS_PORT=6379", "node", ".output/server/index.mjs" ]
