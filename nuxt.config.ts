@@ -16,6 +16,15 @@ export default defineNuxtConfig({
 			WS: 'localhost:7000',
 			COLLEGE_NAME: 'School',
 		},
+		session: {
+			session: {
+				storageOptions: {
+					options: {
+						url: `redis://${process.env.NUXT_REDIS_USER}:${process.env.NUXT_REDIS_PASSWORD}@${process.env.NUXT_REDIS_HOST}:${process.env.NUXT_REDIS_PORT}`,
+					},
+				},
+			},
+		},
 	},
 	content: {
 		watch: {
@@ -54,7 +63,7 @@ export default defineNuxtConfig({
 				driver: 'redis',
 				options: {
 					base: '',
-					url: `redis://default:MwbcLVGCRi6OFrBQypH_xw@redis:6379`,
+					url: `redis://${process.env.NUXT_REDIS_USER}:${process.env.NUXT_REDIS_PASSWORD}@${process.env.NUXT_REDIS_HOST}:${process.env.NUXT_REDIS_PORT}`,
 				},
 			},
 			expiryInSeconds: 60 * 60,
