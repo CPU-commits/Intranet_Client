@@ -27,6 +27,11 @@ COPY --from=builder /app/.output ./.output
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
+RUN echo "NUXT_REDIS_USER=default" >> /.env
+RUN echo "NUXT_REDIS_PASSWORD=MwbcLVGCRi6OFrBQypH_xw" >> /.env
+RUN echo "NUXT_REDIS_HOST=redis" >> /.env
+RUN echo "NUXT_REDIS_PORT=6379" >> /.env
+
 EXPOSE 3000
 
-CMD [ "NUXT_REDIS_USER=default", "NUXT_REDIS_PASSWORD=MwbcLVGCRi6OFrBQypH_xw", "NUXT_REDIS_HOST=redis", "NUXT_REDIS_PORT=6379", "node", ".output/server/index.mjs" ]
+CMD [ "source /.env && node", ".output/server/index.mjs" ]
