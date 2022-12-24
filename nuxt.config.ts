@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 			NODE_ENV: 'dev' as 'dev' | 'prod',
 			WS: 'localhost:7000',
 			COLLEGE_NAME: 'School',
+			SHORT_NAME: 'Sc',
 		},
 		session: {
 			session: {
@@ -31,6 +32,13 @@ export default defineNuxtConfig({
 						),
 					},
 				},
+			},
+		},
+		pwa: {
+			manifest: {
+				name: `${process.env.COLLEGE_NAME} Intranet`,
+				short_name: `${process.env.COLLEGE_SHORT_NAME} Intr.`,
+				description: `Intranet del colegio ${process.env.COLLEGE_NAME}`,
 			},
 		},
 	},

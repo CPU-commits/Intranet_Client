@@ -6,9 +6,11 @@ defineProps<{
 }>()
 // Stores
 const auth = useAuthStore()
+const config = useRuntimeConfig()
 // Router
 const route = useRoute()
 
+const shortName = config.public.SHORT_NAME
 const url = ref(route.path)
 watch(
 	() => route.path,
@@ -33,7 +35,7 @@ watch(
 					class="NuxtLink"
 					:to="auth.getIsAuth ? '/inicio' : '/'"
 				>
-					<h2>CSAH Intranet</h2>
+					<h2>{{ shortName }} Intranet</h2>
 				</NuxtLink>
 			</div>
 			<div v-if="auth.isAuth" class="Header__content--main">

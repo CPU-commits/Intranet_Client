@@ -8,6 +8,7 @@ import { BodyFetch } from '~~/models/body.model'
 // Composable
 const voting = useVoting()
 const { $fetchModule } = useNuxtApp()
+const config = useRuntimeConfig()
 // Stores
 const toasts = useToastsStore()
 const auth = useAuthStore()
@@ -17,6 +18,7 @@ const route = useRoute()
 
 const url = route.path
 // Menu
+const shortName = config.public.SHORT_NAME
 const menuOpen = ref(false)
 
 watch(
@@ -93,7 +95,7 @@ async function logout() {
 							<i class="fa-solid fa-bars" />
 						</button>
 						<NuxtLink class="NuxtLink" to="/" @click="ahref">
-							<h2>CSAH Intranet</h2>
+							<h2>{{ shortName }} Intranet</h2>
 						</NuxtLink>
 					</div>
 				</header>
