@@ -117,21 +117,17 @@ aside {
 
 .Annoucement {
 	position: relative;
-	border: 2px solid var(--color-light);
-	border-radius: 5px;
 	padding: 10px;
+	border-bottom: 1px solid var(--color-light);
 }
 
 .Annoucement__body {
 	margin-bottom: 10px;
-	header {
-		border-bottom: 1px solid var(--color-light);
-	}
 }
 
 .Annoucement__body--footer {
 	display: flex;
-	margin-top: 10px;
+	margin-top: 20px;
 	flex-wrap: wrap;
 }
 

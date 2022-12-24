@@ -4,7 +4,7 @@ export function differentDates(
 	dateOne: string | Date,
 	dateTwo: string | Date,
 ): boolean {
-	return moment(dateOne).diff(moment(dateTwo)) === 0
+	return moment(dateOne).diff(moment(dateTwo)) !== 0
 }
 
 export function dateIsAfter(

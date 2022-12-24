@@ -66,6 +66,7 @@ img {
 	width: 100%;
 	max-height: 400px;
 	margin-bottom: 30px;
+	object-fit: cover;
 }
 
 .News__contain header {

@@ -171,6 +171,7 @@ a:hover h2 {
 	font-size: 1.1rem;
 	text-align: center;
 	transition: all 0.4s;
+	margin-bottom: 8px;
 }
 
 .News img {
