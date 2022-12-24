@@ -6,23 +6,23 @@ import { UserTypes, UserTypesKeys } from '~~/models/user/user.model'
 const { toRoman } = pkg
 
 export function formatDate(date: string | Date) {
-	return moment(date).locale('es').utc().format('LLL')
+	return moment(date).locale('es').format('LLL')
 }
 
 export function formatMiniDate(date: string | Date) {
-	return moment(date).locale('es').utc().format('MM/DD HH:mm')
+	return moment(date).locale('es').format('MM/DD HH:mm')
 }
 
 export function timeAgo(date: string | Date) {
-	return moment(date).locale('es').utc().fromNow()
+	return moment(date).locale('es').fromNow()
 }
 
 export function removeTime(date: string | Date) {
-	return moment(date).locale('es').utc().startOf('day').format('YYYY-MM-DD')
+	return moment(date).locale('es').startOf('day').format('YYYY-MM-DD')
 }
 
 export function getOnlyTime(date: string | Date) {
-	return moment(date).locale('es').utc().format('HH:mm')
+	return moment(date).locale('es').format('HH:mm')
 }
 
 export function secondsToHoursFormat(seconds: number) {
@@ -54,15 +54,11 @@ export function urlify(text: string) {
 }
 
 export function formatDateUTC(date: string | Date) {
-	return moment(date)
-		.utcOffset(0, true)
-		.locale('es')
-		.utc()
-		.format('YYYY-MM-DD HH:mm')
+	return moment(date).locale('es').format('YYYY-MM-DD HH:mm')
 }
 
 export function formateDateInput(date: string | Date) {
-	return moment(date).utc().format('YYYY-MM-DD')
+	return moment(date).format('YYYY-MM-DD')
 }
 
 export function intToChar(int: number) {
