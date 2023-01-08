@@ -10,20 +10,25 @@ interface Log {
 
 export class Logger {
 	constructor() {
-		log4js.shutdown()
 		log4js.configure({
 			appenders: {
 				defaultLogs: {
 					type: 'file',
-					filename: './logs/default.log',
+					filename: `${process.cwd()}/logs/default.log`,
+					maxLogSize: 1000000, // 10 MB
+					backups: 1,
 				},
 				errorLogs: {
 					type: 'file',
-					filename: './logs/error.log',
+					filename: `${process.cwd()}/logs/error.log`,
+					maxLogSize: 10000000, // 10 MB
+					backups: 2,
 				},
 				httpLogs: {
 					type: 'file',
-					filename: './logs/http.log',
+					filename: `${process.cwd()}/logs/http.log`,
+					maxLogSize: 1000000, // 10 MB
+					backups: 3,
 				},
 			},
 			categories: {
