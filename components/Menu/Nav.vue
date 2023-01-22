@@ -121,7 +121,12 @@ i {
 	justify-content: flex-end;
 	align-items: center;
 	gap: 10px;
-	width: 200px;
+	width: fit-content;
+	max-width: 220px;
+	min-width: 200px;
+	h2 {
+		text-align: center;
+	}
 }
 
 .Header__content--main {

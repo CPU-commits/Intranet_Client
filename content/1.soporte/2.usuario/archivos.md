@@ -13,7 +13,7 @@ Los archivos están activos para los usuarios `Director`, `Directivo` y `Profeso
 🔗 Para visualizar y administrar estos, se encuentran disponibles en [/usuario/archivos](/usuario/archivos).
 
 Para subir un archivo se debe dar click en **➕ Subir archivo**. Dar un titulo y un archivo
-a subir **(Límite de 25MB.)**.
+a subir **(Límite de 50MB. Por archivo)**.
 
 Un ejemplo de archivo subido se ve así:
 

@@ -253,6 +253,9 @@ button {
 	display: flex;
 	align-items: center;
 	gap: 5px;
+	h2 {
+		text-align: center;
+	}
 }
 
 .Opened {
