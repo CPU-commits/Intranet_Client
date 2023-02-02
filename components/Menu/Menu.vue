@@ -106,23 +106,25 @@ async function logout() {
 							<span>Inicio</span>
 						</li>
 					</NuxtLink>
-					<NuxtLink
-						v-if="auth.userTypeNotIs(UserTypesKeys.DIRECTOR)"
-						class="NuxtLink"
-						to="/aula_virtual"
-						@click="ahref"
-					>
-						<li
-							:class="
-								url.startsWith('/aula_virtual')
-									? 'selected'
-									: ''
-							"
+					<ClientOnly>
+						<NuxtLink
+							v-if="auth.userTypeNotIs(UserTypesKeys.DIRECTOR)"
+							class="NuxtLink"
+							to="/aula_virtual"
+							@click="ahref"
 						>
-							<i class="fa-solid fa-chalkboard" />
-							<span>Aula virtual</span>
-						</li>
-					</NuxtLink>
+							<li
+								:class="
+									url.startsWith('/aula_virtual')
+										? 'selected'
+										: ''
+								"
+							>
+								<i class="fa-solid fa-chalkboard" />
+								<span>Aula virtual</span>
+							</li>
+						</NuxtLink>
+					</ClientOnly>
 					<NuxtLink class="NuxtLink" to="/noticias" @click="ahref">
 						<li
 							:class="

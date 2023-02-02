@@ -1,11 +1,39 @@
 import { DefaultResponse } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
-import { NotificationType } from '~~/models/notification/notification.model'
+import type { NotificationType } from '~~/models/notification/notification.model'
+import type { NotificationPreferences } from '~~/models/notification/preferences.model'
 
 export class NotificationsService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
 	private readonly nuxtApp = useNuxtApp()
+
+	async getNotificationPreferences() {
+		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			BodyFetch<NotificationPreferences> & DefaultResponse
+		>({
+			method: 'get',
+			URL: '/api/notifications/get_preferences',
+			token: this.authStore.getToken,
+			spinnerStatus: false,
+		})
+
+		return dataFetch.body
+	}
+
+	async changeNotificationPreference(
+		notificationPreferences: NotificationPreferences,
+	) {
+		await this.nuxtApp.$fetchModule.fetchData({
+			method: 'post',
+			URL: '/api/notifications/change_preferences',
+			token: this.authStore.getToken,
+			spinnerStatus: false,
+			body: {
+				...notificationPreferences.preferences,
+			},
+		})
+	}
 
 	async getNotifications(total = false, skip = 0) {
 		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<

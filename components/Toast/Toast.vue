@@ -45,6 +45,7 @@ article {
 	align-items: center;
 	margin: 0 auto 0.5rem auto;
 	width: 20rem;
+	border: 2px solid var(--color-light);
 }
 
 .error {

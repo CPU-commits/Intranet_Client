@@ -63,23 +63,32 @@ watch(
 					</li>
 				</ul>
 			</div>
-			<div class="Header__content--right">
-				<Notifications v-if="auth.isAuth" />
-				<NuxtLink v-if="auth.isAuth" class="NuxtLink" to="/usuario">
-					<i class="fa-solid fa-user" />
-				</NuxtLink>
-				<NuxtLink
-					v-if="
-						auth.getUserType === UserTypesKeys.DIRECTOR ||
-						auth.getUserType === UserTypesKeys.DIRECTIVE ||
-						auth.getUserType === UserTypesKeys.LIBRARIAN
-					"
-					class="NuxtLink"
-					to="/admin"
-				>
-					<i class="fa-solid fa-gear" />
-				</NuxtLink>
-			</div>
+			<ClientOnly>
+				<div class="Header__content--right">
+					<Notifications v-if="auth.isAuth" />
+					<NuxtLink v-if="auth.isAuth" class="NuxtLink" to="/usuario">
+						<i class="fa-solid fa-user" />
+					</NuxtLink>
+					<NuxtLink
+						v-if="
+							auth.getUserType === UserTypesKeys.DIRECTOR ||
+							auth.getUserType === UserTypesKeys.DIRECTIVE ||
+							auth.getUserType === UserTypesKeys.LIBRARIAN
+						"
+						class="NuxtLink"
+						to="/admin"
+					>
+						<i class="fa-solid fa-gear" />
+					</NuxtLink>
+					<NuxtLink
+						v-if="!auth.isAuth"
+						title="¿Necesitas ayuda?"
+						to="/soporte/acceso"
+					>
+						<i class="fa-solid fa-circle-info" />
+					</NuxtLink>
+				</div>
+			</ClientOnly>
 		</section>
 	</nav>
 </template>

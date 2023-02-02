@@ -558,6 +558,10 @@ ul {
 			color: var(--color-main);
 		}
 	}
+
+	span {
+		cursor: default;
+	}
 }
 
 .Selected {

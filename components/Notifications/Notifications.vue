@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Socket.io
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 // Types
 import type { NotificationType } from '~~/models/notification/notification.model'
 import type { ErrorFetch } from '~~/common/fetchModule'
@@ -13,10 +13,34 @@ const { $fetchModule, $notificationService } = useNuxtApp()
 const config = useRuntimeConfig()
 // Composable
 const notificationsNumber = useNotification()
+const preferences = useNotificationsPreference()
 // Store
 const auth = useAuthStore()
 // Router
 const route = useRoute()
+// Sockets
+const socket = io(`ws://${config.public.WS}`, {
+	extraHeaders: {
+		Authorization: auth.getToken ?? '',
+	},
+}).connect()
+let socketStudents: Socket
+if (auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE))
+	socketStudents = io(`ws://${config.public.WS}/students`, {
+		extraHeaders: {
+			Authorization: auth.getToken ?? '',
+		},
+	})
+
+watch(
+	() => preferences.value.preferences.app,
+	() => {
+		handleConnectSocket()
+	},
+	{
+		deep: true,
+	},
+)
 
 // Ref
 const notificationEl = ref<HTMLElement | null>(null)
@@ -53,32 +77,48 @@ async function getNotifications(total = false, skip = 0) {
 	}
 }
 
+function handleConnectSocket() {
+	// Try to connect
+	// Global socket
+	const { globals, classroom, customs } = preferences.value.preferences.app
+	if (globals || customs)
+		socket.on('notify/global', () => {
+			notificationsNumber.value++
+		})
+	else if (!globals && !customs) socket.removeAllListeners('notify/global')
+	/* Students socket */
+	if (
+		auth.userTypeIs(
+			UserTypesKeys.STUDENT,
+			UserTypesKeys.STUDENT_DIRECTIVE,
+		) &&
+		classroom
+	) {
+		socketStudents.on('notify/students', () => {
+			notificationsNumber.value++
+		})
+	} else if (
+		auth.userTypeIs(
+			UserTypesKeys.STUDENT,
+			UserTypesKeys.STUDENT_DIRECTIVE,
+		) &&
+		!classroom &&
+		!customs
+	) {
+		socketStudents.removeAllListeners('notify/students')
+	}
+}
+
 // Notifications
 const notificationsOpen = ref(false)
 
 onMounted(async () => {
-	const socket = io(`ws://${config.public.WS}`, {
-		extraHeaders: {
-			Authorization: auth.getToken ?? '',
-		},
-	}).connect()
-
-	socket.on('notify/global', () => {
-		notificationsNumber.value++
-	})
-	/* Students socket */
-	if (
-		auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE)
-	) {
-		const socketStudents = io(`ws://${config.public.WS}/students`, {
-			extraHeaders: {
-				Authorization: auth.getToken ?? '',
-			},
-		})
-		socketStudents.on('notify/students', () => {
-			notificationsNumber.value++
-		})
-	}
+	// Get preferences from server
+	const preferencesData =
+		await $notificationService.getNotificationPreferences()
+	preferences.value = preferencesData
+	// Try to connect to socket
+	handleConnectSocket()
 	// Get nofications count
 	try {
 		notificationsNumber.value =
@@ -89,6 +129,7 @@ onMounted(async () => {
 	}
 })
 
+// Menu functions
 function toogleMenu() {
 	notificationsNumber.value = 0
 	notificationsOpen.value = !notificationsOpen.value
@@ -105,7 +146,18 @@ function deleteNotification(index: number) {
 
 <template>
 	<section class="Container">
-		<button @click="toogleMenu">
+		<button
+			v-if="
+				preferences.preferences.app.globals ||
+				preferences.preferences.app.customs ||
+				(auth.userTypeIs(
+					UserTypesKeys.STUDENT,
+					UserTypesKeys.STUDENT_DIRECTIVE,
+				) &&
+					preferences.preferences.app.classroom)
+			"
+			@click="toogleMenu"
+		>
 			<i
 				:class="route.path.startsWith('/noticias') ? 'News' : ''"
 				class="fa-solid fa-bell"
@@ -120,6 +172,13 @@ function deleteNotification(index: number) {
 				99
 			</span>
 		</button>
+		<NuxtLink
+			v-else
+			title="Administrar notificaciones"
+			to="/usuario/notificaciones"
+		>
+			<i class="fa-solid fa-bell-slash" />
+		</NuxtLink>
 
 		<section
 			v-if="notificationsOpen"
@@ -152,7 +211,8 @@ function deleteNotification(index: number) {
 	position: relative;
 }
 
-button {
+button,
+a {
 	background-color: transparent;
 	border: none;
 	font-family: 'Karla', sans-serif;
