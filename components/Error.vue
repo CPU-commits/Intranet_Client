@@ -24,6 +24,10 @@ if (err.statusCode === 400) {
 	src.value = '/img/error/404.svg'
 	message.value = 'Esta ruta no existe'
 }
+
+function reloadPage() {
+	window.location.reload()
+}
 </script>
 
 <template>
@@ -32,6 +36,11 @@ if (err.statusCode === 400) {
 
 		<span v-if="err.statusCode !== 404">{{ err.message }}</span>
 		<img :src="src" :alt="message" />
+
+		<HTMLButtonText :click="reloadPage">
+			<i class="fa-solid fa-arrows-rotate"></i>
+			Recargar pagina
+		</HTMLButtonText>
 	</section>
 </template>
 
@@ -43,7 +52,8 @@ if (err.statusCode === 400) {
 	gap: 5px;
 }
 
-h2 {
+h2,
+i {
 	color: var(--color-main);
 }
 
