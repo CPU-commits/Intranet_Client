@@ -8,6 +8,7 @@
     margin: 0;
     font-family: 'Inconsolata', monospace;
     color: var(--color-dark);
+	box-sizing: border-box;
 }
 
 body {
@@ -295,7 +296,7 @@ button {
     }
 
     .Tbody tr:last-child td {
-        padding-bottom: 10px;   
+        padding-bottom: 10px;
     }
 
     .ProseMirror {
