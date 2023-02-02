@@ -36,6 +36,22 @@ async function logIn() {
 		})
 	}
 }
+
+onMounted(() => {
+	const reset = route.query?.reset
+	if (reset && typeof reset === 'string') {
+		const resetValue = reset === 'true'
+		const message = `${
+			resetValue
+				? 'Se ha reiniciado la contraseña exitosamente'
+				: 'El token no existe o está expirado'
+		}`
+		toasts.addToast({
+			message,
+			type: resetValue ? 'success' : 'error',
+		})
+	}
+})
 </script>
 
 <template>
@@ -56,6 +72,11 @@ async function logIn() {
 					type="password"
 				/>
 				<HTMLButton type="submit">Iniciar sesi&oacute;n</HTMLButton>
+				<footer>
+					<NuxtLink to="/recuperar_contrasena">
+						¿Olvidaste tu contraseña?
+					</NuxtLink>
+				</footer>
 			</HTMLForm>
 		</div>
 	</section>
@@ -73,5 +94,15 @@ async function logIn() {
 		border-radius: 15px;
 		box-shadow: var(--box-shadow);
 	}
+}
+
+footer {
+	border-top: 1px solid var(--color-light);
+	padding-top: 10px;
+}
+
+a {
+	color: var(--color-main);
+	margin-top: 10px;
 }
 </style>

@@ -43,4 +43,28 @@ export class UserService {
 			})
 		}
 	}
+
+	async recoverPassword(contact: string) {
+		try {
+			await this.nuxtApp.$fetchModule.fetchData({
+				method: 'post',
+				URL: '/api/users/recover_password',
+				body: {
+					contact,
+				},
+				spinnerStatus: true,
+			})
+			this.toastsStore.addToast({
+				message:
+					'Te hemos mandado un correo para recuperar tu contraseña',
+				type: 'success',
+			})
+		} catch (err) {
+			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			this.toastsStore.addToast({
+				message: _err.message,
+				type: 'error',
+			})
+		}
+	}
 }
