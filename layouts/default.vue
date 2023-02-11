@@ -10,7 +10,9 @@ const spinner = useSpinner()
 		<!-- Toasts -->
 		<Toasts />
 		<!-- Menu -->
-		<Menu />
+		<ClientOnly>
+			<Menu />
+		</ClientOnly>
 		<main>
 			<slot />
 		</main>
