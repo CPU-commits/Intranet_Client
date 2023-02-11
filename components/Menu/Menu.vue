@@ -84,7 +84,7 @@ async function logout() {
 
 <template>
 	<div>
-		<menu class="Menu" :class="menuOpen ? 'Opened' : ''">
+		<menu class="Menu" :class="{ Opened: menuOpen }">
 			<div
 				class="Menu__container"
 				:class="menuOpen ? 'Menu__opened' : ''"
