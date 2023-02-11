@@ -19,14 +19,15 @@ const auth = useAuthStore()
 // Router
 const route = useRoute()
 // Sockets
-const socket = io(`ws://${config.public.WS}`, {
+const protocol = `ws${!process.dev ? 's' : ''}`
+const socket = io(`${protocol}://${config.public.WS}`, {
 	extraHeaders: {
 		Authorization: auth.getToken ?? '',
 	},
 }).connect()
 let socketStudents: Socket
 if (auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE))
-	socketStudents = io(`ws://${config.public.WS}/students`, {
+	socketStudents = io(`${protocol}://${config.public.WS}/students`, {
 		extraHeaders: {
 			Authorization: auth.getToken ?? '',
 		},
