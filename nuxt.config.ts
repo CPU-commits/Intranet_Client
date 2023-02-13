@@ -103,6 +103,14 @@ export default defineNuxtConfig({
 		},
 		plugins: [eslint()],
 	},
+	app: {
+		head: {
+			title: 'Intranet',
+			htmlAttrs: {
+				lang: 'es',
+			},
+		},
+	},
 	hooks: {
 		ready(nuxt) {
 			const logger = new Logger()
