@@ -11,6 +11,7 @@ export default defineNuxtConfig({
 			WS: 'localhost:7000',
 			COLLEGE_NAME: 'School',
 			SHORT_NAME: 'Sc',
+			CLIENT_URL: 'https://example.com',
 		},
 		session: {
 			session: {
@@ -109,6 +110,11 @@ export default defineNuxtConfig({
 			htmlAttrs: {
 				lang: 'es',
 			},
+		},
+	},
+	nitro: {
+		prerender: {
+			routes: ['/sitemap.xml'],
 		},
 	},
 	hooks: {
