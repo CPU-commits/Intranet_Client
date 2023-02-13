@@ -63,6 +63,7 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'nuxt-security',
 		'@sidebase/nuxt-session',
+		'nuxt-jsonld',
 		// '@nuxtjs/html-validator',
 		// '@nuxtjs/web-vitals' -> Integrate GA and party town -> https://github.com/nuxt-modules/partytown
 	],

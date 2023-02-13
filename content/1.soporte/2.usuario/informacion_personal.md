@@ -4,6 +4,26 @@ head:
     meta:
         - name: 'robots'
           content: 'noindex, nofollow'
+    script:
+        - type: 'application/ld+json'
+          children: {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": {
+                "@type": "Question",
+                "name": "¿Qué información personal almacenan?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "- R.U.T
+                    - Matricula **(Si aplica)**
+                    - Nombre
+                    - Apellidos
+                    - Curso actual **(Si aplica)**
+                    - Cursos impartidos **(Si aplica)**
+                    - Email **(Opcional)**"
+                }
+            }
+        }
 ---
 # Información personal
 * * *

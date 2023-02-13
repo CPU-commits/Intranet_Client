@@ -4,6 +4,20 @@ head:
     meta:
         - name: 'robots'
           content: 'noindex, nofollow'
+    script:
+        - type: 'application/ld+json'
+          children: {
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+            "mainEntity": {
+            "@type": "Question",
+            "name": "¿Cómo accedo a la Intranet?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "En primera instancia su 🔑 contraseña será generada de manera automática. Esta será los útlimos 5 digitos antes del digito verificador de su R.U.T"
+            }
+        }
+}
 ---
 <!-- Content -->
 # Acceso a la Intranet

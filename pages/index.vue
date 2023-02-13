@@ -7,6 +7,18 @@ const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = schoolName
 	? `Iniciar sesión - ${schoolName} - Intranet`
 	: 'Iniciar sesión - Intranet'
+// JSON ld
+useJsonld({
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: `${schoolName} - Intranet`,
+	url: useRuntimeConfig().public.CLIENT_URL,
+	potentialAction: {
+		'@type': 'SearchAction',
+		target: '{search_term_string}',
+		query: 'required name=search_term_string',
+	},
+})
 // Nuxt app
 const { $fetchModule } = useNuxtApp()
 // Stores

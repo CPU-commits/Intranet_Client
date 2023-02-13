@@ -34,6 +34,7 @@ onMounted(() => {
 	box-shadow: var(--box-shadow);
 	display: flex;
 	justify-content: space-around;
+	z-index: -1;
 }
 
 .Footer__gobernalle {
