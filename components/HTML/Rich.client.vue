@@ -1,4 +1,3 @@
-<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <!-- eslint-disable vue/require-default-prop -->
 <!-- eslint-disable import/no-named-as-default -->
 <script setup lang="ts">

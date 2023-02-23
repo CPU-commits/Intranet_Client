@@ -15,7 +15,7 @@ COPY --from=installer /app/node_modules ./node_modules
 
 COPY . .
 
-RUN npm run build
+RUN npx nuxi build
 
 # STAGE 2 -> Nuxt entrypoint
 FROM node:16.18.1-alpine3.16
