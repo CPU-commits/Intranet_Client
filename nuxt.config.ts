@@ -91,11 +91,6 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	nitro: {
-		prerender: {
-			routes: ['/sitemap.xml'],
-		},
-	},
 	hooks: {
 		ready(nuxt) {
 			const logger = new Logger()
