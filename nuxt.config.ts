@@ -16,22 +16,7 @@ export default defineNuxtConfig({
 		session: {
 			session: {
 				storageOptions: {
-					options: {
-						username:
-							process.env
-								.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_USERNAME,
-						password:
-							process.env
-								.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_PASSWORD,
-						host: process.env
-							.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_HOST,
-						port: parseInt(
-							process.env
-								.NUXT_SESSION_SESSION_STORAGE_OPTIONS_OPTIONS_PORT ??
-								'6379',
-							10,
-						),
-					},
+					driver: 'memory',
 				},
 			},
 		},
@@ -78,14 +63,7 @@ export default defineNuxtConfig({
 		session: {
 			cookieSameSite: 'strict',
 			storageOptions: {
-				driver: 'redis',
-				options: {
-					base: '',
-					username: 'default',
-					password: 'MDNcVb924a',
-					host: 'localhost',
-					port: 6379,
-				},
+				driver: 'memory',
 			},
 			expiryInSeconds: 60 * 60,
 		},
