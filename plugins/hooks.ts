@@ -73,7 +73,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 					}
 				}
 			}
-		}, 15000)
+		}, 1500000)
 	})
 	/* nuxtApp.hook('vue:error', (err, _, info) => {
 		if (messageInError(err)) {
