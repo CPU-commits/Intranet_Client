@@ -46,3 +46,10 @@ try {
 		<NewsRead v-if="news" :news="news" />
 	</div>
 </template>
+
+<style scoped>
+div {
+	width: 100%;
+	max-width: 650px;
+}
+</style>

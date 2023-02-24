@@ -1,5 +1,16 @@
 <script setup lang="ts">
+// Route
+const route = useRoute()
 const footerEl = ref<HTMLElement | null>(null)
+
+const path = ref(route.path)
+
+watch(
+	() => route.path,
+	(newValue) => {
+		path.value = newValue
+	},
+)
 
 onMounted(() => {
 	// Observe resize
@@ -15,7 +26,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<footer ref="footerEl" class="Footer">
+	<footer
+		ref="footerEl"
+		class="Footer"
+		:class="{ Footer__news: path.includes('/noticias') }"
+	>
 		<div class="Footer__gobernalle">
 			<h2>Gobernalle</h2>
 			<img src="/img/gobernalle.png" alt="Gobernalle Logo" />
@@ -24,7 +39,7 @@ onMounted(() => {
 	</footer>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .Footer {
 	position: absolute;
 	width: 100%;
@@ -35,6 +50,10 @@ onMounted(() => {
 	display: flex;
 	justify-content: space-around;
 	z-index: -1;
+}
+
+.Footer__news {
+	background-color: var(--color-news-black);
 }
 
 .Footer__gobernalle {

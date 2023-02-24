@@ -226,6 +226,7 @@ h4 {
 
 .News__content {
 	text-decoration: none;
+	width: 100%;
 	margin: 20px;
 	box-sizing: border-box;
 	position: relative;

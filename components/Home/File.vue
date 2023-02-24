@@ -16,7 +16,9 @@ defineEmits<{
 }>()
 
 async function downloadFile() {
-	const urlToken = await $filesService.downloadFile(props.file._id.$oid)
+	const urlToken = await $filesService.downloadFile(
+		props.file._id as unknown as string,
+	)
 	if (urlToken !== undefined) $filesService.downloadFileUrl(urlToken)
 }
 </script>
