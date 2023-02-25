@@ -4,7 +4,7 @@ const spinner = useSpinner()
 </script>
 
 <template>
-	<div>
+	<div class="All">
 		<!-- Loading -->
 		<Loading v-if="spinner" />
 		<!-- Toasts -->
@@ -25,6 +25,7 @@ main {
 	width: 100%;
 	display: flex;
 	justify-content: center;
+	margin-bottom: 250px;
 }
 
 main div {

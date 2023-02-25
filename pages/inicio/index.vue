@@ -198,18 +198,16 @@ a:hover h2 {
 }
 
 .Home__annoucements {
-	background-color: white;
-	box-shadow: var(--box-shadow);
 	border-radius: 15px;
-	padding: 15px;
 	width: 100%;
 }
 
 .Home__annoucements--content {
 	margin-top: 10px;
 	display: flex;
+	align-items: center;
 	flex-direction: column;
-	gap: 10px;
+	gap: 40px;
 }
 
 @media (max-width: 767.98px) {

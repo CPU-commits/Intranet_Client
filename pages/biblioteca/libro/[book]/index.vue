@@ -23,20 +23,22 @@ if (typeof idBook !== 'string')
 	})
 // Data
 const book = ref<Book | null>(null)
-try {
-	const dataFetch = await $libraryService.getBook(idBook)
-	book.value = dataFetch
+onMounted(async () => {
+	try {
+		const dataFetch = await $libraryService.getBook(idBook)
+		book.value = dataFetch
 
-	title.value = schoolName
-		? `${book.value.name} - ${schoolName} - Intranet`
-		: `${book.value.name} - Intranet`
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+		title.value = schoolName
+			? `${book.value.name} - ${schoolName} - Intranet`
+			: `${book.value.name} - Intranet`
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 
 const opinion = ref('')
 

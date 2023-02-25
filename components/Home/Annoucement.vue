@@ -3,7 +3,7 @@
 import type { Annoucement } from '@@/models/home/annoucement.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
-import { formatMiniDate } from '~~/utils/format'
+import { formatDateLL } from '~~/utils/format'
 import { differentDates } from '~~/utils/dates'
 // Props
 const props = defineProps<{
@@ -63,14 +63,7 @@ async function deleteAnnoucement() {
 		</div>
 		<footer>
 			<small>
-				Publicado por
-				<span class="Annoucemenet__author">
-					{{ annoucement.user.name }}
-					{{ annoucement.user.first_lastname }}
-				</span>
-			</small>
-			<small>
-				{{ formatMiniDate(annoucement.upload_date) }}
+				{{ formatDateLL(annoucement.upload_date) }}
 				<span
 					v-if="
 						differentDates(
@@ -80,6 +73,13 @@ async function deleteAnnoucement() {
 					"
 				>
 					(editado)
+				</span>
+			</small>
+			<small>
+				Publicado por
+				<span class="Annoucemenet__author">
+					{{ annoucement.user.name }}
+					{{ annoucement.user.first_lastname }}
 				</span>
 			</small>
 		</footer>
@@ -116,13 +116,20 @@ aside {
 }
 
 .Annoucement {
+	display: flex;
+	max-width: 1000px;
+	flex-direction: row-reverse;
 	position: relative;
-	padding: 10px;
-	border-bottom: 1px solid var(--color-light);
+	width: 100%;
+	background-color: white;
+	padding: 20px;
+	box-shadow: var(--box-shadow);
+	border-radius: 8px;
 }
 
 .Annoucement__body {
 	margin-bottom: 10px;
+	width: 100%;
 }
 
 .Annoucement__body--footer {
@@ -133,7 +140,16 @@ aside {
 
 .Annoucement footer {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: 10px;
+	small,
+	span {
+		text-align: left;
+	}
+	small:first-child {
+		font-size: 1rem;
+	}
 }
 
 .Annoucemenet__author {
@@ -155,15 +171,23 @@ aside {
 @media (max-width: 575.98px) {
 	.Annoucement {
 		padding: 5px;
+		flex-direction: column;
 	}
 
-	footer small {
+	.Annoucement__bodt {
+		margin-bottom: 0;
+	}
+
+	.Annoucement footer {
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+	}
+
+	footer small,
+	.Annoucement footer small:first-child {
 		font-size: 0.7rem;
 		width: fit-content;
-	}
-
-	footer small:last-child {
-		text-align: right;
 	}
 }
 </style>

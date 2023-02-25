@@ -20,19 +20,21 @@ if (typeof idNews !== 'string')
 	})
 
 const news = ref<News | null>(null)
-try {
-	news.value = await $newsService.getSingleNews(idNews)
+onMounted(async () => {
+	try {
+		news.value = await $newsService.getSingleNews(idNews)
 
-	title.value = schoolName
-		? `${news.value.title} - ${schoolName} - Intranet`
-		: `${news.value.title} - Intranet`
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+		title.value = schoolName
+			? `${news.value.title} - ${schoolName} - Intranet`
+			: `${news.value.title} - Intranet`
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 </script>
 
 <template>

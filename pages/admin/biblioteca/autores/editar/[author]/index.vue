@@ -24,26 +24,27 @@ const router = useRouter()
 const route = useRoute()
 
 const idAuthor = route.params.author
-// SSR
+// Fetch data
 const author = ref<Author | null>(null)
-if (typeof idAuthor === 'string') {
-	try {
-		author.value = await $libraryService.getAuthor(idAuthor)
-	} catch (err) {
-		const _err = $fetchModule.handleError(err)
+onMounted(async () => {
+	if (typeof idAuthor === 'string') {
+		try {
+			author.value = await $libraryService.getAuthor(idAuthor)
+		} catch (err) {
+			const _err = $fetchModule.handleError(err)
+			throw createError({
+				..._err,
+				fatal: true,
+			})
+		}
+	} else {
 		throw createError({
-			..._err,
+			message: '[author] must be string',
+			statusCode: 400,
 			fatal: true,
 		})
 	}
-} else {
-	throw createError({
-		message: '[author] must be string',
-		statusCode: 400,
-		fatal: true,
-	})
-}
-
+})
 // Modals
 const modalInfo = ref(false)
 const toggleInfo = () => {

@@ -32,7 +32,7 @@ const {
 // Stores
 const toasts = useToastsStore()
 
-// SSR
+// Fetch data
 const semesters: Ref<Array<{
 	modules?: Array<ClassroomModule>
 	semester: Semester
@@ -40,26 +40,28 @@ const semesters: Ref<Array<{
 		students?: Array<Student>
 	}
 }> | null> = ref(null)
-if (typeof year === 'string' && !isNaN(Number(year))) {
-	try {
-		semesters.value = (
-			await $semesterService.getSemesterYear(parseInt(year))
-		).semesters
-	} catch (err) {
-		const _err = $fetchModule.handleError(err)
+onMounted(async () => {
+	if (typeof year === 'string' && !isNaN(Number(year))) {
+		try {
+			semesters.value = (
+				await $semesterService.getSemesterYear(parseInt(year))
+			).semesters
+		} catch (err) {
+			const _err = $fetchModule.handleError(err)
+			throw createError({
+				..._err,
+				fatal: true,
+			})
+		}
+	} else {
 		throw createError({
-			..._err,
+			statusCode: 400,
+			message: 'Param [year] is not a year',
+			statusMessage: 'Param [year] is not a year',
 			fatal: true,
 		})
 	}
-} else {
-	throw createError({
-		statusCode: 400,
-		message: 'Param [year] is not a year',
-		statusMessage: 'Param [year] is not a year',
-		fatal: true,
-	})
-}
+})
 // Modals
 const modal = ref(false)
 

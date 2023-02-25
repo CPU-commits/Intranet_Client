@@ -1,7 +1,6 @@
 <script setup lang="ts">
 // Route
 const route = useRoute()
-const footerEl = ref<HTMLElement | null>(null)
 
 const path = ref(route.path)
 
@@ -11,28 +10,15 @@ watch(
 		path.value = newValue
 	},
 )
-
-onMounted(() => {
-	// Observe resize
-	new ResizeObserver(() => {
-		if (document.body.clientHeight < window.innerHeight)
-			footerEl.value?.style.setProperty('--bottom', '0')
-		else footerEl.value?.style.setProperty('--bottom', 'initial')
-	}).observe(document.body)
-	// Init value
-	if (document.body.clientHeight < window.innerHeight)
-		footerEl.value?.style.setProperty('--bottom', '0')
-})
 </script>
 
 <template>
 	<footer
-		ref="footerEl"
 		class="Footer"
 		:class="{ Footer__news: path.includes('/noticias') }"
 	>
 		<div class="Footer__gobernalle">
-			<h2>Gobernalle</h2>
+			<h2>Gobernalle Intranet</h2>
 			<img src="/img/gobernalle.png" alt="Gobernalle Logo" />
 			<span>Un producto de Gobernalle</span>
 		</div>
@@ -44,7 +30,7 @@ onMounted(() => {
 	position: absolute;
 	width: 100%;
 	height: 200px;
-	bottom: var(--bottom);
+	bottom: 0;
 	background-color: var(--color-main);
 	box-shadow: var(--box-shadow);
 	display: flex;

@@ -47,8 +47,7 @@ defineProps<{
 	padding: 30px;
 	background-color: white;
 	padding-bottom: 400px;
-	border-left: 1px solid var(--color-light);
-	border-right: 1px solid var(--color-light);
+	box-shadow: var(--box-shadow);
 }
 
 .News__contain {

@@ -20,21 +20,23 @@ if (typeof authorParam !== 'string')
 	})
 // Data
 const author = ref<Author | null>(null)
-try {
-	const dataFetch = await $libraryService.getAuthor(authorParam)
+onMounted(async () => {
+	try {
+		const dataFetch = await $libraryService.getAuthor(authorParam)
 
-	author.value = dataFetch
+		author.value = dataFetch
 
-	title.value = schoolName
-		? `${author.value.name} - ${schoolName} - Intranet`
-		: `${author.value.name} - Intranet`
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+		title.value = schoolName
+			? `${author.value.name} - ${schoolName} - Intranet`
+			: `${author.value.name} - Intranet`
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 
 function copyLink() {
 	navigator.clipboard.writeText(author.value?.slug ?? '')

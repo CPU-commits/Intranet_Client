@@ -29,32 +29,34 @@ const router = useRouter()
 const route = useRoute()
 
 const idBook = route.params.book
-// SSR
+// Fetch data
 const book = ref<Book | null>(null)
-if (typeof idBook === 'string') {
-	try {
-		book.value = await $libraryService.getBook(idBook)
-	} catch (err) {
-		const _err = $fetchModule.handleError(err)
+onMounted(async () => {
+	if (typeof idBook === 'string') {
+		try {
+			book.value = await $libraryService.getBook(idBook)
+		} catch (err) {
+			const _err = $fetchModule.handleError(err)
+			throw createError({
+				..._err,
+				fatal: true,
+			})
+		}
+	} else {
 		throw createError({
-			..._err,
+			message: '[book] must be string',
+			statusCode: 400,
 			fatal: true,
 		})
 	}
-} else {
-	throw createError({
-		message: '[book] must be string',
-		statusCode: 400,
-		fatal: true,
-	})
-}
+})
 
 // Modal
 const modal = ref(false)
 // Form
 const fileInput = ref<HTMLInputElement | null>(null)
 const files = ref<FileList | null>(null)
-const src = ref(book.value.image.url)
+const src = ref(book.value?.image.url)
 const tag = ref('')
 // Fetch data
 const tags = ref<Array<Tag> | null>(null)

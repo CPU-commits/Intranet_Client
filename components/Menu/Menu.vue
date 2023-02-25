@@ -87,7 +87,10 @@ async function logout() {
 		<menu class="Menu" :class="{ Opened: menuOpen }">
 			<div
 				class="Menu__container"
-				:class="menuOpen ? 'Menu__opened' : ''"
+				:class="{
+					Menu__opened: menuOpen,
+					Menu__dark: url.includes('/noticias'),
+				}"
 			>
 				<header class="Menu__header">
 					<div class="Menu__header--title">
@@ -240,6 +243,14 @@ button {
 	position: fixed;
 	top: 0;
 	transition: all 0.4s ease;
+}
+
+.Menu__dark {
+	background-color: var(--color-news-black);
+	ul li span,
+	button {
+		color: white;
+	}
 }
 
 .Menu__header {

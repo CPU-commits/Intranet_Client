@@ -34,15 +34,17 @@ if (typeof idForm !== 'string')
 	})
 
 // Init form store
-try {
-	await form.getForm(idForm)
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+onMounted(async () => {
+	try {
+		await form.getForm(idForm)
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 
 onBeforeUnmount(() => {
 	form.$reset()

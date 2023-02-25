@@ -9,6 +9,10 @@ export function formatDate(date: string | Date) {
 	return moment(date).locale('es').format('LLL')
 }
 
+export function formatDateLL(date: string | Date) {
+	return moment(date).locale('es').format('LL')
+}
+
 export function formatMiniDate(date: string | Date) {
 	return moment(date).locale('es').format('MM/DD HH:mm')
 }

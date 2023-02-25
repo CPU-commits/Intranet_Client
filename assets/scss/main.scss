@@ -11,6 +11,11 @@
 	box-sizing: border-box;
 }
 
+html {
+	min-height: 100%;
+	position: relative;
+}
+
 body {
     background-color: var(--color-main-light);
 }
@@ -184,7 +189,8 @@ button {
 .ProseMirror img {
     width: 100%;
     max-height: 400px;
-    object-fit: contain;
+	border-radius: 8px;
+    object-fit: cover;
 }
 
 .ProseMirror a {

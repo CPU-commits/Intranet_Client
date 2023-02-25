@@ -26,20 +26,22 @@ if (typeof idNews !== 'string')
 	})
 
 const news = ref<News | null>(null)
-try {
-	const dataFetch = await $newsService.getSingleNews(idNews)
-	news.value = dataFetch
+onMounted(async () => {
+	try {
+		const dataFetch = await $newsService.getSingleNews(idNews)
+		news.value = dataFetch
 
-	title.value = schoolName
-		? `${news.value.title} (editar) - ${schoolName} - Intranet`
-		: `${news.value.title} (editar) - Intranet`
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+		title.value = schoolName
+			? `${news.value.title} (editar) - ${schoolName} - Intranet`
+			: `${news.value.title} (editar) - Intranet`
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 
 // News
 const fileInput = ref<HTMLInputElement | null>(null)

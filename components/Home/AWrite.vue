@@ -69,7 +69,7 @@ function deleteFile(index: number) {
 	<div class="Annoucement_Write">
 		<HTMLForm :form="uploadAnnoucement">
 			<HTMLRich
-				:have-background="false"
+				:have-background="true"
 				placeholder="¿Algo que anunciar?"
 				@build-editor="(e: Editor) => editor = e"
 			/>
@@ -88,11 +88,7 @@ function deleteFile(index: number) {
 				:key="file._id.$oid"
 				class="Annoucement_Write__attached--file"
 			>
-				<HomeFile
-					:file="file"
-					:editable="true"
-					@delete="() => deleteFile(i)"
-				/>
+				<HomeFile :file="file" @delete="() => deleteFile(i)" />
 				<span v-if="i + 1 < filesAttached.length">┈</span>
 			</section>
 		</footer>

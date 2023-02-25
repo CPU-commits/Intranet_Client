@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // Utils
+import { UserTypesKeys } from '~~/models/user/user.model'
 import { intToRoman } from '~~/utils/format'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
@@ -9,12 +10,10 @@ const title = ref(
 		: 'Formulario - Aula Virtual - Intranet',
 )
 // Guard
-/* definePageMeta({
-    middleware: 'role',
-    roles: [
-        UserTypesKeys.TEACHER,
-    ],
-}) */
+definePageMeta({
+	middleware: 'role',
+	roles: [UserTypesKeys.TEACHER],
+})
 // Nuxtapp
 const { $fetchModule } = useNuxtApp()
 // Stores
@@ -42,15 +41,17 @@ onBeforeUnmount(() => {
 })
 
 // Data
-try {
-	await form.getFormStudent(idForm, idStudent)
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+onMounted(async () => {
+	try {
+		await form.getFormStudent(idForm, idStudent)
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 </script>
 
 <template>
