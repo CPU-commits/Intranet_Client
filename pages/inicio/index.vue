@@ -165,10 +165,14 @@ a:hover h2 {
 	padding: 10px;
 	border-radius: 8px;
 	box-sizing: border-box;
+	min-height: 220px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .News h2 {
-	font-size: 1.1rem;
+	font-size: 1.2rem;
 	text-align: center;
 	transition: all 0.4s;
 	margin-bottom: 8px;
@@ -176,11 +180,15 @@ a:hover h2 {
 
 .News img {
 	width: 100%;
+	height: 120px;
+	object-fit: cover;
+	border-radius: 3px;
 }
 
 .News footer {
 	display: flex;
 	flex-direction: column;
+	text-align: center;
 }
 
 .News__author,
