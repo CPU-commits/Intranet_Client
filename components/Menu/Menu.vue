@@ -16,7 +16,7 @@ const auth = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 
-const url = route.path
+const url = ref(route.path)
 // Menu
 const shortName = config.public.SHORT_NAME
 const menuOpen = ref(false)
@@ -25,6 +25,13 @@ watch(
 	() => auth.isAuth,
 	(newValue) => {
 		if (newValue) getVotingStatus()
+	},
+)
+
+watch(
+	() => route.path,
+	(newValue) => {
+		url.value = newValue
 	},
 )
 
