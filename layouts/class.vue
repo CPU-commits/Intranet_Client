@@ -43,22 +43,24 @@ watch(
 	},
 )
 
-try {
-	const dataFetch = await $moduleService.getModule(idModule)
-	_module.value = dataFetch
+onMounted(async () => {
+	try {
+		const dataFetch = await $moduleService.getModule(idModule)
+		_module.value = dataFetch
 
-	moduleName.value = `${_module.value.subject.subject} ${
-		auth.userTypeIs(UserTypesKeys.TEACHER)
-			? `- ${_module.value.section.course.course} ${_module.value.section.section}`
-			: ''
-	}`
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+		moduleName.value = `${_module.value.subject.subject} ${
+			auth.userTypeIs(UserTypesKeys.TEACHER)
+				? `- ${_module.value.section.course.course} ${_module.value.section.section}`
+				: ''
+		}`
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 
 function addSection(section: Section) {
 	if (_module.value) _module.value.sub_sections.push(section)

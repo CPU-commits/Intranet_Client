@@ -16,15 +16,17 @@ const { $fetchModule, $semesterService, $booklifeService } = useNuxtApp()
 const auth = useAuthStore()
 
 const semesters = ref<Array<Semester> | null>(null)
-try {
-	semesters.value = await $semesterService.getSemesters()
-} catch (err) {
-	const _err = $fetchModule.handleError(err)
-	throw createError({
-		..._err,
-		fatal: true,
-	})
-}
+onMounted(async () => {
+	try {
+		semesters.value = await $semesterService.getSemesters()
+	} catch (err) {
+		const _err = $fetchModule.handleError(err)
+		throw createError({
+			..._err,
+			fatal: true,
+		})
+	}
+})
 
 // Selected
 const semester = ref<Semester | null>(null)
