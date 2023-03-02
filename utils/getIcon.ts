@@ -51,7 +51,6 @@ export function getTypeFile(type: string) {
 	)
 		return 'Archivo ZIP | RAR'
 	if (type.includes('text')) return 'Texto'
-	if (type.includes('excel') || type.includes('sheet'))
-		return 'fa-solid fa-file-excel'
-	return 'Excel'
+	if (type.includes('excel') || type.includes('sheet')) return 'Excel'
+	return 'Archivo'
 }
