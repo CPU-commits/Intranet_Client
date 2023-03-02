@@ -270,6 +270,12 @@ function getPointsEvaluated(pattern: string) {
 	gap: 10px;
 }
 
+.File h3 {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
 h4 {
 	width: 100%;
 	padding: 10px;
