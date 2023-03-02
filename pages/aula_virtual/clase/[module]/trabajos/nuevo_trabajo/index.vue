@@ -294,6 +294,7 @@ async function uploadWork() {
 						:id-module="idModule"
 						:edit="true"
 						:file="file"
+						:can-download="true"
 						@delete="() => deleteFile(i)"
 					/>
 					<ClassLink

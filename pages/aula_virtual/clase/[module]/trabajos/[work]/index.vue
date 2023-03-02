@@ -159,6 +159,7 @@ onMounted(async () => {
 							:id-module="idModule"
 							:is-classroom="true"
 							:minimalist="true"
+							:can-download="true"
 							:file="attached.file"
 						/>
 						<ClassLink

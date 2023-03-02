@@ -128,6 +128,7 @@ function getPointsEvaluated(pattern: string) {
 						:id-module="idModule"
 						:id-classroom="true"
 						:edit="!work.is_revised"
+						:can-download="true"
 						:file="file"
 						@delete="() => deleteFile(file._id)"
 					/>

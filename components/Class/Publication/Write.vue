@@ -66,6 +66,7 @@ async function uploadPublication() {
 					:edit="true"
 					:file="file"
 					:is-classroom="true"
+					:can-download="true"
 					@delete="deleteFile(i)"
 				/>
 				<ClassLink

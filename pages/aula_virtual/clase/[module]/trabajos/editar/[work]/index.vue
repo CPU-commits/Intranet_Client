@@ -350,6 +350,7 @@ async function deleteLink(index: number) {
 						:edit="true"
 						:is-classroom="true"
 						:file="file"
+						:can-download="true"
 						@delete="() => deleteFile(i)"
 					/>
 					<ClassLink
