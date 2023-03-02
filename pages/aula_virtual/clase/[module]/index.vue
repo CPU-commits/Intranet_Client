@@ -43,7 +43,8 @@ function getSection() {
 
 watch(
 	() => route.query.section,
-	() => {
+	async () => {
+		await nextTick()
 		_section.value = getSection()
 		replaceData(true)
 	},
@@ -51,6 +52,7 @@ watch(
 
 const error = ref<ErrorFetch | null>(null)
 async function replaceData(total = false, skip = 0, limit?: number) {
+	if (total) publications.value = []
 	let query = `&skip=${skip}&total=${total}`
 	if (limit) query += `&limit=${limit}`
 	try {
