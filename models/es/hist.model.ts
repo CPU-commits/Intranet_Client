@@ -10,7 +10,7 @@ export type Hits = {
 		_score: number
 
 		_source: any
-	}>
+	}> | null
 	max_score: number
 	total: {
 		relation: string

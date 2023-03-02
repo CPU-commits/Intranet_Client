@@ -65,7 +65,8 @@ async function searchFunction() {
 			idModule as string,
 			search.value,
 		)
-		dataFetch.hits.forEach((hit) => {
+		const hits = dataFetch.hits ?? []
+		hits.forEach((hit) => {
 			if (hit._index === 'works')
 				works.value.push({ ...hit._source, _id: hit._id })
 			if (hit._index === 'publications')
