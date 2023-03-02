@@ -40,6 +40,7 @@ watch(
 	},
 	{
 		deep: true,
+		immediate: true,
 	},
 )
 
@@ -121,7 +122,6 @@ onMounted(async () => {
 	// Try to connect to socket
 	// eslint-disable-next-line security-node/detect-crlf, no-console
 	console.log(`WS: Using protocol: ${protocol}`)
-	handleConnectSocket()
 	// Get nofications count
 	try {
 		notificationsNumber.value =
