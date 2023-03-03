@@ -36,6 +36,8 @@ if (auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE))
 watch(
 	() => preferences.value.preferences.app,
 	() => {
+		// eslint-disable-next-line no-console
+		console.log('Handle connect WS')
 		handleConnectSocket()
 	},
 	{
@@ -43,6 +45,11 @@ watch(
 		immediate: true,
 	},
 )
+
+onBeforeUnmount(() => {
+	socket.disconnect()
+	if (socketStudents) socketStudents.disconnect()
+})
 
 // Ref
 const notificationEl = ref<HTMLElement | null>(null)

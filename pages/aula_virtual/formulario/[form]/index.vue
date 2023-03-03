@@ -37,6 +37,7 @@ if (typeof idForm !== 'string')
 onMounted(async () => {
 	try {
 		await form.getForm(idForm)
+		if (form.isWTime && form.getWorkStatus === 'opened') sleep()
 	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		throw createError({
@@ -56,8 +57,6 @@ const modal = ref(false)
 const seconds = ref('')
 // Called
 const called = ref(false)
-
-if (form.isWTime && form.getWorkStatus === 'opened') sleep()
 
 async function sleep() {
 	seconds.value = moment
