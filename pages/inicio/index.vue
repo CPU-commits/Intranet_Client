@@ -79,42 +79,49 @@ function deleteAnnoucement(index: number) {
 		</Head>
 		<!-- Body -->
 		<aside class="Home__last">
-			<!-- eslint-disable vue/no-use-v-if-with-v-for -->
-			<!-- eslint-disable vue/attributes-order -->
-			<NuxtLink
-				v-if="news"
-				v-for="(_news, i) in news"
-				:key="i"
-				:to="`/noticias/${_news.url}`"
-			>
-				<article class="News">
-					<header>
-						<h2>{{ _news.title }}</h2>
-						<NuxtImg
-							:alt="_news.title"
-							preload
-							:src="_news.image.url"
-							@error="$event.target.src = '/img/no_image.svg'"
-						/>
-					</header>
-					<footer>
-						<small>
-							Publicado por:
-							<span class="News__author">
-								<span v-if="_news.author?.name">
-									{{ _news.author.name }}
-									{{ _news.author.first_lastname }}
+			<template v-if="news && news.length > 0">
+				<NuxtLink
+					v-for="(_news, i) in news"
+					:key="i"
+					:to="`/noticias/${_news.url}`"
+				>
+					<article class="News">
+						<header>
+							<h2>{{ _news.title }}</h2>
+							<NuxtImg
+								:alt="_news.title"
+								preload
+								:src="_news.image.url"
+								@error="$event.target.src = '/img/no_image.svg'"
+							/>
+						</header>
+						<footer>
+							<small>
+								Publicado por:
+								<span class="News__author">
+									<span v-if="_news.author?.name">
+										{{ _news.author.name }}
+										{{ _news.author.first_lastname }}
+									</span>
+									<span v-else>
+										<i class="fa-solid fa-robot" /> Noticia
+										autom&aacute;tica
+									</span>
 								</span>
-								<span v-else>
-									<i class="fa-solid fa-robot" /> Noticia
-									autom&aacute;tica
-								</span>
-							</span>
-						</small>
-						<small>{{ formatMiniDate(_news.upload_date) }}</small>
-					</footer>
-				</article>
-			</NuxtLink>
+							</small>
+							<small>{{
+								formatMiniDate(_news.upload_date)
+							}}</small>
+						</footer>
+					</article>
+				</NuxtLink>
+			</template>
+			<figure v-else-if="news && news.length === 0">
+				<NuxtImg src="/img/drag.svg" alt="Dragón escupiendo fuego" />
+				<figcaption>
+					<h5>Sin noticias todav&iacute;a...</h5>
+				</figcaption>
+			</figure>
 			<Error v-else-if="errorNews" :err="errorNews" />
 		</aside>
 		<section class="Home__annoucements">
@@ -238,6 +245,16 @@ a:hover h2 {
 
 .Home__content--figure img {
 	max-width: 600px;
+	width: 100%;
+}
+
+.Home__last figure {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.Home__last img {
 	width: 100%;
 }
 

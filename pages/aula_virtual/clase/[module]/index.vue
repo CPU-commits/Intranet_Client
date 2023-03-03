@@ -33,8 +33,7 @@ const _section = ref(getSection())
 const idModule = route.params.module as string
 
 // Data
-const publications = ref<Array<Publication> | null>(null)
-const tries = ref(0)
+const publications = ref<Map<number, Array<Publication>>>(new Map())
 
 onMounted(() => replaceData(true))
 
@@ -60,12 +59,12 @@ async function replaceData(total = false, skip = 0, limit?: number) {
 			_section.value,
 			query,
 		)
-		if (!publications.value || total) {
-			// eslint-disable-next-line no-console, security-node/detect-crlf
-			console.log(dataFetch.publications, publications.value)
-			if (tries.value === 0) publications.value = dataFetch.publications
-			tries.value++
-		} else publications.value.push(...dataFetch.publications)
+		if (total)
+			publications.value.set(_section.value, dataFetch.publications)
+		else
+			publications.value
+				.get(_section.value)
+				?.push(...dataFetch.publications)
 		if (total)
 			onScroll({
 				total: dataFetch.total,
@@ -84,11 +83,13 @@ async function replaceData(total = false, skip = 0, limit?: number) {
 }
 
 function newPublication(publication: Publication) {
-	if (publications.value) publications.value.unshift(publication)
+	if (publications.value)
+		publications.value.get(_section.value)?.unshift(publication)
 }
 
 function deletePublication(index: number) {
-	if (publications.value) publications.value.splice(index, 1)
+	if (publications.value)
+		publications.value.get(_section.value)?.splice(index, 1)
 }
 </script>
 
@@ -110,9 +111,9 @@ function deletePublication(index: number) {
 						@newPublication="(p: Publication) => newPublication(p)"
 					/>
 				</div>
-				<template v-if="publications && publications.length > 0">
+				<template v-if="publications.get(_section)?.length ?? 0 > 0">
 					<ClassPublication
-						v-for="(publication, i) in publications"
+						v-for="(publication, i) in publications.get(_section)"
 						:key="publication._id"
 						:can-edit="auth.userTypeIs(UserTypesKeys.TEACHER)"
 						:id-module="idModule"
@@ -121,7 +122,7 @@ function deletePublication(index: number) {
 					/>
 				</template>
 				<div
-					v-if="publications && publications.length === 0"
+					v-if="publications.get(_section)?.length ?? 0 === 0"
 					class="Empty"
 				>
 					<img src="/img/empty.svg" alt="Contenido Vacío" />
