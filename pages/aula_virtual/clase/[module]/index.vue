@@ -45,7 +45,8 @@ watch(
 	() => route.query.section,
 	() => {
 		_section.value = getSection()
-		replaceData(true)
+		console.log(_section.value)
+		// replaceData(true)
 	},
 )
 
