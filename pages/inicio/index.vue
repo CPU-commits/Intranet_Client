@@ -256,6 +256,7 @@ a:hover h2 {
 
 .Home__last img {
 	width: 100%;
+	min-width: 400px;
 }
 
 @media (max-width: 767.98px) {
