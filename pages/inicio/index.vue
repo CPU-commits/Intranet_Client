@@ -56,7 +56,7 @@ async function getAnnoucements(total = false, skip = 0, limit = 20) {
 	const dataFetch = await $homeService.getAnnoucements(total, skip, limit)
 	if (total || !annoucements.value)
 		annoucements.value = dataFetch.annoucements
-	else annoucements.value.push(...dataFetch.annoucements)
+	else annoucements.value.push(...(dataFetch.annoucements ?? []))
 	return dataFetch
 }
 

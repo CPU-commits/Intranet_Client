@@ -11,7 +11,7 @@ export class HomeService {
 		const query = `?total=${total}&skip=${skip}&limit=${limit}`
 		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
 			BodyFetch<{
-				annoucements: Array<Annoucement>
+				annoucements: Array<Annoucement> | null
 				total: number
 			}> &
 				DefaultResponse
