@@ -43,8 +43,7 @@ function getSection() {
 
 watch(
 	() => route.query.section,
-	async () => {
-		await nextTick()
+	() => {
 		_section.value = getSection()
 		replaceData(true)
 	},
@@ -108,7 +107,7 @@ function deletePublication(index: number) {
 						@newPublication="(p: Publication) => newPublication(p)"
 					/>
 				</div>
-				<template v-if="publications">
+				<template v-if="publications && publications.length > 0">
 					<ClassPublication
 						v-for="(publication, i) in publications"
 						:key="publication._id"
