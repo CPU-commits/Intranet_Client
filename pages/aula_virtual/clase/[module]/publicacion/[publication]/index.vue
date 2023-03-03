@@ -44,14 +44,16 @@ if (typeof idPublication !== 'string')
 const publication = ref<Publication | null>(null)
 
 const error = ref<ErrorFetch | null>(null)
-try {
-	publication.value = await $publicationsService.getPublication(
-		idModule,
-		idPublication,
-	)
-} catch (err) {
-	error.value = $fetchModule.handleError(err)
-}
+onMounted(async () => {
+	try {
+		publication.value = await $publicationsService.getPublication(
+			idModule,
+			idPublication,
+		)
+	} catch (err) {
+		error.value = $fetchModule.handleError(err)
+	}
+})
 </script>
 
 <template>

@@ -36,7 +36,7 @@ export class PublicationsService {
 				DefaultResponse
 		>({
 			method: 'get',
-			URL: `/api/classroom/publications/get_publication/${idModule}/${idPublication}`,
+			URL: `/api/c/classroom/publications/get_publication/${idModule}/${idPublication}`,
 			spinnerStatus: true,
 			token: this.authStore.getToken,
 		})
