@@ -91,7 +91,7 @@ function handleConnectSocket() {
 	// Global socket
 	const { globals, classroom, customs } = preferences.value.preferences.app
 	if (globals || customs)
-		socket.on('notify/global', () => {
+		socket.once('notify/global', () => {
 			notificationsNumber.value++
 		})
 	else if (!globals && !customs) socket.removeAllListeners('notify/global')
@@ -103,7 +103,7 @@ function handleConnectSocket() {
 		) &&
 		classroom
 	) {
-		socketStudents.on('notify/students', () => {
+		socketStudents.once('notify/students', () => {
 			notificationsNumber.value++
 		})
 	} else if (

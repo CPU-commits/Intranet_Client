@@ -45,6 +45,7 @@ watch(
 	() => route.query.section,
 	() => {
 		_section.value = getSection()
+		// eslint-disable-next-line no-console, security-node/detect-crlf
 		console.log(_section.value)
 		// replaceData(true)
 	},
