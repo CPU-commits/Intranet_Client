@@ -126,17 +126,14 @@ function deletePublication(index: number) {
 							@delete="() => deletePublication(i)"
 						/>
 					</template>
+					<div v-else class="Empty">
+						<img src="/img/empty.svg" alt="Contenido Vacío" />
+						<span>
+							Parece que est&aacute; todo vac&iacute;o por
+							aqu&iacute;...
+						</span>
+					</div>
 				</ClientOnly>
-				<div
-					v-if="publications.get(_section)?.length ?? 0 === 0"
-					class="Empty"
-				>
-					<img src="/img/empty.svg" alt="Contenido Vacío" />
-					<span>
-						Parece que est&aacute; todo vac&iacute;o por
-						aqu&iacute;...
-					</span>
-				</div>
 				<SpinnerGet />
 				<Error v-if="error" :err="error" />
 			</section>
