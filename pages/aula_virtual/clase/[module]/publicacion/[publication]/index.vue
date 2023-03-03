@@ -78,5 +78,8 @@ onMounted(async () => {
 <style scoped>
 .Publication {
 	margin: 20px;
+	widows: 100%;
+	max-width: 800px;
+	box-sizing: border-box;
 }
 </style>

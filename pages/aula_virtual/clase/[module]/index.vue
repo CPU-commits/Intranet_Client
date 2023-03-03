@@ -108,15 +108,16 @@ function deletePublication(index: number) {
 						@newPublication="(p: Publication) => newPublication(p)"
 					/>
 				</div>
-				<ClassPublication
-					v-for="(publication, i) in publications"
-					v-show="publications"
-					:key="publication._id"
-					:can-edit="auth.userTypeIs(UserTypesKeys.TEACHER)"
-					:id-module="idModule"
-					:publication="publication"
-					@delete="() => deletePublication(i)"
-				/>
+				<template v-if="publications">
+					<ClassPublication
+						v-for="(publication, i) in publications"
+						:key="publication._id"
+						:can-edit="auth.userTypeIs(UserTypesKeys.TEACHER)"
+						:id-module="idModule"
+						:publication="publication"
+						@delete="() => deletePublication(i)"
+					/>
+				</template>
 				<div
 					v-if="publications && publications.length === 0"
 					class="Empty"

@@ -119,7 +119,7 @@ async function searchFunction() {
 						<h3>#Publicaci&oacute;n</h3>
 					</header>
 				</NuxtLink>
-				<pre>{{ publication.content }}</pre>
+				<p>{{ publication.content }}</p>
 				<footer>
 					<small>
 						Publicado por
