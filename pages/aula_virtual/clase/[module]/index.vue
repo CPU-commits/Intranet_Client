@@ -34,6 +34,7 @@ const idModule = route.params.module as string
 
 // Data
 const publications = ref<Array<Publication> | null>(null)
+const tries = ref(0)
 
 onMounted(() => replaceData(true))
 
@@ -45,15 +46,12 @@ watch(
 	() => route.query.section,
 	() => {
 		_section.value = getSection()
-		// eslint-disable-next-line no-console, security-node/detect-crlf
-		console.log(_section.value)
-		// replaceData(true)
+		replaceData(true)
 	},
 )
 
 const error = ref<ErrorFetch | null>(null)
 async function replaceData(total = false, skip = 0, limit?: number) {
-	if (total) publications.value = []
 	let query = `&skip=${skip}&total=${total}`
 	if (limit) query += `&limit=${limit}`
 	try {
@@ -62,9 +60,12 @@ async function replaceData(total = false, skip = 0, limit?: number) {
 			_section.value,
 			query,
 		)
-		if (!publications.value || total)
-			publications.value = dataFetch.publications
-		else publications.value.push(...dataFetch.publications)
+		if (!publications.value || total) {
+			// eslint-disable-next-line no-console, security-node/detect-crlf
+			console.log(dataFetch.publications, publications.value)
+			if (tries.value === 0) publications.value = dataFetch.publications
+			tries.value++
+		} else publications.value.push(...dataFetch.publications)
 		if (total)
 			onScroll({
 				total: dataFetch.total,
