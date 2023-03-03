@@ -345,7 +345,7 @@ async function deleteLink(index: number) {
 				<section class="Attached">
 					<CloudFile
 						v-for="(file, i) in filesAttached"
-						:key="file._id.$oid"
+						:key="getFileID(file._id)"
 						:id-module="idModule"
 						:edit="true"
 						:is-classroom="true"

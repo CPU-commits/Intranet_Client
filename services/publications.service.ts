@@ -68,7 +68,7 @@ export class PublicationsService {
 				...filesAttached.map((file) => {
 					return {
 						type: 'file',
-						file: file._id.$oid,
+						file: getFileID(file._id),
 					}
 				}),
 			]

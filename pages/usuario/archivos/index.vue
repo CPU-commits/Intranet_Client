@@ -57,7 +57,7 @@ async function deleteFile(idFile: string) {
 	const deleted = await $filesService.deleteFile(idFile)
 	if (deleted && userFiles.value)
 		userFiles.value = userFiles.value.filter(
-			(file) => file._id.$oid !== idFile,
+			(file) => getFileID(file._id) !== idFile,
 		)
 }
 
@@ -105,7 +105,7 @@ function changePermissions(index: number, idFile: string) {
 				]"
 			>
 				<!-- eslint-disable-next-line vue/no-template-shadow -->
-				<tr v-for="(file, i) in userFiles" :key="file._id.$oid">
+				<tr v-for="(file, i) in userFiles" :key="getFileID(file._id)">
 					<td>{{ file.title }}</td>
 					<td>
 						<i :class="getIcon(file.type)" class="icon" />
@@ -119,7 +119,9 @@ function changePermissions(index: number, idFile: string) {
                                     permissionsInput[i] = (e as ComponentPublicInstance).$el
                             }"
 							v-model:value="file.permissions"
-							:change="() => changePermissions(i, file._id.$oid)"
+							:change="
+								() => changePermissions(i, getFileID(file._id))
+							"
 						>
 							<option value="private">Privado</option>
 							<option value="public">P&uacute;blico</option>
@@ -132,14 +134,14 @@ function changePermissions(index: number, idFile: string) {
 					<td>
 						<HTMLButtonIcon
 							type="button"
-							:click="() => downloadFile(file._id.$oid)"
+							:click="() => downloadFile(getFileID(file._id))"
 							class-item="fa-solid fa-file-arrow-down"
 						/>
 					</td>
 					<td>
 						<HTMLButtonIcon
 							type="button"
-							:click="() => deleteFile(file._id.$oid)"
+							:click="() => deleteFile(getFileID(file._id))"
 							class-item="fa-solid fa-minus"
 						/>
 					</td>

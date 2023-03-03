@@ -220,7 +220,7 @@ export class WorkService {
 					...filesAttached.map((file) => {
 						return {
 							type: 'file',
-							file: file._id.$oid,
+							file: getFileID(file._id),
 						}
 					}),
 					...linksAttached.map((link) => {
@@ -369,7 +369,7 @@ export class WorkService {
 			attached: [
 				...filesAttached.map((file) => {
 					return {
-						file: file._id.$oid ? file._id.$oid : file._id,
+						file: getFileID(file._id),
 						type: 'file',
 					}
 				}),

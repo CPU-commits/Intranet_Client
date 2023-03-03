@@ -289,7 +289,7 @@ async function uploadWork() {
 				<section class="Attached">
 					<CloudFile
 						v-for="(file, i) in filesAttached"
-						:key="file._id.$oid"
+						:key="getFileID(file._id)"
 						:is-classroom="true"
 						:id-module="idModule"
 						:edit="true"

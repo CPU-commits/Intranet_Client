@@ -34,11 +34,13 @@ async function downloadFile() {
 		let urlToken: string | undefined
 		if (props.isClassroom && props.idModule) {
 			urlToken = await $filesService.downloadFileClassroom(
-				props.file._id.$oid,
+				getFileID(props.file._id),
 				props.idModule,
 			)
 		} else {
-			urlToken = await $filesService.downloadFile(props.file._id.$oid)
+			urlToken = await $filesService.downloadFile(
+				getFileID(props.file._id),
+			)
 		}
 		// Download
 		if (urlToken !== undefined) $filesService.downloadFileUrl(urlToken)
@@ -48,14 +50,7 @@ async function downloadFile() {
 
 <template>
 	<article v-if="!minimalist" class="File">
-		<div
-			class="File__container"
-			@click="
-				{
-					downloadFile
-				}
-			"
-		>
+		<div class="File__container" @click="downloadFile">
 			<header>
 				<i :class="getIcon(file.type)" />
 			</header>
@@ -66,20 +61,12 @@ async function downloadFile() {
 		</div>
 		<aside v-if="edit">
 			<HTMLButtonIcon
-				:click="() => $emit('delete', file._id.$oid)"
+				:click="() => $emit('delete', getFileID(file._id))"
 				class-item="fa-solid fa-xmark"
 			/>
 		</aside>
 	</article>
-	<article
-		v-else
-		class="FileMin"
-		@click="
-			{
-				downloadFile
-			}
-		"
-	>
+	<article v-else class="FileMin" @click="downloadFile">
 		<span>┈</span>
 		<i :class="getIcon(file.type)" />
 		<h4>{{ file.title }}</h4>

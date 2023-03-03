@@ -61,7 +61,7 @@ async function uploadFiles() {
 
 // $oid undefined, id is the real _id
 
-async function deleteFile(id: any) {
+async function deleteFile(id: string) {
 	const deleted = await $workService.deleteFileWork(id, work._id)
 	if (deleted)
 		files_uploaded.files_uploaded = files_uploaded.files_uploaded.filter(
@@ -130,7 +130,7 @@ function getPointsEvaluated(pattern: string) {
 						:edit="!work.is_revised"
 						:can-download="true"
 						:file="file"
-						@delete="() => deleteFile(file._id)"
+						@delete="() => deleteFile(getFileID(file._id))"
 					/>
 					<span v-else>Sin archivos subidos...</span>
 				</div>

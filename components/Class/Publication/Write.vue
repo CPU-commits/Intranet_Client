@@ -61,7 +61,7 @@ async function uploadPublication() {
 				<h4><i class="fa-solid fa-thumbtack" /> Adjuntos</h4>
 				<CloudFile
 					v-for="(file, i) in filesAttached"
-					:key="file._id.$oid"
+					:key="getFileID(file._id)"
 					:id-module="idModule"
 					:edit="true"
 					:file="file"

@@ -110,6 +110,7 @@ async function editPublication() {
 					:id-module="idModule"
 					:file="attached.file"
 					:can-download="true"
+					:is-classroom="true"
 					@delete="() => deleteAttached(attached._id)"
 				/>
 				<ClassLink

@@ -71,7 +71,7 @@ function addFile(index: number) {
 		<section class="Files">
 			<div
 				v-for="(file, i) in files"
-				:key="file._id.$oid"
+				:key="getFileID(file._id)"
 				class="File"
 				@click="() => addFile(i)"
 			>

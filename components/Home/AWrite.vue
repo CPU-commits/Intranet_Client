@@ -29,7 +29,7 @@ async function uploadAnnoucement() {
 			throw new Error('Debe escribir algo a anunciar')
 		const idInserted = await $homeService.uploadAnnoucement(
 			editor.value?.getHTML() ?? '',
-			filesAttached.value.map((file) => file._id.$oid),
+			filesAttached.value.map((file) => getFileID(file._id)),
 		)
 		if (idInserted !== undefined) {
 			// Push annoucement
@@ -85,7 +85,7 @@ function deleteFile(index: number) {
 		<footer class="Annoucement_Write__attached">
 			<section
 				v-for="(file, i) in filesAttached"
-				:key="file._id.$oid"
+				:key="getFileID(file._id)"
 				class="Annoucement_Write__attached--file"
 			>
 				<HomeFile :file="file" @delete="() => deleteFile(i)" />

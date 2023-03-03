@@ -54,7 +54,7 @@ async function deleteAnnoucement() {
 			<footer class="Annoucement__body--footer">
 				<section
 					v-for="(file, i) in annoucement?.files"
-					:key="file._id.$oid"
+					:key="getFileID(file._id)"
 				>
 					<HomeFile :file="file" />
 					<span v-if="i + 1 < annoucement.files.length">┈</span>

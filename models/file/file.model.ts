@@ -1,7 +1,7 @@
 import type { OID } from '../oid.model'
 
 export interface UserFile {
-	_id: OID
+	_id: OID | string
 	filename: string
 	key: string
 	title: string
