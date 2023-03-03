@@ -65,7 +65,7 @@ async function searchFunction() {
 			idModule as string,
 			search.value,
 		)
-		const hits = dataFetch.hits ?? []
+		const hits = dataFetch?.hits ?? []
 		hits.forEach((hit) => {
 			if (hit._index === 'works')
 				works.value.push({ ...hit._source, _id: hit._id })
