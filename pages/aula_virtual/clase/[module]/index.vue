@@ -108,11 +108,9 @@ function deletePublication(index: number) {
 						@newPublication="(p: Publication) => newPublication(p)"
 					/>
 				</div>
-				<!-- eslint-disable vue/no-use-v-if-with-v-for -->
-				<!-- eslint-disable vue/attributes-order -->
 				<ClassPublication
-					v-if="publications"
 					v-for="(publication, i) in publications"
+					v-show="publications"
 					:key="publication._id"
 					:can-edit="auth.userTypeIs(UserTypesKeys.TEACHER)"
 					:id-module="idModule"
