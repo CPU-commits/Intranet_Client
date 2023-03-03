@@ -129,12 +129,23 @@ function deleteAnnoucement(index: number) {
 				@newAnnoucement="(a) => newAnnoucement(a)"
 			/>
 			<div class="Home__annoucements--content">
-				<LazyHomeAnnoucement
-					v-for="(annoucement, i) in annoucements"
-					:key="annoucement._id"
-					:annoucement="annoucement"
-					@delete="() => deleteAnnoucement(i)"
-				/>
+				<template v-if="annoucements && annoucements.length > 0">
+					<LazyHomeAnnoucement
+						v-for="(annoucement, i) in annoucements"
+						:key="annoucement._id"
+						:annoucement="annoucement"
+						@delete="() => deleteAnnoucement(i)"
+					/>
+				</template>
+				<figure
+					v-else-if="annoucements && annoucements.length === 0"
+					class="Home__content--figure"
+				>
+					<NuxtImg src="/img/no-found.svg" alt="Minero perdido" />
+					<figcaption>
+						<h4>No se han encontrado publicaciones</h4>
+					</figcaption>
+				</figure>
 			</div>
 
 			<SpinnerGet />
@@ -216,6 +227,18 @@ a:hover h2 {
 	align-items: center;
 	flex-direction: column;
 	gap: 40px;
+}
+
+.Home__content--figure {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.Home__content--figure img {
+	max-width: 600px;
+	width: 100%;
 }
 
 @media (max-width: 767.98px) {
