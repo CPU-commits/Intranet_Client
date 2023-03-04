@@ -31,7 +31,11 @@ if (auth.userTypeIs(UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE))
 		extraHeaders: {
 			Authorization: auth.getToken ?? '',
 		},
-	})
+	}).connect()
+const connected = ref({
+	global: false,
+	students: false,
+})
 
 watch(
 	() => preferences.value.preferences.app,
@@ -90,22 +94,31 @@ function handleConnectSocket() {
 	// Try to connect
 	// Global socket
 	const { globals, classroom, customs } = preferences.value.preferences.app
-	if (globals || customs)
-		socket.once('notify/global', () => {
+	if (
+		(globals && !connected.value.global) ||
+		(customs && !connected.value.global)
+	) {
+		socket.on('notify/global', () => {
 			notificationsNumber.value++
 		})
-	else if (!globals && !customs) socket.removeAllListeners('notify/global')
+		connected.value.global = true
+	} else if (!globals && !customs) {
+		socket.removeAllListeners('notify/global')
+		connected.value.global = false
+	}
 	/* Students socket */
 	if (
 		auth.userTypeIs(
 			UserTypesKeys.STUDENT,
 			UserTypesKeys.STUDENT_DIRECTIVE,
 		) &&
-		classroom
+		classroom &&
+		!connected.value.students
 	) {
-		socketStudents.once('notify/students', () => {
+		socketStudents.on('notify/students', () => {
 			notificationsNumber.value++
 		})
+		connected.value.students = true
 	} else if (
 		auth.userTypeIs(
 			UserTypesKeys.STUDENT,
@@ -115,6 +128,7 @@ function handleConnectSocket() {
 		!customs
 	) {
 		socketStudents.removeAllListeners('notify/students')
+		connected.value.students = false
 	}
 }
 

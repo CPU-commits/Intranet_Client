@@ -47,7 +47,7 @@ onMounted(async () => {
 	}
 })
 
-onBeforeUnmount(() => {
+onUnmounted(() => {
 	form.$reset()
 })
 
