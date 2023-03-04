@@ -117,7 +117,11 @@ function deleteAnnoucement(index: number) {
 				</NuxtLink>
 			</template>
 			<figure v-else-if="news && news.length === 0">
-				<NuxtImg src="/img/drag.svg" alt="Dragón escupiendo fuego" />
+				<NuxtImg
+					class="Home__last--drag"
+					src="/img/drag.svg"
+					alt="Dragón escupiendo fuego"
+				/>
 				<figcaption>
 					<h5>Sin noticias todav&iacute;a...</h5>
 				</figcaption>
@@ -254,7 +258,7 @@ a:hover h2 {
 	align-items: center;
 }
 
-.Home__last img {
+.Home__last--drag {
 	width: 100%;
 	min-width: 400px;
 }
