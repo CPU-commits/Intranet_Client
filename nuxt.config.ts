@@ -1,4 +1,4 @@
-import eslint from 'vite-plugin-eslint'
+// import eslint from 'vite-plugin-eslint'
 import { Logger } from './utils/logs'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
@@ -44,7 +44,7 @@ export default defineNuxtConfig({
 	modules: [
 		'@nuxt/image-edge',
 		'@nuxt/content',
-		'@kevinmarrec/nuxt-pwa',
+		'@vite-pwa/nuxt',
 		'@pinia/nuxt',
 		'nuxt-security',
 		'@sidebase/nuxt-session',
@@ -81,7 +81,7 @@ export default defineNuxtConfig({
 				},
 			},
 		},
-		plugins: [eslint()],
+		// plugins: [eslint()],
 	},
 	app: {
 		head: {
@@ -118,13 +118,34 @@ export default defineNuxtConfig({
 		},
 	},
 	pwa: {
+		includeAssets: ['icon.png'],
 		manifest: {
-			name: `${process.env.COLLEGE_NAME} Intranet`,
-			short_name: `${process.env.COLLEGE_SHORT_NAME} Intr.`,
-			description: `Intranet del colegio ${process.env.COLLEGE_NAME}`,
+			name: `Intranet`,
+			short_name: `Intr.`,
+			description: `Intranet de Colegio`,
 			theme_color: '#5867e8',
 			background_color: '#f8faff',
 			lang: 'es',
+			icons: [
+				{
+					src: 'icon.png',
+					sizes: '192x192',
+					type: 'image/png',
+				},
+				{
+					src: 'icon.png',
+					sizes: '512x512',
+					type: 'image/png',
+				},
+			],
+		},
+		registerType: 'autoUpdate',
+		workbox: {
+			globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+		},
+		devOptions: {
+			enabled: true,
+			type: 'module',
 		},
 	},
 	security: {

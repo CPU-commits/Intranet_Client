@@ -15,7 +15,7 @@ watch(
 <template>
 	<footer
 		class="Footer"
-		:class="{ Footer__news: path.includes('/noticias') }"
+		:class="{ Footer__news: path.startsWith('/noticias') }"
 	>
 		<div class="Footer__gobernalle">
 			<h2>Gobernalle Intranet</h2>
