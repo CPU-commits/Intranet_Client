@@ -1,32 +1,37 @@
 /* eslint-disable import/no-named-as-default-member */
-import moment from 'moment'
 // eslint-disable-next-line import/default
 import pkg from 'roman-numerals'
+import dayjs from 'dayjs'
+import 'dayjs/locale/es'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { UserTypes, UserTypesKeys } from '~~/models/user/user.model'
 const { toRoman } = pkg
 
+dayjs.locale('es')
+dayjs.extend(relativeTime)
+
 export function formatDate(date: string | Date) {
-	return moment(date).locale('es').format('LLL')
+	return capitalizeFirstLetter(dayjs(date).format('MMMM DD, YYYY h:mm A'))
 }
 
 export function formatDateLL(date: string | Date) {
-	return moment(date).locale('es').format('LL')
+	return capitalizeFirstLetter(dayjs(date).format('MMMM DD, YYYY'))
 }
 
 export function formatMiniDate(date: string | Date) {
-	return moment(date).locale('es').format('MM/DD HH:mm')
+	return dayjs(date).format('MM/DD HH:mm')
 }
 
 export function timeAgo(date: string | Date) {
-	return moment(date).locale('es').fromNow()
+	return dayjs(date).fromNow()
 }
 
 export function removeTime(date: string | Date) {
-	return moment(date).locale('es').startOf('day').format('YYYY-MM-DD')
+	return dayjs(date).startOf('day').format('YYYY-MM-DD')
 }
 
 export function getOnlyTime(date: string | Date) {
-	return moment(date).locale('es').format('HH:mm')
+	return dayjs(date).format('HH:mm')
 }
 
 export function secondsToHoursFormat(seconds: number) {
@@ -58,11 +63,11 @@ export function urlify(text: string) {
 }
 
 export function formatDateUTC(date: string | Date) {
-	return moment(date).locale('es').format('YYYY-MM-DD HH:mm')
+	return dayjs(date).format('YYYY-MM-DD HH:mm')
 }
 
 export function formateDateInput(date: string | Date) {
-	return moment(date).format('YYYY-MM-DD')
+	return dayjs(date).format('YYYY-MM-DD')
 }
 
 export function intToChar(int: number) {

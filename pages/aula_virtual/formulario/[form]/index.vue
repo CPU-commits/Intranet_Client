@@ -1,7 +1,8 @@
 <!-- eslint-disable import/no-named-as-default-member -->
 <script setup lang="ts">
-// Moment
-import moment from 'moment'
+// Dayjs
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 // Types
 import { UserTypesKeys } from '~~/models/user/user.model'
 import { intToRoman } from '~~/utils/format'
@@ -24,6 +25,8 @@ const form = useFormStore()
 // Router
 const router = useRouter()
 const route = useRoute()
+
+dayjs.extend(duration)
 
 const idForm = route.params.form
 if (typeof idForm !== 'string')
@@ -59,13 +62,13 @@ const seconds = ref('')
 const called = ref(false)
 
 async function sleep() {
-	seconds.value = moment
-		.utc(moment(form.getDateLimit).diff(moment(new Date())))
-		.format('HH:mm:ss')
+	seconds.value = dayjs
+		.duration(dayjs(new Date()).add(1, 'hour').diff(new Date()))
+		.format('HH:mm')
 	while (seconds.value !== '00:00:00') {
-		seconds.value = moment
-			.utc(moment(form.getDateLimit).diff(moment(new Date())))
-			.format('HH:mm:ss')
+		seconds.value = dayjs
+			.duration(dayjs(new Date()).add(1, 'hour').diff(new Date()))
+			.format('HH:mm')
 		await setSeconds()
 	}
 	finishForm()

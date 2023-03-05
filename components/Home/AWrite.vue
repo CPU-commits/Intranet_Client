@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// Moment
-import moment from 'moment'
 // Types
 import type { Editor } from '@tiptap/core'
 import type { UserFile } from '~~/models/file/file.model'
@@ -37,7 +35,7 @@ async function uploadAnnoucement() {
 				name: auth.getName,
 				first_lastname: '',
 			} as User
-			const now = moment().toDate()
+			const now = new Date()
 			const annoucementData = {
 				_id: idInserted,
 				annoucement,
