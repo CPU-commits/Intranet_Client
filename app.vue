@@ -12,7 +12,7 @@ useHead({
 		<VitePwaManifest />
 		<NuxtPage />
 		<ClientOnly>
-			<Offline />
+			<Offline v-if="$pwa?.offlineReady" />
 		</ClientOnly>
 	</NuxtLayout>
 </template>
