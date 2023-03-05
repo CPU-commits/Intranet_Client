@@ -19,7 +19,7 @@ watch(opened, (newValue) => {
 // Ref
 const scroll = ref(0)
 const content: Ref<HTMLElement | null> = ref(null)
-const aside: Ref<HTMLElement | null> = ref(null)
+const asideEl: Ref<HTMLElement | null> = ref(null)
 const emits = defineEmits(['update:opened'])
 
 onUpdated(() => {
@@ -29,8 +29,8 @@ onUpdated(() => {
 
 	scroll.value = D.scrollTop
 
-	if (aside.value) {
-		aside.value.style.setProperty('--top', `${scroll.value}px`)
+	if (asideEl.value) {
+		asideEl.value.style.setProperty('--top', `${scroll.value}px`)
 	}
 })
 
