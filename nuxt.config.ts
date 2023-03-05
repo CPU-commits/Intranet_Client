@@ -1,9 +1,10 @@
-// import eslint from 'vite-plugin-eslint'
+import eslint from 'vite-plugin-eslint'
 import { Logger } from './utils/logs'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
 	runtimeConfig: {
+		iconURL: '',
 		// Public
 		public: {
 			API: 'http://localhost:8080',
@@ -81,7 +82,7 @@ export default defineNuxtConfig({
 				},
 			},
 		},
-		// plugins: [eslint()],
+		plugins: [eslint()],
 	},
 	app: {
 		head: {
@@ -142,10 +143,6 @@ export default defineNuxtConfig({
 		registerType: 'autoUpdate',
 		workbox: {
 			globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-		},
-		devOptions: {
-			enabled: true,
-			type: 'module',
 		},
 	},
 	security: {
