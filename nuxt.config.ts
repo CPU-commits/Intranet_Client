@@ -90,6 +90,29 @@ export default defineNuxtConfig({
 			htmlAttrs: {
 				lang: 'es',
 			},
+			link: [
+				{
+					rel: 'icon',
+					type: 'image/png',
+					href: '/icon.png',
+				},
+				{
+					rel: 'apple-touch-icon',
+					href: '/icon.png',
+					sizes: 'any',
+				},
+				{
+					rel: 'mask-icon',
+					href: '/icon.png',
+					color: '#FFFFFF',
+				},
+			],
+			meta: [
+				{
+					name: 'theme-color',
+					content: '#5867e8',
+				},
+			],
 		},
 	},
 	hooks: {
@@ -140,9 +163,11 @@ export default defineNuxtConfig({
 				},
 			],
 		},
+		strategies: 'generateSW',
 		registerType: 'autoUpdate',
 		workbox: {
-			globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+			globPatterns: ['**/*.{js,css,ico,png,svg}'],
+			navigateFallback: null,
 		},
 	},
 	security: {

@@ -71,6 +71,9 @@ onMounted(() => {
 		<!-- Head -->
 		<Head>
 			<Title>{{ title }}</Title>
+			<Meta name="description">
+				Portal Intranet del colegio {{ schoolName }}
+			</Meta>
 		</Head>
 		<!-- Body -->
 		<div class="Session__content">
