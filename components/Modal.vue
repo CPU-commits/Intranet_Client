@@ -46,7 +46,7 @@ const closeModal = () => {
 
 <template>
 	<Teleport to="body">
-		<aside v-if="opened" ref="aside" class="Modal">
+		<aside v-if="opened" ref="asideEl" class="Modal">
 			<div ref="content" class="Modal__container">
 				<section>
 					<header class="Modal__header">
