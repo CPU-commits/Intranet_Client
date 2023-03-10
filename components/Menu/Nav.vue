@@ -10,7 +10,7 @@ const config = useRuntimeConfig()
 // Router
 const route = useRoute()
 
-const shortName = config.public.SHORT_NAME
+const shortName = config.public.SHORT_NAME.toUpperCase()
 const url = ref(route.path)
 watch(
 	() => route.path,

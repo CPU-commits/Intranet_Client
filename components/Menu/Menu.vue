@@ -18,7 +18,7 @@ const route = useRoute()
 
 const url = ref(route.path)
 // Menu
-const shortName = config.public.SHORT_NAME
+const shortName = config.public.SHORT_NAME.toUpperCase()
 const menuOpen = ref(false)
 
 watch(
