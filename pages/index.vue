@@ -24,6 +24,7 @@ const { $fetchModule } = useNuxtApp()
 // Stores
 const auth = useAuthStore()
 const toasts = useToastsStore()
+const consent = ref(true)
 // Router
 const router = useRouter()
 const route = useRoute()
@@ -63,6 +64,7 @@ onMounted(() => {
 			type: resetValue ? 'success' : 'error',
 		})
 	}
+	consent.value = useConsent().value
 })
 </script>
 
@@ -86,11 +88,15 @@ onMounted(() => {
 					v-model:value="userForm.password"
 					type="password"
 				/>
-				<HTMLButton type="submit">Iniciar sesi&oacute;n</HTMLButton>
+				<HTMLButton type="submit"> Iniciar sesi&oacute;n </HTMLButton>
 				<footer>
 					<NuxtLink to="/recuperar_contrasena">
 						¿Olvidaste tu contraseña?
 					</NuxtLink>
+					<div>
+						<i class="fa-solid fa-cookie"></i>
+						<NuxtLink to="/cookies"> Cookies</NuxtLink>
+					</div>
 				</footer>
 			</HTMLForm>
 		</div>
@@ -113,11 +119,25 @@ onMounted(() => {
 
 footer {
 	border-top: 1px solid var(--color-light);
-	padding-top: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 a {
 	color: var(--color-main);
 	margin-top: 10px;
+}
+
+@media (max-width: 575.98px) {
+	.Session {
+		width: 100%;
+		box-sizing: border-box;
+		margin: 0;
+		.Session__content {
+			width: 100%;
+			margin: 15px;
+		}
+	}
 }
 </style>

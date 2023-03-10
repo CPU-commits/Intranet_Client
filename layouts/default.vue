@@ -1,6 +1,22 @@
 <script setup lang="ts">
 import Toasts from '~~/components/Toast/Toasts.vue'
 const spinner = useSpinner()
+
+watch(
+	() => useConsent(),
+	async (newValue) => {
+		if (!newValue.value) {
+			// Destroy session
+			const { remove } = await useSession()
+			await remove()
+			// Goto index
+			location.replace('/')
+		} else {
+			const { refresh } = await useSession()
+			await refresh()
+		}
+	},
+)
 </script>
 
 <template>
@@ -17,6 +33,9 @@ const spinner = useSpinner()
 			<slot />
 		</main>
 		<Footer />
+		<ClientOnly>
+			<Cookies />
+		</ClientOnly>
 	</div>
 </template>
 

@@ -5,6 +5,10 @@ useHead({
 	},
 	title: 'Intranet',
 })
+
+onMounted(() => {
+	import('@/pwa')
+})
 </script>
 
 <template>

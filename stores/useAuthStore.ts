@@ -67,12 +67,20 @@ const useAuthStore = defineStore('auth', {
 			this.user = null
 		},
 		async logIn(userForm: { rut: string; password: string }) {
-			const dataFetch = await logIn(userForm)
-			this.setAuth({
-				user: dataFetch.user,
-				access_token: dataFetch.access_token,
-				refresh_token: dataFetch.refresh_token,
-			})
+			const consent = useConsent()
+			if (consent.value) {
+				const dataFetch = await logIn(userForm)
+				this.setAuth({
+					user: dataFetch.user,
+					access_token: dataFetch.access_token,
+					refresh_token: dataFetch.refresh_token,
+				})
+			} else {
+				useToastsStore().addToast({
+					message: 'No tienes las cookies activadas',
+					type: 'error',
+				})
+			}
 		},
 		async logOut() {
 			await logOut()
