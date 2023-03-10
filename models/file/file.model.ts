@@ -1,5 +1,9 @@
 import type { OID } from '../oid.model'
 
+export interface $DATE {
+	$date: number
+}
+
 export interface UserFile {
 	_id: OID | string
 	filename: string
@@ -8,5 +12,5 @@ export interface UserFile {
 	type: string
 	url: string
 	permissions: number
-	date: string
+	date: string | $DATE
 }

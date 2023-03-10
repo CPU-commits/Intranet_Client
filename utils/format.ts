@@ -5,13 +5,22 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { UserTypes, UserTypesKeys } from '~~/models/user/user.model'
+import { $DATE } from '~~/models/file/file.model'
 const { toRoman } = pkg
 
 dayjs.locale('es')
 dayjs.extend(relativeTime)
 
-export function formatDate(date: string | Date) {
-	return capitalizeFirstLetter(dayjs(date).format('MMMM DD, YYYY h:mm A'))
+function getDate(date: string | Date | $DATE) {
+	if (typeof date === 'string') return date
+	if (date instanceof Date) return date
+	return date.$date
+}
+
+export function formatDate(date: string | Date | $DATE) {
+	return capitalizeFirstLetter(
+		dayjs(getDate(date)).format('MMMM DD, YYYY h:mm A'),
+	)
 }
 
 export function formatDateLL(date: string | Date) {
