@@ -1,13 +1,14 @@
 <script setup lang="ts">
-definePageMeta({
-	scrollToTop: true,
-})
 // Types
 import { ErrorFetch } from '~~/common/fetchModule'
 import type { Book } from '~~/models/library/book.model'
 import type { BookFilters } from '~~/services/library.service'
 import onScroll from '~~/utils/onScroll'
 // Meta
+definePageMeta({
+	scrollToTop: true,
+})
+
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = schoolName
 	? `Biblioteca Virtual - ${schoolName} - Intranet`

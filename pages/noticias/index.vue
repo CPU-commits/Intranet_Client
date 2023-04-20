@@ -1,7 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-	scrollToTop: true,
-})
 // Types
 import { ErrorFetch } from '~~/common/fetchModule'
 import type { News } from '~~/models/news/news.model'
@@ -9,6 +6,10 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import onScroll from '~~/utils/onScroll'
 // Meta
+definePageMeta({
+	scrollToTop: true,
+})
+
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = schoolName
 	? `Noticias - ${schoolName} - Intranet`

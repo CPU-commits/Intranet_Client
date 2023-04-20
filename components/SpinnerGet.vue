@@ -1,9 +1,21 @@
 <script setup lang="ts">
+defineProps<{
+	scope?: string
+}>()
+
+// Composable
 const spinnerGet = useSpinnerGet()
+const scopeSpinner = useScopeSpinner()
 </script>
 
 <template>
-	<div v-if="spinnerGet" class="lds-ring">
+	<div
+		v-if="
+			(!scope && spinnerGet) ||
+			(scope && scopeSpinner.get(scope) && spinnerGet)
+		"
+		class="lds-ring"
+	>
 		<div />
 		<div />
 		<div />

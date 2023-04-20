@@ -28,6 +28,7 @@ interface ConfigFetch {
 	}
 	signal?: AbortSignal
 	responseType?: 'blob' | 'text' | 'json' | 'stream' | 'arrayBuffer'
+	scopeSpinner?: string
 }
 
 export type DefaultResponse = {
@@ -76,6 +77,7 @@ export class Fetch {
 
 	private readonly spinner = useSpinner()
 	private readonly spinnerGet = useSpinnerGet()
+	private readonly scopeSpinner = useScopeSpinner()
 
 	private generateFetchId(): string {
 		return `fetch_id_${uuidv4()}`
@@ -145,12 +147,14 @@ export class Fetch {
 		id: string,
 		counters: { get: boolean; fetch: boolean },
 		key: string,
+		scopeSpinner?: string,
 	) {
 		if (counters.get) this.counters.counterGetFetch -= 1
 		if (counters.fetch) this.counters.counterFetch -= 1
 
 		const index = this.currentFetch.get(key)?.findIndex((f) => f.id === id)
 		this.currentFetch.get(key)?.splice(index ?? 0, 1)
+		if (scopeSpinner) this.scopeSpinner.value.delete(scopeSpinner)
 	}
 
 	async fetchData<T extends DefaultResponse>(
@@ -183,6 +187,9 @@ export class Fetch {
 		// Create fetch
 		const apiFetch = this.getFetch(config)
 
+		if (config.scopeSpinner)
+			this.scopeSpinner.value.set(config.scopeSpinner, true)
+
 		if (config.method !== 'get' || config.spinnerStatus) {
 			this.spinner.value = true
 			this.counters.counterFetch += 1
@@ -203,6 +210,7 @@ export class Fetch {
 							(config.spinnerStatus ?? false),
 					},
 					key,
+					config.scopeSpinner,
 				)
 				throw err
 			},
@@ -215,6 +223,7 @@ export class Fetch {
 					config.method !== 'get' || (config.spinnerStatus ?? false),
 			},
 			key,
+			config.scopeSpinner,
 		)
 		return dataFetch as T & DefaultResponse
 	}
