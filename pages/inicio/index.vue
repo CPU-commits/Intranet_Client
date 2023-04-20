@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+	scrollToTop: true,
+})
 // Types
 import type { ErrorFetch } from '~~/common/fetchModule'
 import type { Annoucement } from '~~/models/home/annoucement.model'

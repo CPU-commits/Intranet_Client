@@ -21,6 +21,7 @@ definePageMeta({
 		UserTypesKeys.STUDENT_DIRECTIVE,
 		UserTypesKeys.TEACHER,
 	],
+	scrollToTop: true,
 })
 // Nuxtapp
 const { $fetchModule, $publicationsService } = useNuxtApp()

@@ -14,6 +14,7 @@ const title = schoolName
 definePageMeta({
 	middleware: 'role',
 	roles: [UserTypesKeys.STUDENT, UserTypesKeys.STUDENT_DIRECTIVE],
+	scrollToTop: true,
 })
 // Nuxtapp
 const { $moduleService, $fetchModule } = useNuxtApp()
