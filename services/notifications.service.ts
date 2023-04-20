@@ -47,6 +47,7 @@ export class NotificationsService {
 			URL: `/api/notifications/get_notifications?skip=${skip}&total=${total}`,
 			token: this.authStore.getToken,
 			spinnerStatus: false,
+			scopeSpinner: 'notifications',
 		})
 
 		return dataFetch.body

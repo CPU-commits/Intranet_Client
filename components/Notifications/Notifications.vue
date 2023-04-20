@@ -223,7 +223,7 @@ function deleteNotification(index: number) {
 					Sin notificaciones...
 				</p>
 
-				<SpinnerGet />
+				<SpinnerGet scope="notifications" />
 				<Error v-if="error" :err="error" />
 			</div>
 		</section>
