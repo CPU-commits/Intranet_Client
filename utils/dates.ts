@@ -18,5 +18,5 @@ export function dateIsBefore(
 	dateOne: string | Date,
 	dateTwo: string | Date,
 ): boolean {
-	return dayjs(dateOne).isAfter(dateTwo)
+	return dayjs(dateOne).isBefore(dateTwo)
 }
