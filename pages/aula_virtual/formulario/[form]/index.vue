@@ -62,13 +62,14 @@ const seconds = ref('')
 const called = ref(false)
 
 async function sleep() {
-	seconds.value = dayjs
-		.duration(dayjs(new Date()).add(1, 'hour').diff(new Date()))
-		.format('HH:mm')
-	while (seconds.value !== '00:00:00') {
-		seconds.value = dayjs
-			.duration(dayjs(new Date()).add(1, 'hour').diff(new Date()))
+	const getSeconds = () =>
+		dayjs
+			.duration(dayjs(form.getDateLimit).diff(new Date()))
 			.format('HH:mm')
+
+	seconds.value = getSeconds()
+	while (seconds.value !== '00:00:00') {
+		seconds.value = getSeconds()
 		await setSeconds()
 	}
 	finishForm()
