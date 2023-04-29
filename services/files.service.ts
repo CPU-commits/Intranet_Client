@@ -1,3 +1,4 @@
+import { serialize } from 'object-to-formdata'
 import { DefaultResponse } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { UserFile } from '~~/models/file/file.model'
@@ -11,6 +12,42 @@ export class FilesService {
 		const blob = new Blob([part], { type })
 		const url = window.URL.createObjectURL(blob)
 		return url
+	}
+
+	async importExcelData(
+		file: File,
+		sheets: Array<string>,
+		transformer?: Array<{ key: string; value: string }>,
+	) {
+		const formData = serialize({
+			sheets,
+		})
+		formData.append('file', file)
+		// Set transformer
+		transformer?.forEach((trans, i) => {
+			formData.append(`transformer[${i}][key]`, trans.key)
+			formData.append(`transformer[${i}][value]`, trans.value)
+		})
+
+		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			BodyFetch<{
+				excelData: [
+					{
+						sheet: string
+						values: Array<object>
+					},
+				]
+			}> &
+				DefaultResponse
+		>({
+			method: 'post',
+			URL: '/api/files/excel',
+			spinnerStatus: true,
+			token: this.authStore.getToken,
+			body: formData,
+		})
+
+		return dataFetch.body
 	}
 
 	async getFiles() {

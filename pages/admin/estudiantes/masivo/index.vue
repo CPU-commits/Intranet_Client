@@ -20,39 +20,17 @@ const router = useRouter()
 // Data
 const students = ref<
 	Array<Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>>
->([
-	{
-		name: '',
-		first_lastname: '',
-		second_lastname: '',
-		rut: '',
-		registration_number: '',
-	},
-])
-// Modal
-const modal = ref(false)
-// Cells
-const cells = ref(0)
+>([])
 
 function deleteCell(position: number) {
 	students.value.splice(position, 1)
 }
 
-function addCells() {
-	for (let i = 0; i < cells.value; i++) {
-		students.value.push({
-			name: '',
-			first_lastname: '',
-			second_lastname: '',
-			rut: '',
-		})
-	}
-	cells.value = 0
-	modal.value = false
-}
 // Upload data
-async function uploadStudents() {
-	const dataFetch = await $studentsService.uploadStudents(students.value)
+async function uploadStudents(
+	students: Array<Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>>,
+) {
+	const dataFetch = await $studentsService.uploadStudents(students)
 	if (dataFetch) router.push('/admin/estudiantes')
 }
 </script>
@@ -65,23 +43,19 @@ async function uploadStudents() {
 			<Meta name="robots" content="noindex, nofollow" />
 		</Head>
 		<!-- Body -->
-		<AdminPanel>
-			<template #nav>
-				<Icons>
-					<HTMLButtonIcon
-						title="Agregar celdas"
-						class-item="fa-solid fa-plus"
-						:click="() => (modal = true)"
-					/>
-					<HTMLButtonIcon
-						title="Subir estudiantes"
-						class-item="fa-solid fa-arrow-up-from-bracket"
-						:click="uploadStudents"
-					/>
-				</Icons>
-			</template>
-			<h2>Tabla estudiantes</h2>
-			<br />
+		<AdminMassive
+			v-model:data="students"
+			:upload="uploadStudents"
+			title="estudiantes"
+			:generic="{
+				name: '',
+				first_lastname: '',
+				second_lastname: '',
+				rut: '',
+				registration_number: '',
+			}"
+			excel-file="Estudiantes Masivo.xlsx"
+		>
 			<HTMLTable
 				:header="['Nombre', 'Ap. P', 'Ap. M', 'RUT', 'Matricula', '']"
 			>
@@ -118,18 +92,6 @@ async function uploadStudents() {
 					</td>
 				</tr>
 			</HTMLTable>
-		</AdminPanel>
-
-		<!-- Modals -->
-		<Modal v-model:opened="modal">
-			<template #title>
-				<h2>Agregar celdas</h2>
-			</template>
-			<HTMLForm :form="addCells">
-				<label for="cells">Cantidad de celdas</label>
-				<HTMLInput id="cells" v-model:value="cells" type="number" />
-				<HTMLButton type="submit">Agregar celdas</HTMLButton>
-			</HTMLForm>
-		</Modal>
+		</AdminMassive>
 	</NuxtLayout>
 </template>

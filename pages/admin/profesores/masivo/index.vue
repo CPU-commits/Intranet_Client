@@ -18,35 +18,12 @@ const { $teacherService } = useNuxtApp()
 const router = useRouter()
 
 // Data
-const teachers = ref<Array<Omit<Omit<User, '_id'>, 'user_type'>>>([
-	{
-		name: '',
-		first_lastname: '',
-		second_lastname: '',
-		rut: '',
-	},
-])
-// Modal
-const modal = ref(false)
-// Cells
-const cells = ref(0)
+const teachers = ref<Array<Omit<Omit<User, '_id'>, 'user_type'>>>([])
 
 function deleteCell(position: number) {
 	teachers.value.splice(position, 1)
 }
 
-function addCells() {
-	for (let i = 0; i < cells.value; i++) {
-		teachers.value.push({
-			name: '',
-			first_lastname: '',
-			second_lastname: '',
-			rut: '',
-		})
-	}
-	cells.value = 0
-	modal.value = false
-}
 // Upload data
 async function uploadTeachers() {
 	const dataFetch = await $teacherService.uploadTeachers(teachers.value)
@@ -62,23 +39,18 @@ async function uploadTeachers() {
 			<Meta name="robots" content="noindex, nofollow" />
 		</Head>
 		<!-- Body -->
-		<AdminPanel>
-			<template #nav>
-				<Icons>
-					<HTMLButtonIcon
-						title="Agregar celdas"
-						class-item="fa-solid fa-plus"
-						:click="() => (modal = true)"
-					/>
-					<HTMLButtonIcon
-						title="Subir profesores"
-						class-item="fa-solid fa-arrow-up-from-bracket"
-						:click="uploadTeachers"
-					/>
-				</Icons>
-			</template>
-			<h2>Tabla profesores</h2>
-			<br />
+		<AdminMassive
+			v-model:data="teachers"
+			:upload="uploadTeachers"
+			title="profesores"
+			:generic="{
+				name: '',
+				first_lastname: '',
+				second_lastname: '',
+				rut: '',
+			}"
+			excel-file="Profesores Masivo.xlsx"
+		>
 			<HTMLTable :header="['Nombre', 'Ap. P', 'Ap. M', 'RUT', '']">
 				<tr v-for="(teacher, i) in teachers" :key="i">
 					<td>
@@ -107,18 +79,6 @@ async function uploadTeachers() {
 					</td>
 				</tr>
 			</HTMLTable>
-		</AdminPanel>
-
-		<!-- Modals -->
-		<Modal v-model:opened="modal">
-			<template #title>
-				<h2>Agregar celdas</h2>
-			</template>
-			<HTMLForm :form="addCells">
-				<label for="cells">Cantidad de celdas</label>
-				<HTMLInput id="cells" v-model:value="cells" type="number" />
-				<HTMLButton type="submit">Agregar celdas</HTMLButton>
-			</HTMLForm>
-		</Modal>
+		</AdminMassive>
 	</NuxtLayout>
 </template>

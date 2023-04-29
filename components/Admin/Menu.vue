@@ -14,161 +14,175 @@ const url = route.path
 
 <template>
 	<menu class="AdminMenu">
-		<ul>
-			<NuxtLink
-				v-if="
-					auth.userTypeNotIs(UserTypesKeys.LIBRARIAN) &&
-					auth.userTypeIs(UserTypesKeys.DIRECTOR)
-				"
-				class="NuxtLink"
-				to="/admin/colegio"
-			>
-				<li :class="url === '/admin/colegio' ? 'Selected' : ''">
-					<i class="fa-solid fa-building-columns" />
-					<span>Colegio</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/estudiantes"
-			>
-				<li
-					:class="
-						url.startsWith('/admin/estudiantes') ? 'Selected' : ''
+		<ClientOnly>
+			<ul>
+				<NuxtLink
+					v-if="
+						auth.userTypeNotIs(UserTypesKeys.LIBRARIAN) &&
+						auth.userTypeIs(UserTypesKeys.DIRECTOR)
 					"
+					class="NuxtLink"
+					to="/admin/colegio"
 				>
-					<i class="fa-solid fa-graduation-cap" />
-					<span>Estudiantes</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/profesores"
-			>
-				<li
-					:class="
-						url.startsWith('/admin/profesores') ? 'Selected' : ''
+					<li :class="url === '/admin/colegio' ? 'Selected' : ''">
+						<i class="fa-solid fa-building-columns" />
+						<span>Colegio</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/estudiantes"
+				>
+					<li
+						:class="
+							url.startsWith('/admin/estudiantes')
+								? 'Selected'
+								: ''
+						"
+					>
+						<i class="fa-solid fa-graduation-cap" />
+						<span>Estudiantes</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/profesores"
+				>
+					<li
+						:class="
+							url.startsWith('/admin/profesores')
+								? 'Selected'
+								: ''
+						"
+					>
+						<i class="fa-solid fa-chalkboard-user" />
+						<span>Profesores</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="
+						auth.userTypeNotIs(UserTypesKeys.LIBRARIAN) &&
+						auth.userTypeIs(UserTypesKeys.DIRECTOR)
 					"
+					class="NuxtLink"
+					to="/admin/directivos"
 				>
-					<i class="fa-solid fa-chalkboard-user" />
-					<span>Profesores</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="
-					auth.userTypeNotIs(UserTypesKeys.LIBRARIAN) &&
-					auth.userTypeIs(UserTypesKeys.DIRECTOR)
-				"
-				class="NuxtLink"
-				to="/admin/directivos"
-			>
-				<li
-					:class="
-						url.startsWith('/admin/directivos') ? 'Selected' : ''
-					"
+					<li
+						:class="
+							url.startsWith('/admin/directivos')
+								? 'Selected'
+								: ''
+						"
+					>
+						<i class="fa-solid fa-user-tie" />
+						<span>Directivos</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/cursos"
 				>
-					<i class="fa-solid fa-user-tie" />
-					<span>Directivos</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/cursos"
-			>
-				<li
-					:class="
-						url === '/admin/cursos' ||
-						url.startsWith('/admin/secciones')
-							? 'Selected'
-							: ''
-					"
+					<li
+						:class="
+							url === '/admin/cursos' ||
+							url.startsWith('/admin/secciones')
+								? 'Selected'
+								: ''
+						"
+					>
+						<i class="fa-solid fa-layer-group" />
+						<span>Cursos</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/materias"
 				>
-					<i class="fa-solid fa-layer-group" />
-					<span>Cursos</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/materias"
-			>
-				<li
-					:class="url.startsWith('/admin/materias') ? 'Selected' : ''"
+					<li
+						:class="
+							url.startsWith('/admin/materias') ? 'Selected' : ''
+						"
+					>
+						<i class="fa-solid fa-book-bookmark" />
+						<span>Materias</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/semestres"
 				>
-					<i class="fa-solid fa-book-bookmark" />
-					<span>Materias</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/semestres"
-			>
-				<li
-					:class="
-						url.startsWith('/admin/semestres') ? 'Selected' : ''
-					"
+					<li
+						:class="
+							url.startsWith('/admin/semestres') ? 'Selected' : ''
+						"
+					>
+						<i class="fa-solid fa-calendar-days" />
+						<span>Semestres</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/aula_virtual"
 				>
-					<i class="fa-solid fa-calendar-days" />
-					<span>Semestres</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/aula_virtual"
-			>
-				<li
-					:class="
-						url.startsWith('/admin/aula_virtual') ? 'Selected' : ''
-					"
+					<li
+						:class="
+							url.startsWith('/admin/aula_virtual')
+								? 'Selected'
+								: ''
+						"
+					>
+						<i class="fa-solid fa-chalkboard" />
+						<span>Aula Virtual</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink class="NuxtLink" to="/admin/biblioteca">
+					<li
+						:class="
+							url.startsWith('/admin/biblioteca')
+								? 'Selected'
+								: ''
+						"
+					>
+						<i class="fa-solid fa-book-bookmark" />
+						<span>Biblioteca</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/archivado"
 				>
-					<i class="fa-solid fa-chalkboard" />
-					<span>Aula Virtual</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink class="NuxtLink" to="/admin/biblioteca">
-				<li
-					:class="
-						url.startsWith('/admin/biblioteca') ? 'Selected' : ''
-					"
+					<li
+						:class="
+							url.startsWith('/admin/archivado') ? 'Selected' : ''
+						"
+					>
+						<i class="fa-solid fa-box-archive" />
+						<span>Archivado</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/historico"
 				>
-					<i class="fa-solid fa-book-bookmark" />
-					<span>Biblioteca</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/archivado"
-			>
-				<li
-					:class="
-						url.startsWith('/admin/archivado') ? 'Selected' : ''
-					"
-				>
-					<i class="fa-solid fa-box-archive" />
-					<span>Archivado</span>
-				</li>
-			</NuxtLink>
-			<NuxtLink
-				v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
-				class="NuxtLink"
-				to="/admin/historico"
-			>
-				<li
-					:class="
-						url.startsWith('/admin/historico') ? 'Selected' : ''
-					"
-				>
-					<i class="fa-solid fa-clock-rotate-left" />
-					<span>Historico</span>
-				</li>
-			</NuxtLink>
-		</ul>
+					<li
+						:class="
+							url.startsWith('/admin/historico') ? 'Selected' : ''
+						"
+					>
+						<i class="fa-solid fa-clock-rotate-left" />
+						<span>Historico</span>
+					</li>
+				</NuxtLink>
+			</ul>
+		</ClientOnly>
 	</menu>
 </template>
 
