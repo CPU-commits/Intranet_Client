@@ -15,7 +15,6 @@
 		"@nuxtjs/eslint-config-typescript": "^12.0.0",
 		"@nuxtjs/html-validator": "^1.2.3",
 		"@nuxtjs/web-vitals": "^0.2.2",
-		"@sidebase/nuxt-session": "^0.2.7",
 		"@types/roman-numerals": "^0.3.0",
 		"@types/uuid": "^9.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.1",
@@ -30,15 +29,17 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-security-node": "^1.1.1",
 		"eslint-plugin-vue": "^9.8.0",
-		"nuxt": "3.0.0",
+		"nuxt": "3.3.3",
+		"nuxt-security": "^0.13.0",
 		"sass": "^1.56.1",
 		"sitemap": "^7.1.1",
 		"typescript": "^4.9.3",
 		"vite-plugin-eslint": "^1.8.1",
-		"vue-tsc": "^1.0.11"
+		"vue-tsc": "^1.6.0"
 	},
 	"dependencies": {
 		"@fortawesome/vue-fontawesome": "^3.0.1",
+		"@nozomuikuta/h3-cors": "^0.2.2",
 		"@pinia/nuxt": "^0.4.6",
 		"@tiptap/extension-character-count": "^2.0.0-beta.205",
 		"@tiptap/extension-code-block-lowlight": "^2.0.0-beta.205",
@@ -60,19 +61,21 @@
 		"@tiptap/extension-youtube": "^2.0.0-beta.205",
 		"@tiptap/starter-kit": "^2.0.0-beta.205",
 		"@tiptap/vue-3": "^2.0.0-beta.205",
+		"cryptr": "^6.2.0",
 		"dayjs": "^1.11.7",
 		"h3-typebox": "^0.5.0",
+		"ioredis": "^5.3.2",
 		"jwt-decode": "^3.1.2",
 		"log4js": "^6.7.1",
 		"lowlight": "^2.8.0",
 		"nuxt-jsonld": "^2.0.7",
-		"nuxt-security": "^0.9.0",
 		"object-to-formdata": "^4.4.2",
 		"pinia": "^2.0.27",
 		"redis": "^4.5.1",
 		"roman-numerals": "^0.3.2",
 		"socket.io-client": "^4.5.4",
 		"uuid": "^9.0.0",
-		"vue": "^3.2.45"
+		"vue": "^3.2.45",
+		"zod": "^3.21.4"
 	}
 }

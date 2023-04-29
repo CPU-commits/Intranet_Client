@@ -27,10 +27,6 @@ export default defineEventHandler(async (event) => {
 				baseURL: useRuntimeConfig().public.API,
 			},
 		)
-		// Set session
-		event.context.session.refresh_token = dataFetch.refresh_token
-		event.context.session.access_token = dataFetch.access_token
-		event.context.session.user = dataFetch.user
 
 		return dataFetch
 	} catch (err) {

@@ -3,7 +3,7 @@
 // Modules
 import { v4 as uuidv4 } from 'uuid'
 // Types
-import type { FetchError } from 'ohmyfetch'
+import type { FetchError } from 'ofetch'
 import { capitalizeFirstLetter } from '~~/utils/format'
 
 enum HTTPMethods {

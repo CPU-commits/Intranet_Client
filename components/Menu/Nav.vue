@@ -65,7 +65,9 @@ watch(
 			</div>
 			<ClientOnly>
 				<div class="Header__content--right">
-					<Notifications v-if="auth.isAuth" />
+					<Notifications
+						v-if="auth.isAuth && config.public.ENABLED_WS"
+					/>
 					<NuxtLink v-if="auth.isAuth" class="NuxtLink" to="/usuario">
 						<i class="fa-solid fa-user" />
 					</NuxtLink>

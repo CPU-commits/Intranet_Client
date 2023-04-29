@@ -16,18 +16,18 @@ export default defineNuxtPlugin((nuxtApp) => {
 		setInterval(async () => {
 			if (process.client) {
 				const { session, refresh, overwrite, reset, remove } =
-					await useSession()
+					await useSession<AuthData | undefined>()
 				await refresh()
 
 				if (
-					session.value?.refresh_token &&
-					session.value?.access_token &&
-					session.value?.user
+					session.value?.data?.refresh_token &&
+					session.value?.data?.access_token &&
+					session.value?.data?.user
 				) {
 					const data: AuthData = {
-						refresh_token: session.value.refresh_token,
-						access_token: session.value.access_token,
-						user: session.value.user,
+						refresh_token: session.value.data.refresh_token,
+						access_token: session.value.data.access_token,
+						user: session.value.data.user,
 					}
 					const decodedToken = jwt_decode<{ iat: number }>(
 						data.access_token,

@@ -13,13 +13,17 @@ export default defineNuxtConfig({
 			COLLEGE_NAME: 'School',
 			SHORT_NAME: 'Sc',
 			CLIENT_URL: 'https://example.com',
+			ENABLED_WS: true,
 		},
-		session: {
-			session: {
-				storageOptions: {
-					driver: 'memory',
-				},
-			},
+		cookies: {
+			CRYPTO_KEY: 'E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfU',
+			EXPIRY_IN_SECONDS: 3600,
+		},
+		redis: {
+			user: '',
+			host: '',
+			port: 0,
+			password: '',
 		},
 		pwa: {
 			manifest: {
@@ -48,7 +52,6 @@ export default defineNuxtConfig({
 		'@vite-pwa/nuxt',
 		'@pinia/nuxt',
 		'nuxt-security',
-		'@sidebase/nuxt-session',
 		'nuxt-jsonld',
 		// '@nuxtjs/html-validator',
 		// '@nuxtjs/web-vitals' -> Integrate GA and party town -> https://github.com/nuxt-modules/partytown
@@ -58,19 +61,6 @@ export default defineNuxtConfig({
 	},
 	imports: {
 		dirs: ['stores'],
-	},
-	session: {
-		isEnabled: true,
-		session: {
-			cookieSameSite: 'strict',
-			storageOptions: {
-				driver: 'memory',
-			},
-			expiryInSeconds: 60 * 60,
-		},
-		api: {
-			isEnabled: true,
-		},
 	},
 	ssr: true,
 	vite: {
@@ -191,7 +181,7 @@ export default defineNuxtConfig({
 			},
 		},
 		allowedMethodsRestricter: {
-			value: ['GET', 'POST'],
+			value: ['GET', 'POST', 'DELETE'],
 			route: '/**',
 		},
 	},

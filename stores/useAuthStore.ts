@@ -70,7 +70,7 @@ const useAuthStore = defineStore('auth', {
 			const consent = useConsent()
 			if (consent.value) {
 				const dataFetch = await logIn(userForm)
-				this.setAuth({
+				await this.setAuth({
 					user: dataFetch.user,
 					access_token: dataFetch.access_token,
 					refresh_token: dataFetch.refresh_token,
@@ -86,9 +86,12 @@ const useAuthStore = defineStore('auth', {
 			await logOut()
 			this.unsetAuth()
 		},
-		setAuth(user: AuthData) {
+		async setAuth(user: AuthData) {
 			this.isAuth = true
 			this.user = user
+
+			const { overwrite } = await useSession()
+			await overwrite(user)
 		},
 		userTypeNotIs(...userTypes: KeysUserTypes[]) {
 			return !userTypes.includes(this.getUserType as never)
