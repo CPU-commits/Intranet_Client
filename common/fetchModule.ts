@@ -78,6 +78,7 @@ export class Fetch {
 	private readonly spinner = useSpinner()
 	private readonly spinnerGet = useSpinnerGet()
 	private readonly scopeSpinner = useScopeSpinner()
+	private readonly errors = useErrorStore()
 
 	private generateFetchId(): string {
 		return `fetch_id_${uuidv4()}`
@@ -87,26 +88,31 @@ export class Fetch {
 		return typeof error === 'object' && error !== null && 'message' in error
 	}
 
-	handleError(error: unknown): ErrorFetch {
+	handleError(error: unknown, save = true): ErrorFetch {
+		let errorFetch: ErrorFetch
 		if (this.isFetchError(error)) {
 			const message = error.data?.message ?? error.message
-			return {
+			errorFetch = {
 				success: false,
 				message: capitalizeFirstLetter(message),
 				statusCode: error.response?.status ?? 500,
 			}
 		} else if (error instanceof Error) {
-			return {
+			errorFetch = {
 				success: false,
 				message: capitalizeFirstLetter(error.message),
 				statusCode: 500,
 			}
+		} else {
+			errorFetch = {
+				success: false,
+				message: 'Error inesperado',
+				statusCode: 500,
+			}
 		}
-		return {
-			success: false,
-			message: 'Error inesperado',
-			statusCode: 500,
-		}
+		// Push error
+		if (save) this.errors.push(errorFetch)
+		return errorFetch
 	}
 
 	private getFetch({

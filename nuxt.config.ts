@@ -51,11 +51,15 @@ export default defineNuxtConfig({
 		'@nuxt/content',
 		'@vite-pwa/nuxt',
 		'@pinia/nuxt',
+		'@pinia-plugin-persistedstate/nuxt',
 		'nuxt-security',
 		'nuxt-jsonld',
 		// '@nuxtjs/html-validator',
 		// '@nuxtjs/web-vitals' -> Integrate GA and party town -> https://github.com/nuxt-modules/partytown
 	],
+	piniaPersistedstate: {
+		storage: 'localStorage',
+	},
 	image: {
 		domains: ['*.s3.amazonaws.com'],
 	},

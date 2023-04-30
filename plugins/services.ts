@@ -20,6 +20,7 @@ import { PublicationsService } from '~~/services/publications.service'
 import { WorkService } from '~~/services/work.service'
 import { FormService } from '~~/services/form.service'
 import { NotificationsService } from '~~/services/notifications.service'
+import { ErrorService } from '~/services/error.service'
 
 export default defineNuxtPlugin(() => {
 	const filesService = new FilesService()
@@ -46,6 +47,7 @@ export default defineNuxtPlugin(() => {
 			formService: new FormService(),
 			notificationService: new NotificationsService(),
 			filesService,
+			reportService: new ErrorService(),
 		},
 	}
 })

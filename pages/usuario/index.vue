@@ -113,6 +113,15 @@ onMounted(async () => {
 
 				<SpinnerGet />
 				<Error v-if="error" :err="error" />
+
+				<aside class="Errors">
+					<small>
+						¿Ha experimentado un error?
+						<NuxtLink to="/usuario/report">
+							Rep&oacute;rtelo
+						</NuxtLink>
+					</small>
+				</aside>
 			</section>
 		</div>
 	</User>

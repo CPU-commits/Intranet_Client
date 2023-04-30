@@ -195,6 +195,22 @@ async function logout() {
 							<span>Soporte</span>
 						</li>
 					</NuxtLink>
+					<NuxtLink
+						class="NuxtLink"
+						to="/usuario/report"
+						@click="ahref"
+					>
+						<li
+							:class="
+								url.startsWith('/usuario/report')
+									? 'selected'
+									: ''
+							"
+						>
+							<i class="fa-solid fa-bug"></i>
+							<span>Reportar error</span>
+						</li>
+					</NuxtLink>
 				</ul>
 				<button class="logout" @click="logout">
 					<i class="fa-solid fa-arrow-right-from-bracket" />
