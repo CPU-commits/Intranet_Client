@@ -205,7 +205,6 @@ export class Fetch {
 		if (counters.fetch) this.counters.counterFetch -= 1
 
 		const index = this.currentFetch.get(key)?.findIndex((f) => f.id === id)
-		console.log(this.currentFetch.get(key), key)
 		this.currentFetch.get(key)?.splice(index ?? 0, 1)
 		if (scopeSpinner) this.scopeSpinner.value.delete(scopeSpinner)
 	}
@@ -253,9 +252,11 @@ export class Fetch {
 		// Create fetch
 		const apiFetch = this.getFetch(config)
 
-		if (config.scopeSpinner)
-			this.scopeSpinner.value.set(config.scopeSpinner, true)
+		// Scope fetch
+		if (!config.scopeSpinner) config.scopeSpinner = 'default'
+		this.scopeSpinner.value.set(config.scopeSpinner, true)
 
+		// Methods
 		if (config.method !== 'get' || config.spinnerStatus) {
 			this.spinner.value = true
 			this.counters.counterFetch += 1

@@ -186,6 +186,9 @@ async function changeStatus() {
 				:search="() => getStudents(true, 0, search)"
 			/>
 			<br />
+			<HTMLButton type="button" :click="() => $courseService.getCycles()"
+				>hola</HTMLButton
+			>
 			<!-- Data -->
 			<HTMLTable
 				v-if="students"
