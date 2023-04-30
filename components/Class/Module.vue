@@ -127,7 +127,7 @@ header {
 		color: var(--color-main);
 		font-size: 0.8rem;
 	}
-	height: 100px;
+	min-height: 100px;
 }
 
 .Work {
