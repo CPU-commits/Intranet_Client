@@ -242,10 +242,15 @@ i {
 	color: var(--color-main);
 }
 
+.Work__content {
+	overflow-x: auto;
+}
+
 .Work__content section {
 	padding: 20px;
 	border: 2px solid var(--color-light);
 	margin: 20px;
+	width: fit-content;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -296,7 +301,7 @@ footer small:last-child {
 
 	.Work__content section {
 		padding: 10px;
-		margin: 10px;
+		margin: 10px 0;
 		gap: 10px;
 	}
 
