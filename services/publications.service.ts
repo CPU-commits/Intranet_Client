@@ -21,6 +21,9 @@ export class PublicationsService {
 			URL: `/api/c/classroom/publications/get_publications/${idModule}?section=${section}${query}`,
 			spinnerStatus: true,
 			token: this.authStore.getToken,
+			abort: {
+				onChangePath: true,
+			},
 		})
 		return {
 			publications: dataFetch.body.publications ?? [],

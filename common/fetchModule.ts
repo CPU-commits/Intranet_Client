@@ -24,7 +24,8 @@ interface ConfigFetch {
 	nuxt?: boolean
 	// Abort is for all same URLs
 	abort?: {
-		url: string
+		url?: string
+		onChangePath?: boolean
 	}
 	signal?: AbortSignal
 	responseType?: 'blob' | 'text' | 'json' | 'stream' | 'arrayBuffer'
@@ -52,6 +53,8 @@ export class Fetch {
 		Array<{
 			id: string
 			controller: AbortController
+			path: string
+			config: ConfigFetch
 		}>
 	> = new Map()
 
@@ -79,6 +82,12 @@ export class Fetch {
 	private readonly spinnerGet = useSpinnerGet()
 	private readonly scopeSpinner = useScopeSpinner()
 	private readonly errors = useErrorStore()
+	// Route
+	private path = useRoute().path
+
+	constructor() {
+		this.watchPath()
+	}
 
 	private generateFetchId(): string {
 		return `fetch_id_${uuidv4()}`
@@ -88,6 +97,36 @@ export class Fetch {
 		return typeof error === 'object' && error !== null && 'message' in error
 	}
 
+	private watchPath() {
+		useRouter().beforeEach((to) => {
+			this.path = to.path
+
+			this.currentFetch.forEach((fetchController, url) => {
+				fetchController.forEach(({ id, controller, path }) => {
+					if (
+						path !== this.path &&
+						controller.signal &&
+						!controller.signal.aborted
+					) {
+						const config = this.currentFetch
+							.get(url)
+							?.find((f) => f.id === id)
+						if (config?.config.abort?.onChangePath)
+							controller.abort()
+					}
+				})
+			})
+
+			return true
+		})
+	}
+
+	/**
+	 * Handles errors in fetch request
+	 * @param error The error to handle
+	 * @param save Indicates wheter the error should be saved in the error store
+	 * @returns An ErrorFetch object with information about the error
+	 */
 	handleError(error: unknown, save = true): ErrorFetch {
 		let errorFetch: ErrorFetch
 		if (this.isFetchError(error)) {
@@ -149,6 +188,13 @@ export class Fetch {
 		})
 	}
 
+	/**
+	 * Removes a fetch from the list of current requests
+	 * @param id The ID of the fetch to remove
+	 * @param counters Counters to reduce in one for GET and non-GET requests
+	 * @param key The key of the fetch request in the currentFetch map. (URL)
+	 * @param scopeSpinner Optional. The scope of the spinner
+	 */
 	private popFetch(
 		id: string,
 		counters: { get: boolean; fetch: boolean },
@@ -159,17 +205,27 @@ export class Fetch {
 		if (counters.fetch) this.counters.counterFetch -= 1
 
 		const index = this.currentFetch.get(key)?.findIndex((f) => f.id === id)
+		console.log(this.currentFetch.get(key), key)
 		this.currentFetch.get(key)?.splice(index ?? 0, 1)
 		if (scopeSpinner) this.scopeSpinner.value.delete(scopeSpinner)
 	}
 
+	/**
+	 * Performs a fetch request and returns the response
+	 * @param config The configuration of the fetch request
+	 * @returns A promise with the response from the fetch request
+	 */
 	async fetchData<T extends DefaultResponse>(
 		config: ConfigFetch,
 	): Promise<T> {
 		const key = config.URL.split('?')[0]
 		// Abort all fetchs
-		const abortKey = config.abort?.url === 'same' ? key : config.abort?.url
-		if (config.abort && this.currentFetch.has(abortKey ?? '')) {
+		const abortKey = config.abort?.url === 'same' ? key : config?.abort?.url
+		if (
+			config.abort &&
+			config.abort?.url &&
+			this.currentFetch.has(abortKey ?? '')
+		) {
 			const struct = this.currentFetch.get(abortKey ?? '')
 			struct?.forEach((c) => {
 				c.controller.abort()
@@ -186,9 +242,13 @@ export class Fetch {
 			this.currentFetch.get(key)?.push({
 				id,
 				controller,
+				path: this.path,
+				config,
 			})
 		} else {
-			this.currentFetch.set(key, [{ id, controller }])
+			this.currentFetch.set(key, [
+				{ id, controller, path: this.path, config },
+			])
 		}
 		// Create fetch
 		const apiFetch = this.getFetch(config)
