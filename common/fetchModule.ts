@@ -133,19 +133,23 @@ export class Fetch {
 			const message = error.data?.message ?? error.message
 			errorFetch = {
 				success: false,
-				message: capitalizeFirstLetter(message),
+				message: capitalizeFirstLetter(
+					handleErrorMessage(message, error.status),
+				),
 				statusCode: error.response?.status ?? 500,
 			}
 		} else if (error instanceof Error) {
 			errorFetch = {
 				success: false,
-				message: capitalizeFirstLetter(error.message),
+				message: capitalizeFirstLetter(
+					handleErrorMessage(error.message),
+				),
 				statusCode: 500,
 			}
 		} else {
 			errorFetch = {
 				success: false,
-				message: 'Error inesperado',
+				message: handleErrorMessage('fetch'),
 				statusCode: 500,
 			}
 		}

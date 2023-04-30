@@ -23,7 +23,8 @@ export async function setSession(
 		expires: dayjs().add(EXPIRY_IN_SECONDS, 'seconds').toDate(),
 		httpOnly: true,
 		path: '/',
-		secure: url.protocol.includes('https'),
+		sameSite: 'strict',
+		secure: !process.dev,
 	})
 
 	return {

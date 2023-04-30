@@ -9,20 +9,18 @@ const { err } = defineProps<{
 }>()
 
 const src: Ref<string> = ref('/img/error/500.svg')
-const message: Ref<string> = ref('Ha ocurrido un error')
+const message = handleErrorMessage(err.message, err.statusCode)
 
 if (err.statusCode === 400) {
 	src.value = '/img/error/400.svg'
-	message.value = 'Ups... Parece que algo se olvidó'
 } else if (err.statusCode === 401) {
 	src.value = '/img/error/401.svg'
-	message.value = 'No estás autorizado a esta ruta'
 } else if (err.statusCode === 403) {
+	src.value = ''
+} else if (err.statusCode === 410) {
 	src.value = '/img/error/403.svg'
-	message.value = 'Parece que esta ruta ya no existe'
 } else if (err.statusCode === 404) {
 	src.value = '/img/error/404.svg'
-	message.value = 'Esta ruta no existe'
 }
 
 function reloadPage() {
@@ -35,7 +33,7 @@ function reloadPage() {
 		<h2>{{ message }}</h2>
 
 		<span v-if="err.statusCode !== 404">{{ err.message }}</span>
-		<img :src="src" :alt="message" />
+		<NuxtImg :src="src" :alt="message" />
 
 		<HTMLButtonText :click="reloadPage">
 			<i class="fa-solid fa-arrows-rotate"></i>

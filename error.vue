@@ -26,68 +26,67 @@ const back = () => {
 }
 
 const src = ref('/img/error/500.svg')
-const message = ref('Ha ocurrido un error')
+const message = handleErrorMessage('fetch', err.value.statusCode)
 
 if (err.value.statusCode === 400) {
 	src.value = '/img/error/400.svg'
-	message.value = 'Ups... Parece que algo se olvidó'
 } else if (err.value.statusCode === 401) {
 	src.value = '/img/error/401.svg'
-	message.value = 'No estás autorizado a esta ruta'
 } else if (err.value.statusCode === 403) {
 	src.value = '/img/error/403.svg'
-	message.value = 'Parece que esta ruta ya no existe'
 } else if (err.value.statusCode === 404) {
 	src.value = '/img/error/404.svg'
-	message.value = 'Esta ruta no existe'
 }
 </script>
 
 <template>
-	<section class="Error">
-		<section class="Error__message">
-			<h1>{{ message }}</h1>
-			<span v-if="err.statusCode !== 404">
-				{{ err.message }}
-			</span>
-			<button type="button" @click="reload">
-				<i class="fa-solid fa-rotate-right" /> Recargar p&aacute;gina
-			</button>
-			<button type="button" @click="back">
-				<i class="fa-solid fa-circle-arrow-left" /> Volver atras
-			</button>
-			<button type="button" @click="handleError">
-				<i class="fa-solid fa-house" /> Volver a la p&aacute;gina
-				principal
-			</button>
-		</section>
+	<main>
+		<Menu />
+		<section class="Error">
+			<section class="Error__message">
+				<h1>{{ message }}</h1>
+				<span v-if="err.statusCode !== 404">
+					{{ err.message }}
+				</span>
+				<button type="button" @click="reload">
+					<i class="fa-solid fa-rotate-right" /> Recargar
+					p&aacute;gina
+				</button>
+				<button type="button" @click="back">
+					<i class="fa-solid fa-circle-arrow-left" /> Volver atras
+				</button>
+				<button type="button" @click="handleError">
+					<i class="fa-solid fa-house" /> Volver a la p&aacute;gina
+					principal
+				</button>
+			</section>
 
-		<img :src="src" alt="dsf" />
-	</section>
+			<img :src="src" alt="Imagen" />
+		</section>
+		<Footer />
+	</main>
 </template>
 
 <style scoped>
 .Error {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	position: absolute;
-	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .Error__message {
-	background-color: var(--color-main);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	padding: 10px;
-	padding-bottom: 100px;
 	gap: 5px;
 }
 
 h1 {
-	color: white;
-	font-size: 3.5rem;
+	color: var(--color-main);
+	font-size: 2rem;
+	max-width: 500px;
 	text-align: center;
 }
 
@@ -97,21 +96,46 @@ span {
 }
 
 i {
-	color: var(--color-main);
+	color: white;
 }
 
 button {
 	background-color: transparent;
 	border: none;
-	color: var(--color-main);
-	background-color: white;
+	color: white;
+	background-color: var(--color-main);
 	padding: 5px;
 	border-radius: 8px;
 }
 
 img {
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	max-width: 600px;
+	object-fit: contain;
+}
+
+@media (max-width: 998px) {
+	.Error {
+		flex-direction: column;
+	}
+
+	h1 {
+		font-size: 2.5rem;
+	}
+
+	img {
+		margin-bottom: 300px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	h1 {
+		font-size: 1.5rem;
+	}
+
+	span,
+	button {
+		font-size: 0.8rem;
+	}
 }
 </style>

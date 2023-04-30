@@ -230,6 +230,7 @@ button {
 
 	.Header__content--left {
 		gap: 5px;
+		min-width: initial;
 	}
 
 	.Header__content--main {
