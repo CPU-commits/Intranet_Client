@@ -5,7 +5,7 @@ const { redis } = useRuntimeConfig()
 
 // eslint-disable-next-line import/no-mutable-exports
 let redisClient: Redis
-if (process.env.NUXT_IS_BUILDING === 'building')
+if (process.env.IS_BUILDING === 'building')
 	redisClient = {
 		get(_key: any, _callback?: any): any {
 			return null

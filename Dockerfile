@@ -15,7 +15,9 @@ COPY --from=installer /app/node_modules ./node_modules
 
 COPY . .
 
-ENV NUXT_IS_BUILDING=building
+ENV IS_BUILDING=building
+
+RUN echo "$IS_BUILDING"
 
 RUN npx nuxi build
 
