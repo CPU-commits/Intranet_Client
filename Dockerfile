@@ -15,6 +15,8 @@ COPY --from=installer /app/node_modules ./node_modules
 
 COPY . .
 
+ENV IS_BUILDING=building
+
 RUN npx nuxi build
 
 # STAGE 2 -> Nuxt entrypoint
