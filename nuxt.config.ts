@@ -15,6 +15,10 @@ export default defineNuxtConfig({
 			CLIENT_URL: 'https://example.com',
 			ENABLED_WS: true,
 		},
+		i18n: {
+			baseUrl: 'http://localhost:3000',
+		},
+		isBuilding: false,
 		cookies: {
 			CRYPTO_KEY: 'E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfU',
 			EXPIRY_IN_SECONDS: 3600,
@@ -47,6 +51,7 @@ export default defineNuxtConfig({
 	},
 	css: ['@/assets/scss/main.scss'],
 	modules: [
+		'@nuxtjs/i18n',
 		'@nuxt/image-edge',
 		'@nuxt/content',
 		'@vite-pwa/nuxt',
@@ -66,6 +71,31 @@ export default defineNuxtConfig({
 	imports: {
 		dirs: ['stores'],
 	},
+	i18n: {
+		locales: [
+			{
+				code: 'en',
+				name: 'English',
+				file: 'en-US.json',
+				iso: 'en-US',
+			},
+			{
+				code: 'es',
+				name: 'Español',
+				file: 'es.json',
+				iso: 'es-ES',
+			},
+		],
+		detectBrowserLanguage: {
+			useCookie: true,
+			cookieKey: 'i18n_redirected',
+			redirectOn: 'root',
+		},
+		lazy: true,
+		defaultLocale: 'es',
+		langDir: 'lang',
+		strategy: 'prefix_except_default',
+	},
 	ssr: true,
 	vite: {
 		css: {
@@ -81,9 +111,6 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			title: 'Intranet',
-			htmlAttrs: {
-				lang: 'es',
-			},
 			link: [
 				{
 					rel: 'icon',
