@@ -18,7 +18,6 @@ export default defineNuxtConfig({
 		i18n: {
 			baseUrl: 'http://localhost:3000',
 		},
-		isBuilding: false,
 		cookies: {
 			CRYPTO_KEY: 'E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfU',
 			EXPIRY_IN_SECONDS: 3600,
