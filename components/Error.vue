@@ -29,7 +29,7 @@ function reloadPage() {
 </script>
 
 <template>
-	<section v-if="err.message !== ERROR_ABORT" class="Error">
+	<section v-if="err.message.includes(ERROR_ABORT)" class="Error">
 		<h2>{{ message }}</h2>
 
 		<span v-if="err.statusCode !== 404">{{ err.message }}</span>

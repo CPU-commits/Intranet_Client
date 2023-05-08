@@ -18,13 +18,19 @@ export interface AuthData {
 
 async function logIn(userForm: { rut: string; password: string }) {
 	const { $fetchModule } = useNuxtApp()
-	const dataFetch = await $fetchModule.fetchData<AuthData & DefaultResponse>({
-		method: 'post',
-		URL: '/api/auth/login',
-		body: userForm,
-		nuxt: true,
-	})
-	return dataFetch
+	try {
+		const dataFetch = await $fetchModule.fetchData<
+			AuthData & DefaultResponse
+		>({
+			method: 'post',
+			URL: '/api/auth/login',
+			body: userForm,
+			nuxt: true,
+		})
+		return dataFetch
+	} catch {
+		throw new Error('Credenciales inválidas')
+	}
 }
 
 async function logOut() {
