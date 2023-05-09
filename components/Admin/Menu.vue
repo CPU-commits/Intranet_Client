@@ -114,6 +114,20 @@ const url = route.path
 				<NuxtLink
 					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
 					class="NuxtLink"
+					to="/admin/anclaje"
+				>
+					<li
+						:class="
+							url.startsWith('/admin/anclaje') ? 'Selected' : ''
+						"
+					>
+						<i class="fa-solid fa-anchor" />
+						<span>Anclaje</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
 					to="/admin/semestres"
 				>
 					<li

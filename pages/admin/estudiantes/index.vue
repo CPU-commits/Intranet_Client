@@ -30,15 +30,15 @@ const toggleModalStatus = () => {
 	modalEdit.value = false
 }
 // Form
-const formStudent: Omit<
-	Omit<Omit<Student, '_id'>, 'user_type'>,
-	'course'
-> = reactive({
+const formStudent: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
+	course: string
+} = reactive({
 	name: '',
 	first_lastname: '',
 	second_lastname: '',
 	rut: '',
 	registration_number: '',
+	course: '',
 })
 const course = ref('')
 // Change status
@@ -104,7 +104,18 @@ async function uploadStudent() {
 	const dataFetch = await $studentsService.uploadStudent(formStudent)
 	if (dataFetch !== undefined) {
 		const registrationNumber = formStudent.registration_number
-		initForm({ ...dataFetch, registration_number: registrationNumber })
+		// Course
+		let section: Section | undefined
+		if (formStudent.course !== '') {
+			section = (sections.value as Array<Section>).find(
+				(section) => section._id === formStudent.course,
+			)
+		}
+		initForm({
+			...dataFetch,
+			registration_number: registrationNumber,
+			course: section as Section,
+		})
 	}
 }
 
@@ -267,6 +278,18 @@ async function changeStatus() {
 				/>
 				<label for="rut">RUT</label>
 				<HTMLInput id="rut" v-model:value="formStudent.rut" />
+				<label for="course">Curso</label>
+				<HTMLSelect id="course" v-model:value="formStudent.course">
+					<option value="">Sin curso</option>
+					<option
+						v-for="section in sections"
+						:key="section._id"
+						:value="section._id"
+					>
+						{{ section.course.course }}
+						{{ section.section }}
+					</option>
+				</HTMLSelect>
 				<label for="registration_number">Matricula</label>
 				<HTMLInput
 					id="registration_number"

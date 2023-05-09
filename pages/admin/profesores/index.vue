@@ -1,7 +1,8 @@
 <script setup lang="ts">
 // Types
+import { Subject } from '~/models/subject/subject.model'
 import { ErrorFetch } from '~~/common/fetchModule'
-import type { Course } from '~~/models/course/course.model'
+import type { Course, Section } from '~~/models/course/course.model'
 import type { Teacher, Teachers } from '~~/models/user/teacher.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
@@ -163,6 +164,25 @@ function getSubjectsInSections(courses: Array<Course>) {
 		}))
 	})
 }
+
+function filterTeacherImparted(
+	css: Array<{
+		course: Course
+		subject: Subject
+		section: Section
+	}>,
+) {
+	const teacher = teachers.value?.users[teacherPosition.value]
+	if (!teacher) return css
+	return css.filter(
+		(css) =>
+			!teacher.imparted.some(
+				(cssImparted) =>
+					cssImparted.course._id === css.section._id &&
+					cssImparted.subject._id === css.subject._id,
+			),
+	)
+}
 </script>
 
 <template>
@@ -292,7 +312,9 @@ function getSubjectsInSections(courses: Array<Course>) {
 				<HTMLSelect v-if="courses" id="subject" v-model:value="subject">
 					<option value="">Seleccione una materia - curso</option>
 					<option
-						v-for="(css, i) in getSubjectsInSections(courses)"
+						v-for="(css, i) in filterTeacherImparted(
+							getSubjectsInSections(courses),
+						)"
 						:key="i"
 						:value="`${css.section._id}-${css.subject._id}`"
 					>

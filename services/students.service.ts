@@ -69,7 +69,9 @@ export class StudentsService {
 	}
 
 	async uploadStudent(
-		student: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>,
+		student: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
+			course: string
+		},
 	) {
 		try {
 			this.validatorsStudent(student)
@@ -81,7 +83,10 @@ export class StudentsService {
 			>({
 				method: 'post',
 				URL: '/api/students/new_student',
-				body: student,
+				body: {
+					...student,
+					course: student.course !== '' ? student.course : undefined,
+				},
 				spinnerStatus: true,
 				token: this.authStore.getToken,
 			})
@@ -102,7 +107,9 @@ export class StudentsService {
 
 	async uploadStudents(
 		students: Array<
-			Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>
+			Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
+				course: string
+			}
 		>,
 	) {
 		try {
@@ -110,7 +117,10 @@ export class StudentsService {
 			await this.nuxtApp.$fetchModule.fetchData({
 				method: 'post',
 				URL: '/api/students/new_students',
-				body: students,
+				body: students.map((student) => ({
+					...student,
+					course: student.course !== '' ? student.course : undefined,
+				})),
 				spinnerStatus: true,
 				token: this.authStore.getToken,
 			})
