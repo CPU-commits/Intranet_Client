@@ -117,7 +117,7 @@ function getIndex(index: number) {
 }
 
 .Table__nav button {
-	background-color: white;
+	background-color: transparent;
 	border: none;
 	width: 25px;
 	height: 25px;

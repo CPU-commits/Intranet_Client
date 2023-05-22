@@ -79,7 +79,6 @@ function deleteNews(index: number) {
 				<NuxtLink to="/noticias/estudiantes"> Estudiantes </NuxtLink>
 			</li>
 		</ul>
-		<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 		<!-- eslint-disable vue/attributes-order -->
 		<LazyNews
 			v-if="news"

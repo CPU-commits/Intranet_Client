@@ -9,8 +9,6 @@ type Section = {
 }
 // Nuxtapp
 const { $moduleService, $fetchModule } = useNuxtApp()
-// Composable
-const moduleName = useModuleName()
 // Stores
 const auth = useAuthStore()
 // Router
@@ -48,11 +46,15 @@ onMounted(async () => {
 		const dataFetch = await $moduleService.getModule(idModule)
 		_module.value = dataFetch
 
-		moduleName.value = `${_module.value.subject.subject} ${
+		const moduleName = `${_module.value.subject.subject} ${
 			auth.userTypeIs(UserTypesKeys.TEACHER)
 				? `- ${_module.value.section.course.course} ${_module.value.section.section}`
 				: ''
 		}`
+		// Set title
+		useHead({
+			title: `${moduleName} ${document.title}`,
+		})
 	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		throw createError({

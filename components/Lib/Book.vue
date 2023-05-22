@@ -79,9 +79,16 @@ a {
 	text-decoration: none;
 }
 
+.dark-mode .Book {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Book {
+	box-shadow: var(--box-shadow);
+}
+
 .Book {
 	background-color: white;
-	box-shadow: var(--box-shadow);
 	max-width: 250px;
 	width: 100%;
 	padding: 15px;

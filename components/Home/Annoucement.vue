@@ -115,6 +115,14 @@ aside {
 	z-index: 9;
 }
 
+.dark-mode .Annoucement {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Annoucement {
+	box-shadow: var(--box-shadow);
+}
+
 .Annoucement {
 	display: flex;
 	max-width: 1000px;
@@ -123,7 +131,6 @@ aside {
 	width: 100%;
 	background-color: white;
 	padding: 20px;
-	box-shadow: var(--box-shadow);
 	border-radius: 8px;
 }
 

@@ -6,7 +6,6 @@ import type { News } from '~~/models/news/news.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Utils
 import { formatMiniDate } from '~~/utils/format'
-import onScroll from '~~/utils/onScroll'
 // Meta
 definePageMeta({
 	scrollToTop: true,
@@ -185,9 +184,16 @@ a:hover h2 {
 	align-items: center;
 }
 
+.dark-mode .News {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .News {
+	box-shadow: var(--box-shadow);
+}
+
 .News {
 	background-color: white;
-	box-shadow: var(--box-shadow);
 	padding: 10px;
 	border-radius: 8px;
 	box-sizing: border-box;

@@ -9,6 +9,7 @@
     font-family: 'Inconsolata', monospace;
     color: var(--color-dark);
 	box-sizing: border-box;
+	transition: color 0.5s ease;
 }
 
 html {
@@ -16,8 +17,38 @@ html {
 	position: relative;
 }
 
-body {
+.light-mode body {
     background-color: var(--color-main-light);
+}
+
+.dark-mode body {
+	background-color: var(--color-main-dark);
+	p,
+	span,
+	label,
+	i,
+	em,
+	code,
+	strong,
+	li,
+	a,
+	input,
+	.NuxtLink,
+	small,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	button,
+	textarea,
+	select,
+	td,
+	summary,
+	pre {
+		color: white;
+	}
 }
 
 h1, h2, h3, h4, h5, h6 {

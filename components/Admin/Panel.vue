@@ -29,9 +29,16 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.dark-mode .Panel {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Panel {
+	box-shadow: var(--box-shadow);
+}
+
 .Panel {
 	width: 100%;
-	box-shadow: var(--box-shadow);
 	padding: 20px;
 	border-radius: 10px;
 	overflow: auto;

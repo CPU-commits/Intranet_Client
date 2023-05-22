@@ -79,6 +79,10 @@ const closeModal = () => {
 	top: var(--top);
 }
 
+.dark-mode .Modal__container {
+	background-color: var(--color-main-dark-contrast);
+}
+
 .Modal__container {
 	background-color: white;
 	max-height: 80%;

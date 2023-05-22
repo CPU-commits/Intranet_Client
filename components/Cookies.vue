@@ -50,13 +50,20 @@ function setConsent(hasConsent: boolean) {
 </template>
 
 <style scoped>
+.dark-mode .Cookies {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Cookies {
+	box-shadow: var(--box-shadow);
+}
+
 .Cookies {
 	position: fixed;
 	bottom: 0;
 	min-height: 150px;
 	width: 100%;
 	padding: 10px;
-	box-shadow: var(--box-shadow);
 	background-color: white;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;

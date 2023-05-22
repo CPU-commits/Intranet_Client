@@ -28,6 +28,7 @@ textarea {
 	height: 70px;
 	width: 100%;
 	padding: 10px;
+	background-color: transparent;
 	box-sizing: border-box;
 	border: none;
 	border-bottom: 3px var(--color-light) solid;

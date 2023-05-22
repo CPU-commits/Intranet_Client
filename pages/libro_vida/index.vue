@@ -103,12 +103,19 @@ const search = ref('')
 </template>
 
 <style scoped>
+.dark-mode .BookLife {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .BookLife {
+	box-shadow: var(--box-shadow);
+}
+
 .BookLife {
 	width: 100%;
 	margin: 20px;
 	background-color: white;
 	padding: 20px;
-	box-shadow: var(--box-shadow);
 	border-radius: 15px;
 }
 

@@ -3,14 +3,12 @@
 import { ErrorFetch } from '~~/common/fetchModule'
 import type { GradeProgram } from '~~/models/classroom/grade.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-// Composable
-const moduleName = useModuleName()
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = ref(
 	schoolName
-		? `Calificaciones - ${moduleName.value} - ${schoolName} - Intranet`
-		: `Calificaciones - ${moduleName.value} - Intranet`,
+		? `- Calificaciones - ${schoolName} - Intranet`
+		: `- Calificaciones - Intranet`,
 )
 // Guard
 definePageMeta({
@@ -81,13 +79,20 @@ onMounted(async () => {
 	</NuxtLayout>
 </template>
 
-<style>
+<style scoped>
+.dark-mode .Grades {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Grades {
+	box-shadow: var(--box-shadow);
+}
+
 .Grades {
 	margin: 20px;
 	padding: 15px;
 	border-radius: 10px;
 	background-color: white;
-	box-shadow: var(--box-shadow);
 }
 
 @media (max-width: 767.98px) {

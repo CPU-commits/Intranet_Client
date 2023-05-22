@@ -31,11 +31,18 @@ function up() {
 	height: fit-content;
 }
 
+.dark-mode .Form {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Form {
+	box-shadow: var(--box-shadow);
+}
+
 .Form {
 	background-color: white;
 	padding: 15px;
 	border-radius: 10px;
-	box-shadow: var(--box-shadow);
 }
 
 .Up {

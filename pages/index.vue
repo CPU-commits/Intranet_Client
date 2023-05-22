@@ -104,16 +104,23 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.dark-mode .Session .Session__content {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Session .Session__content {
+	box-shadow: var(--box-shadow);
+}
+
 .Session {
 	margin: 20px;
 	display: flex;
 	justify-content: center;
 	.Session__content {
-		background-color: white;
 		padding: 20px;
+		background-color: var(--color-main-light-contrast);
 		width: 400px;
 		border-radius: 15px;
-		box-shadow: var(--box-shadow);
 	}
 }
 

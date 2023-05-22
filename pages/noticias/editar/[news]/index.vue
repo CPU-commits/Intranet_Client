@@ -88,14 +88,14 @@ async function updateNews() {
 		<!-- Body -->
 		<div class="News__contain">
 			<HTMLForm :form="updateNews">
-				<input v-model="news.title" placeholder="Titulo" type="text" />
-				<textarea v-model="news.headline" placeholder="Bajada" />
 				<img
 					title="Subir imagen"
 					alt="Subir imagen"
 					:src="news.image.url"
 					@click="() => fileInput?.click()"
 				/>
+				<input v-model="news.title" placeholder="Titulo" type="text" />
+				<textarea v-model="news.headline" placeholder="Bajada" />
 				<input
 					ref="fileInput"
 					style="display: none"
@@ -142,7 +142,7 @@ img {
 	max-height: 400px;
 	object-fit: cover;
 	cursor: pointer;
-	margin-bottom: 30px;
+	border-radius: 10px;
 }
 
 button {

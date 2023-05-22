@@ -2,10 +2,6 @@
 // Types
 import type { Work } from '~~/models/classroom/work.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-// Utils
-import { dateIsBefore } from '~~/utils/dates'
-import { formatDate, timeAgo } from '~~/utils/format'
-
 // Props
 const props = defineProps<{
 	work: Work
@@ -179,6 +175,10 @@ h3 {
 	position: absolute;
 	right: 0;
 	top: 12px;
+}
+
+.dark-mode .Work__config {
+	background-color: var(--color-main-dark-contrast);
 }
 
 .Work__config {

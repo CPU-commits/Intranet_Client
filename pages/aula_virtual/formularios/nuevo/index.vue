@@ -64,12 +64,19 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped lang="scss">
+.dark-mode .Forms {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Forms {
+	box-shadow: var(--box-shadow);
+}
+
 .Forms {
 	margin: 20px;
 	background-color: white;
 	padding: 20px;
 	width: 100%;
-	box-shadow: var(--box-shadow);
 	border-radius: 10px;
 	margin-bottom: 95vh;
 }
@@ -91,6 +98,10 @@ onBeforeUnmount(() => {
 	padding: 10px;
 	gap: 20px;
 	border: 2px solid var(--color-light);
+}
+
+input {
+	background-color: transparent;
 }
 
 @media (max-width: 767.98px) {

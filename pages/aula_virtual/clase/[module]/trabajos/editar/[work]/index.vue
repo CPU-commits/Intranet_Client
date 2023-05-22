@@ -20,14 +20,12 @@ type Link = {
 	link: string
 	_id_attached?: string
 }
-// Composable
-const moduleName = useModuleName()
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = ref(
 	schoolName
-		? `Editar trabajo - ${moduleName.value} - ${schoolName} - Intranet`
-		: `Editar trabajo - ${moduleName.value} - Intranet`,
+		? `- Editar trabajo - ${schoolName} - Intranet`
+		: `- Editar trabajo - Intranet`,
 )
 // Guard
 definePageMeta({
@@ -375,12 +373,19 @@ async function deleteLink(index: number) {
 </template>
 
 <style scoped>
+.dark-mode .NewWork {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .NewWork {
+	box-shadow: var(--box-shadow);
+}
+
 .NewWork {
 	background-color: white;
 	margin: 20px;
 	padding: 15px;
 	border-radius: 10px;
-	box-shadow: var(--box-shadow);
 	margin-bottom: 80vh;
 }
 

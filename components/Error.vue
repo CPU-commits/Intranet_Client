@@ -16,7 +16,7 @@ if (err.statusCode === 400) {
 } else if (err.statusCode === 401) {
 	src.value = '/img/error/401.svg'
 } else if (err.statusCode === 403) {
-	src.value = ''
+	src.value = '/img/error/403.svg'
 } else if (err.statusCode === 410) {
 	src.value = '/img/error/403.svg'
 } else if (err.statusCode === 404) {
@@ -29,7 +29,7 @@ function reloadPage() {
 </script>
 
 <template>
-	<section v-if="err.message.includes(ERROR_ABORT)" class="Error">
+	<section v-if="!err.message.includes(ERROR_ABORT)" class="Error">
 		<h2>{{ message }}</h2>
 
 		<span v-if="err.statusCode !== 404">{{ err.message }}</span>

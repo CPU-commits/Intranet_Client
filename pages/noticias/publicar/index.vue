@@ -70,14 +70,14 @@ async function publishNews() {
 		<!-- Body -->
 		<div class="News__contain">
 			<HTMLForm :form="publishNews">
-				<input v-model="news.title" placeholder="Titulo" type="text" />
-				<textarea v-model="news.headline" placeholder="Bajada" />
 				<img
 					:src="src"
 					title="Subir imagen"
 					alt="Subir imagen"
 					@click="() => fileInput?.click()"
 				/>
+				<input v-model="news.title" placeholder="Titulo" type="text" />
+				<textarea v-model="news.headline" placeholder="Bajada" />
 				<input
 					ref="fileInput"
 					style="display: none"
@@ -101,10 +101,7 @@ async function publishNews() {
 	flex-direction: column;
 	align-items: center;
 	padding: 30px;
-	background-color: white;
 	padding-bottom: 400px;
-	border-left: 1px solid var(--color-light);
-	border-right: 1px solid var(--color-light);
 }
 
 .News__contain {
@@ -125,7 +122,7 @@ img {
 	max-height: 400px;
 	object-fit: cover;
 	cursor: pointer;
-	margin-bottom: 30px;
+	border-radius: 10px;
 }
 
 button {

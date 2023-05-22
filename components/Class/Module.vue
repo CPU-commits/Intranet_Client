@@ -81,8 +81,11 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-.Module {
+.light-mode .Module {
 	box-shadow: var(--box-shadow);
+}
+
+.Module {
 	transition: all 0.4s;
 	border-radius: 6px;
 	border: 2px solid var(--color-light);

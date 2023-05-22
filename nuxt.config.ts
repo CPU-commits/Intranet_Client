@@ -54,6 +54,7 @@ export default defineNuxtConfig({
 		'@pinia-plugin-persistedstate/nuxt',
 		'nuxt-security',
 		'nuxt-jsonld',
+		'@nuxtjs/color-mode',
 		// '@nuxtjs/html-validator',
 		// '@nuxtjs/web-vitals' -> Integrate GA and party town -> https://github.com/nuxt-modules/partytown
 	],

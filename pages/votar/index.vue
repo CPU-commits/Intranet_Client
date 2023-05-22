@@ -113,9 +113,16 @@ async function voteForList() {
 </template>
 
 <style scoped>
+.dark-mode .Voting {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Voting {
+	box-shadow: var(--box-shadow);
+}
+
 .Voting {
 	background-color: white;
-	box-shadow: var(--box-shadow);
 	margin: 30px;
 	padding: 15px;
 	border-radius: 10px;

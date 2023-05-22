@@ -30,6 +30,7 @@ onMounted(async () => {
 	if (typeof idAuthor === 'string') {
 		try {
 			author.value = await $libraryService.getAuthor(idAuthor)
+			src.value = author.value.image?.url as string
 		} catch (err) {
 			const _err = $fetchModule.handleError(err)
 			throw createError({

@@ -141,6 +141,10 @@ async function addSection() {
 </template>
 
 <style lang="scss" scoped>
+.dark-mode nav {
+	background-color: var(--color-main-dark-contrast);
+}
+
 nav {
 	padding: 13px;
 	display: flex;
@@ -175,11 +179,14 @@ a:hover {
 	}
 }
 
+.light-mode .Header__subject {
+	box-shadow: var(--box-shadow);
+}
+
 .Header__subject {
 	border-top: 2px solid var(--color-light);
 	background-color: var(--color-main);
 	padding: 10px;
-	box-shadow: var(--box-shadow);
 	position: relative;
 	h2 {
 		color: white;

@@ -181,11 +181,18 @@ function downloadBook() {
 </template>
 
 <style scoped>
+.dark-mode .Book {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Book {
+	box-shadow: var(--box-shadow);
+}
+
 .Book {
 	background-color: white;
 	margin: 20px;
 	border-radius: 15px;
-	box-shadow: var(--box-shadow);
 	padding: 15px;
 	width: 100%;
 }
@@ -275,6 +282,7 @@ footer img {
 	height: 100px;
 	object-fit: cover;
 	filter: grayscale(1);
+	border-radius: 5px;
 }
 
 .Rating {

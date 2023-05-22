@@ -3,16 +3,10 @@
 import { ErrorFetch } from '~~/common/fetchModule'
 import type { Publication } from '~~/models/classroom/publication.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-import onScroll from '~~/utils/onScroll'
-// Composable
-const moduleName = useModuleName()
+
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
-const title = ref(
-	schoolName
-		? `${moduleName.value} - ${schoolName} - Intranet`
-		: `${moduleName.value} - Intranet`,
-)
+const title = ref(schoolName ? ` - ${schoolName} - Intranet` : `Intranet`)
 // Guard
 definePageMeta({
 	middleware: 'role',
@@ -104,37 +98,34 @@ function deletePublication(index: number) {
 			</Head>
 			<!-- Body -->
 			<section class="Publications__content">
-				<div class="Publications__write">
-					<!-- eslint-disable vue/v-on-event-hyphenation -->
-					<ClassPublicationWrite
-						v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"
-						:_section="_section"
-						@newPublication="(p: Publication) => newPublication(p)"
-					/>
-				</div>
 				<ClientOnly>
-					<template
-						v-if="publications.get(_section)?.length ?? 0 > 0"
+					<div
+						v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"
+						class="Publications__write"
 					>
-						<ClassPublication
-							v-for="(publication, i) in publications.get(
-								_section,
-							)"
-							:key="publication._id"
-							:can-edit="auth.userTypeIs(UserTypesKeys.TEACHER)"
-							:id-module="idModule"
-							:publication="publication"
-							@delete="() => deletePublication(i)"
+						<ClassPublicationWrite
+							:_section="_section"
+							@new-publication="(p: Publication) => newPublication(p)"
 						/>
-					</template>
-					<div v-else class="Empty">
-						<img src="/img/empty.svg" alt="Contenido Vacío" />
-						<span>
-							Parece que est&aacute; todo vac&iacute;o por
-							aqu&iacute;...
-						</span>
 					</div>
 				</ClientOnly>
+				<template v-if="publications.get(_section)?.length ?? 0 > 0">
+					<ClassPublication
+						v-for="(publication, i) in publications.get(_section)"
+						:key="publication._id"
+						:can-edit="auth.userTypeIs(UserTypesKeys.TEACHER)"
+						:id-module="idModule"
+						:publication="publication"
+						@delete="() => deletePublication(i)"
+					/>
+				</template>
+				<div v-else class="Empty">
+					<img src="/img/empty.svg" alt="Contenido Vacío" />
+					<span>
+						Parece que est&aacute; todo vac&iacute;o por
+						aqu&iacute;...
+					</span>
+				</div>
 				<SpinnerGet />
 				<Error v-if="error" :err="error" />
 			</section>

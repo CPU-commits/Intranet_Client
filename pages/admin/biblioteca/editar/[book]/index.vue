@@ -56,7 +56,7 @@ const modal = ref(false)
 // Form
 const fileInput = ref<HTMLInputElement | null>(null)
 const files = ref<FileList | null>(null)
-const src = ref(book.value?.image.url)
+const src = ref('')
 const tag = ref('')
 // Fetch data
 const tags = ref<Array<Tag> | null>(null)
@@ -74,6 +74,8 @@ onMounted(async () => {
 		tags.value = dataFetch[0]
 		authors.value = dataFetch[1]
 		editorials.value = dataFetch[2]
+
+		src.value = book.value?.image.url as string
 	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		error.value = _err

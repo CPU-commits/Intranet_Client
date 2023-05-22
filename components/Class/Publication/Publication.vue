@@ -179,12 +179,19 @@ async function editPublication() {
 </template>
 
 <style lang="scss" scoped>
+.dark-mode .Publication {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Publication {
+	box-shadow: var(--box-shadow);
+}
+
 .Publication {
 	border: 1px solid var(--color-light);
 	padding: 15px;
 	background-color: white;
 	border-radius: 10px;
-	box-shadow: var(--box-shadow);
 	transition: all 0.4s ease;
 	position: relative;
 }

@@ -26,13 +26,20 @@ watch(
 </template>
 
 <style lang="scss" scoped>
+.dark-mode .Footer {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Footer {
+	box-shadow: var(--box-shadow);
+}
+
 .Footer {
 	position: absolute;
 	width: 100%;
 	height: 200px;
 	bottom: 0;
 	background-color: var(--color-main);
-	box-shadow: var(--box-shadow);
 	display: flex;
 	justify-content: space-around;
 	z-index: -1;

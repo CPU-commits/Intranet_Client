@@ -135,11 +135,18 @@ h3 {
 	margin-bottom: 10px;
 }
 
+.dark-mode .Work {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Work {
+	box-shadow: var(--box-shadow);
+}
+
 .Work {
 	display: flex;
 	flex-direction: column;
 	background-color: white;
-	box-shadow: var(--box-shadow);
 	border-radius: 10px;
 	padding: 20px;
 }

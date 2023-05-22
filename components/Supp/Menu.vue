@@ -496,6 +496,10 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.dark-mode .SuppMenu {
+	background-color: var(--color-main-dark-contrast);
+}
+
 .SuppMenu {
 	left: -270px;
 	width: 250px;

@@ -102,12 +102,20 @@ function copyLink() {
 </template>
 
 <style scoped lang="scss">
+.dark-mode .Author {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Author {
+	box-shadow: var(--box-shadow);
+}
+
 .Author {
 	margin: 20px;
 	padding: 20px;
 	background-color: white;
 	border-radius: 15px;
-	box-shadow: var(--box-shadow);
+	width: 100%;
 	box-sizing: border-box;
 }
 

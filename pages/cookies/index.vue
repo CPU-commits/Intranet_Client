@@ -113,14 +113,21 @@ function setConsent(hasConsent: boolean) {
 	box-sizing: border-box;
 }
 
+.dark-mode .Cookies__content {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Cookies__content {
+	box-shadow: var(--box-shadow);
+}
+
 .Cookies__content {
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
-	background-color: white;
+	background-color: var(--color-main-light-contrast);
 	box-sizing: border-box;
 	border-radius: 8px;
-	box-shadow: var(--box-shadow);
 	padding: 25px;
 	max-width: 1000px;
 }

@@ -19,7 +19,7 @@ const route = useRoute()
 const idModule = route.params.module as string
 // Emits
 const emits = defineEmits<{
-	(e: 'newPublication', publication: Publication): void
+	(e: 'new-publication', publication: Publication): void
 }>()
 // Form
 const text = ref('')
@@ -43,7 +43,7 @@ async function uploadPublication() {
 		idModule,
 		props._section,
 	)
-	if (uploadedPublication) emits('newPublication', uploadedPublication)
+	if (uploadedPublication) emits('new-publication', uploadedPublication)
 }
 </script>
 
@@ -94,12 +94,19 @@ async function uploadPublication() {
 </template>
 
 <style scoped>
+.dark-mode .Publication {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Publication {
+	box-shadow: var(--box-shadow);
+}
+
 .Publication {
 	border: 1px solid var(--color-light);
 	padding: 15px;
 	background-color: white;
 	border-radius: 10px;
-	box-shadow: var(--box-shadow);
 	transition: all 0.4s ease;
 }
 

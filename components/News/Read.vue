@@ -11,25 +11,29 @@ defineProps<{
 	<section class="News">
 		<div class="News__contain">
 			<header>
+				<NuxtImg
+					:src="news.image.url"
+					:alt="news.title"
+					fit="cover"
+					@error="$event.target.src = '/img/no_image.svg'"
+				/>
 				<h1>{{ news.title }}</h1>
-				<p>{{ news.headline }}</p>
-				<span class="News__container--author">
-					<span v-if="news.author?.name">
-						{{ news.author.name }}
-						{{ news.author.first_lastname }}
+				<footer class="Footer">
+					<strong>{{ news.headline }}</strong>
+					<small>{{ formatDate(news.upload_date) }}</small>
+					<span class="News__container--author">
+						<span v-if="news.author?.name">
+							Escrito por
+							{{ news.author.name }}
+							{{ news.author.first_lastname }}
+						</span>
+						<span v-else>
+							<i class="fa-solid fa-robot" /> Noticia
+							autom&aacute;tica
+						</span>
 					</span>
-					<span v-else>
-						<i class="fa-solid fa-robot" /> Noticia
-						autom&aacute;tica
-					</span>
-				</span>
+				</footer>
 			</header>
-			<NuxtImg
-				:src="news.image.url"
-				:alt="news.title"
-				fit="cover"
-				@error="$event.target.src = '/img/no_image.svg'"
-			/>
 			<HTMLRich
 				:have-background="false"
 				:read-only="true"
@@ -44,10 +48,8 @@ defineProps<{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 30px;
-	background-color: white;
+	padding-top: 15px;
 	padding-bottom: 400px;
-	box-shadow: var(--box-shadow);
 }
 
 .News__contain {
@@ -63,34 +65,44 @@ p {
 
 img {
 	width: 100%;
-	max-height: 400px;
-	margin-bottom: 30px;
+	max-width: 500px;
 	object-fit: cover;
+	border-radius: 10px;
 }
 
 .News__contain header {
 	margin-bottom: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 h1 {
 	font-weight: 900;
 	font-size: 2rem;
-	font-size: 'Karla', sans-serif;
-	padding-top: 50px;
+	padding-top: 20px;
 	color: var(--color-news-black);
+}
+
+.Footer {
+	border-bottom: 2px solid #ebebeb;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 10px 0;
+	gap: 5px;
 }
 
 p {
 	font-size: 1rem;
-	border-bottom: 2px solid #ebebeb;
 	margin-bottom: 25px;
 }
 
 .News__container--author,
 .News__container--author i,
 .News__container--author span {
-	color: var(--color-main);
 	font-weight: bold;
+	font-style: italic;
 }
 
 @media (max-width: 575.98px) {

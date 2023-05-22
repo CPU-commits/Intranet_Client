@@ -2,16 +2,13 @@
 // Types
 import { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
-// Utils
-import { formatDate } from '~~/utils/format'
-// Composable
-const moduleName = useModuleName()
+
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = ref(
 	schoolName
-		? `Buscar - ${moduleName.value} - ${schoolName} - Intranet`
-		: `Buscar - ${moduleName.value} - Intranet`,
+		? ` - Buscar - ${schoolName} - Intranet`
+		: ` - Buscar - Intranet`,
 )
 // Guard
 definePageMeta({
@@ -136,13 +133,20 @@ async function searchFunction() {
 </template>
 
 <style scoped>
+.dark-mode .SearchContainer {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .SearchContainer {
+	box-shadow: var(--box-shadow);
+}
+
 .SearchContainer {
 	margin: 20px;
 	background-color: white;
 	padding: 20px;
 	border-radius: 15px;
 	box-sizing: border-box;
-	box-shadow: var(--box-shadow);
 }
 
 .Item {

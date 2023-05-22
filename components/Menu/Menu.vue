@@ -212,10 +212,13 @@ async function logout() {
 						</li>
 					</NuxtLink>
 				</ul>
-				<button class="logout" @click="logout">
-					<i class="fa-solid fa-arrow-right-from-bracket" />
-					Cerrar sesi&oacute;n
-				</button>
+				<footer class="Footer">
+					<MenuColor :large="true" />
+					<button class="logout" @click="logout">
+						<i class="fa-solid fa-arrow-right-from-bracket" />
+						Cerrar sesi&oacute;n
+					</button>
+				</footer>
 			</div>
 		</menu>
 		<MenuNav :toggle-menu="toggleMenu" />
@@ -257,10 +260,17 @@ button {
 	z-index: 10;
 }
 
+.dark-mode .Menu__container {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Menu__container {
+	box-shadow: var(--box-shadow);
+}
+
 .Menu__container {
 	width: 250px;
 	background-color: white;
-	box-shadow: var(--box-shadow);
 	left: -250px;
 	height: 100%;
 	position: fixed;
@@ -348,12 +358,17 @@ button {
 	border-left: 3px solid var(--color-main);
 }
 
-.logout {
-	background: none;
-	border: none;
+.Footer {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 	bottom: 25px;
 	left: 25px;
 	position: absolute;
+}
+
+.logout {
+	background: none;
 	color: var(--color-dark);
 	font-size: 1.1rem;
 	transition: all 0.4s ease;

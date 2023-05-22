@@ -263,13 +263,20 @@ span {
 	right: -8px;
 }
 
+.dark-mode .Notifications {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Notifications {
+	box-shadow: var(--box-shadow);
+}
+
 .Notifications {
 	position: absolute;
 	top: -3px;
 	width: 400px;
 	right: 20px;
 	background-color: white;
-	box-shadow: var(--box-shadow);
 	box-sizing: border-box;
 	border: 1px solid var(--color-light);
 	max-height: 400px;

@@ -156,6 +156,10 @@ async function deleteNews() {
 	top: 5px;
 }
 
+.dark-mode .News__config--container {
+	background-color: var(--color-main-dark-contrast);
+}
+
 .News__config--container {
 	position: absolute;
 	background-color: white;

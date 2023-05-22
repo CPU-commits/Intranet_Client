@@ -16,14 +16,12 @@ type Link = {
 	title: string
 	link: string
 }
-// Composable
-const moduleName = useModuleName()
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = ref(
 	schoolName
-		? `Nuevo trabajo - ${moduleName.value} - ${schoolName} - Intranet`
-		: `Nuevo trabajo - ${moduleName.value} - Intranet`,
+		? `- Nuevo trabajo - ${schoolName} - Intranet`
+		: `- Nuevo trabajo - Intranet`,
 )
 // Guard
 definePageMeta({
@@ -316,12 +314,19 @@ async function uploadWork() {
 </template>
 
 <style scoped>
+.dark-mode .NewWork {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .NewWork {
+	box-shadow: var(--box-shadow);
+}
+
 .NewWork {
 	background-color: white;
 	margin: 20px;
 	padding: 15px;
 	border-radius: 10px;
-	box-shadow: var(--box-shadow);
 	margin-bottom: 80vh;
 }
 

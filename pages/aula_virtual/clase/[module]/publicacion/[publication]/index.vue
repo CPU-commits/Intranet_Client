@@ -3,14 +3,12 @@
 import type { ErrorFetch } from '~~/common/fetchModule'
 import type { Publication } from '~~/models/classroom/publication.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-// Composable
-const moduleName = useModuleName()
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = ref(
 	schoolName
-		? `Publicación - ${moduleName.value} - ${schoolName} - Intranet`
-		: `Publicación - ${moduleName.value} - Intranet`,
+		? `- Publicación - ${schoolName} - Intranet`
+		: `- Publicación - Intranet`,
 )
 // Guard
 definePageMeta({

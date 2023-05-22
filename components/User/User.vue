@@ -83,10 +83,17 @@ const route = useRoute()
 	box-sizing: border-box;
 }
 
+.dark-mode .Content {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Content {
+	box-shadow: var(--box-shadow);
+}
+
 .Content {
 	background-color: white;
 	padding: 20px;
-	box-shadow: var(--box-shadow);
 	border-radius: 8px;
 }
 

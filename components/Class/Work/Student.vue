@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-mutating-props -->
 <!-- eslint-disable camelcase -->
 <!-- eslint-disable vue/no-setup-props-destructure -->
 <!-- eslint-disable vue/prop-name-casing -->

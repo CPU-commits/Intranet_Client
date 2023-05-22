@@ -143,7 +143,16 @@ onMounted(async () => {
 			editorElement.value.style.setProperty('--box-shadow', 'transparent')
 			editorElement.value.style.setProperty('--padding', '0')
 		} else {
-			editorElement.value.style.setProperty('--background', '#FFFFFF')
+			if (useColorMode().value === 'dark')
+				editorElement.value.style.setProperty(
+					'--background',
+					'var(--color-main-dark-contrast)',
+				)
+			else
+				editorElement.value.style.setProperty(
+					'--background',
+					'var(--color-main-light-contrast)',
+				)
 			editorElement.value.style.setProperty('--padding', '15px')
 		}
 })
@@ -690,13 +699,16 @@ function getValue(e: Event) {
 </template>
 
 <style scoped>
+.light-mode .Editor {
+	box-shadow: var(--box-shadow);
+}
+
 .Editor {
 	width: 100%;
 	box-sizing: border-box;
 	background-color: var(--background);
 	border-radius: 15px;
 	padding: var(--padding);
-	box-shadow: var(--box-shadow);
 }
 
 .Editor__header {

@@ -49,6 +49,14 @@ async function recover() {
 </template>
 
 <style lang="scss" scoped>
+.dark-mode .Session .Session__content {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.dark-mode .Session .Session__content {
+	box-shadow: var(--box-shadow);
+}
+
 .Session {
 	margin: 20px;
 	display: flex;
@@ -58,7 +66,6 @@ async function recover() {
 		padding: 20px;
 		width: 400px;
 		border-radius: 15px;
-		box-shadow: var(--box-shadow);
 	}
 }
 

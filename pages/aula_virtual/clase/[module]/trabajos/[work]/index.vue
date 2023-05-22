@@ -6,15 +6,12 @@ import { FormAccess } from '~~/models/classroom/form_access.model'
 import { FilesUploadedClassroom } from '~~/models/file/files_uploaded.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
 import { Grade } from '~~/models/classroom/grade.model'
-import { formatDate } from '~~/utils/format'
-// Composable
-const moduleName = useModuleName()
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = ref(
 	schoolName
-		? `Trabajo - ${moduleName.value} - ${schoolName} - Intranet`
-		: `Trabajo - ${moduleName.value} - Intranet`,
+		? ` - Trabajo - ${schoolName} - Intranet`
+		: ` - Trabajo - Intranet`,
 )
 // Guard
 definePageMeta({
@@ -101,8 +98,8 @@ onMounted(async () => {
 			work.value.attached = null
 		// Title
 		title.value = schoolName
-			? `${work.value.title} - ${moduleName.value} - ${schoolName} - Intranet`
-			: `${work.value.title} - ${moduleName.value} - Intranet`
+			? `- ${work.value.title} - ${schoolName} - Intranet`
+			: `- ${work.value.title} - Intranet`
 	} catch (err) {
 		error.value = $fetchModule.handleError(err)
 	}
@@ -212,12 +209,19 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.dark-mode .Work {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Work {
+	box-shadow: var(--box-shadow);
+}
+
 .Work {
 	background-color: white;
 	margin: 15px;
 	padding: 15px;
 	border-radius: 10px;
-	box-shadow: var(--box-shadow);
 }
 
 header {

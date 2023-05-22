@@ -82,6 +82,7 @@ watch(
 					>
 						<i class="fa-solid fa-gear" />
 					</NuxtLink>
+					<MenuColor v-if="!auth.isAuth" />
 					<NuxtLink
 						v-if="!auth.isAuth"
 						title="¿Necesitas ayuda?"
@@ -96,12 +97,18 @@ watch(
 </template>
 
 <style lang="scss" scoped>
+.dark-mode .Header {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Header {
+	box-shadow: rgb(71 75 255 / 10%) 0px 2px 4px;
+}
+
 .Header {
 	width: 100%;
 	height: 60px;
-	box-shadow: rgb(71 75 255 / 10%) 0px 2px 4px;
 	z-index: 10;
-	background-color: white;
 }
 /* News */
 .News {

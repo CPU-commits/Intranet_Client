@@ -135,11 +135,22 @@ async function deleteForm() {
 </template>
 
 <style scoped lang="scss">
+.dark-mode .Forms {
+	background-color: var(--color-main-dark-contrast);
+}
+
+.light-mode .Forms {
+	box-shadow: var(--box-shadow);
+}
+
+input {
+	background-color: transparent;
+}
+
 .Forms {
 	margin: 20px;
 	background-color: white;
 	padding: 20px;
-	box-shadow: var(--box-shadow);
 	border-radius: 10px;
 	margin-bottom: 95vh;
 	width: 100%;
