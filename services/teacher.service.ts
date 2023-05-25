@@ -118,7 +118,7 @@ export class TeacherService {
 			await this.nuxtApp.$fetchModule.fetchData({
 				method: 'put',
 				URL: `/api/teachers/edit_teacher/${teacher.user._id}`,
-				body: teacher,
+				body: teacher.user,
 				spinnerStatus: true,
 				token: this.authStore.getToken,
 			})

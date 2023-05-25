@@ -6,10 +6,24 @@ import { formatMiniDate } from '~~/utils/format'
 // Stores
 const auth = useAuthStore()
 
-defineProps<{
+const props = defineProps<{
 	moduleData: ClassroomModule
 	isHistory?: boolean
 }>()
+
+const name = computed(() => {
+	let title = `${props.moduleData.subject.subject}`
+	if (
+		auth.userTypeIs(UserTypesKeys.TEACHER, UserTypesKeys.ATTORNEY) ||
+		props.isHistory
+	)
+		title += `- ${props.moduleData.section.course.course} ${props.moduleData.section.section}`
+	if (props.isHistory)
+		title += `- ${props.moduleData.semester.year} ${props.moduleData.semester.semester}°`
+	return title
+})
+
+const studentsModal = ref(false)
 </script>
 
 <template>
@@ -23,21 +37,7 @@ defineProps<{
 					loading="lazy"
 					@error="$event.target.src = '/img/no_image.svg'"
 				/>
-				<h3>
-					{{ moduleData.subject.subject }}
-					<span
-						v-if="
-							auth.userTypeIs(UserTypesKeys.TEACHER) || isHistory
-						"
-					>
-						- {{ moduleData.section.course.course }}
-						{{ moduleData.section.section }}
-					</span>
-					<span v-if="isHistory">
-						- {{ moduleData.semester.year }}
-						{{ moduleData.semester.semester }}°
-					</span>
-				</h3>
+				<h3>{{ name }}</h3>
 			</header>
 		</NuxtLink>
 		<div v-if="!isHistory" class="Module__work">
@@ -74,9 +74,31 @@ defineProps<{
 				Sin pr&oacute;ximas entregas...
 			</small>
 		</div>
+		<HTMLButtonIcon
+			v-if="
+				auth.userTypeIs(UserTypesKeys.ATTORNEY) && moduleData.students
+			"
+			class="Module__work--students"
+			class-item="fa-solid fa-graduation-cap"
+			:one-hundred="false"
+			hover="white"
+			:click="() => (studentsModal = true)"
+		/>
 		<footer>
 			<!--<i class="fa-solid fa-chart-line" />-->
 		</footer>
+		<!-- Modal -->
+		<Modal v-model:opened="studentsModal">
+			<template #title>
+				<h2>Estudiantes en m&oacute;dulo {{ name }}</h2>
+			</template>
+			<HTMLTable :header="['Nombre', 'RUT']">
+				<tr v-for="student in moduleData.students" :key="student._id">
+					<td>{{ student.name }} {{ student.first_lastname }}</td>
+					<td>{{ student.rut }}</td>
+				</tr>
+			</HTMLTable>
+		</Modal>
 	</article>
 </template>
 
@@ -131,6 +153,20 @@ header {
 		font-size: 0.8rem;
 	}
 	min-height: 100px;
+}
+
+.Module__work--students {
+	position: absolute;
+	right: -10px;
+	bottom: -10px;
+	background-color: var(--color-main);
+	border-radius: 80%;
+	padding: 6px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 0;
 }
 
 .Work {

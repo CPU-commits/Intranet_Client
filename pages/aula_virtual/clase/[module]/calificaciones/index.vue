@@ -17,6 +17,7 @@ definePageMeta({
 		UserTypesKeys.STUDENT,
 		UserTypesKeys.STUDENT_DIRECTIVE,
 		UserTypesKeys.TEACHER,
+		UserTypesKeys.ATTORNEY,
 	],
 })
 // Nuxtapp
@@ -36,6 +37,7 @@ if (typeof idModule !== 'string')
 // Component
 const Student = resolveComponent('ClassGradeStudent')
 const Teacher = resolveComponent('ClassGradeTeacher')
+const Parent = resolveComponent('ClassGradeParent')
 // Data
 const gradePrograms = ref<Array<GradeProgram> | null>(null)
 
@@ -61,12 +63,11 @@ onMounted(async () => {
 			<!-- Body -->
 			<component
 				:is="
-					auth.userTypeIs(
-						UserTypesKeys.STUDENT,
-						UserTypesKeys.STUDENT_DIRECTIVE,
-					)
-						? Student
-						: Teacher
+					auth.userTypeIs(UserTypesKeys.TEACHER)
+						? Teacher
+						: auth.userTypeIs(UserTypesKeys.ATTORNEY)
+						? Parent
+						: Student
 				"
 				v-if="gradePrograms"
 				:grade-programs="gradePrograms"

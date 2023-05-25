@@ -1,22 +1,23 @@
 // Types
+import { Parent } from '~/models/user/parent.model'
 import type { DefaultResponse } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
-import type { Directives } from '~~/models/user/directive.model'
 import { User } from '~~/models/user/user.model'
 import validator from '~~/utils/validator'
 
-export class DirectivesService {
+export class ParentService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
 	private readonly nuxtApp = useNuxtApp()
 	private readonly LIMIT = 30
 
-	async getDirectives(total = false, skip?: number, search?: string) {
-		let URL = `/api/directive/get_directives?total=${total}&limit=${this.LIMIT}`
+	async getParents(total = false, skip?: number, search?: string) {
+		let URL = `/api/parents?total=${total}&limit=${this.LIMIT}`
 		if (search) URL += `&search=${search}`
 		if (skip && skip >= 0) URL += `&skip=${skip}`
 		const data = await this.nuxtApp.$fetchModule.fetchData<
-			BodyFetch<Directives> & DefaultResponse
+			BodyFetch<{ parents: Array<Parent>; total?: number }> &
+				DefaultResponse
 		>({
 			URL,
 			token: this.authStore.getToken,
@@ -25,26 +26,58 @@ export class DirectivesService {
 			abort: {
 				url: 'same',
 			},
+			scopeSpinner: 'parent_students',
 		})
 		return data.body
 	}
 
-	async changeStatus(why: string, idDirective: string) {
+	async getParentStudent() {
+		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			BodyFetch<{ students: Array<User> }> & DefaultResponse
+		>({
+			URL: `/api/parents/students`,
+			method: 'get',
+			token: this.authStore.getToken,
+			spinnerStatus: true,
+			abort: {
+				url: 'same',
+			},
+		})
+
+		return dataFetch.body.students
+	}
+
+	async getParentStudentsByID(idParent: string) {
+		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			BodyFetch<{ students: Array<User> }> & DefaultResponse
+		>({
+			URL: `/api/parents/${idParent}/students`,
+			method: 'get',
+			token: this.authStore.getToken,
+			spinnerStatus: true,
+			abort: {
+				url: 'same',
+			},
+		})
+
+		return dataFetch.body.students
+	}
+
+	async changeStatus(why: string, idParent: string) {
 		try {
 			if (why.length > 535 || why === '')
 				throw new Error('Debe existir un motivo de máx 535 cárac.')
 
 			await this.nuxtApp.$fetchModule.fetchData({
 				method: 'post',
-				URL: `/api/directive/change_status/${idDirective}`,
+				URL: `/api/parents/status/${idParent}`,
 				body: { why },
 				spinnerStatus: true,
 				token: this.authStore.getToken,
 			})
 
 			this.toastsStore.addToast({
-				message:
-					'Se ha cambiado el estado del bibliotecario exitosamente',
+				message: 'Se ha cambiado el estado del apoderado exitosamente',
 				type: 'success',
 			})
 			return true
@@ -58,7 +91,7 @@ export class DirectivesService {
 		}
 	}
 
-	private validatorsDirective(formDirective: User) {
+	private validatorsParent(formDirective: User) {
 		if (formDirective.name === '' || formDirective.name.length > 100)
 			throw new Error('Debe existir un nombre de máx. 100 carac.')
 		if (
@@ -84,27 +117,27 @@ export class DirectivesService {
 			)
 	}
 
-	async uploadDirective(directive: User) {
+	async uploadParent(parent: User) {
 		try {
-			this.validatorsDirective(directive)
+			this.validatorsParent(parent)
 			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
 				BodyFetch<{
-					directive: User
+					parents: Parent
 				}> &
 					DefaultResponse
 			>({
 				method: 'post',
-				URL: '/api/directive/new_directive',
-				body: directive,
+				URL: '/api/parents',
+				body: [parent],
 				spinnerStatus: true,
 				token: this.authStore.getToken,
 			})
 			this.toastsStore.addToast({
-				message: 'Se ha agregado el directivo exitosamente',
+				message: 'Se ha agregado el apoderado exitosamente',
 				type: 'success',
 			})
 
-			return dataFetch.body.directive
+			return dataFetch.body.parents
 		} catch (err) {
 			const _err = this.nuxtApp.$fetchModule.handleError(err)
 			this.toastsStore.addToast({
@@ -114,19 +147,18 @@ export class DirectivesService {
 		}
 	}
 
-	async uploadDirectives(directives: Array<User>) {
+	async uploadParents(parents: Array<User>) {
 		try {
-			for (const directive of directives)
-				this.validatorsDirective(directive)
+			for (const parent of parents) this.validatorsParent(parent)
 			await this.nuxtApp.$fetchModule.fetchData({
 				method: 'post',
-				URL: '/api/directive/new_directives',
-				body: directives,
+				URL: '/api/parents',
+				body: parents,
 				spinnerStatus: true,
 				token: this.authStore.getToken,
 			})
 			this.toastsStore.addToast({
-				message: 'Se han agregado los directivos exitosamente',
+				message: 'Se han agregado los apoderados exitosamente',
 				type: 'success',
 			})
 			return true
@@ -140,18 +172,47 @@ export class DirectivesService {
 		}
 	}
 
-	async editDirective(directive: User, idDirective: string) {
+	async assignStudent(idParent: string, idStudent: string) {
 		try {
-			this.validatorsDirective(directive)
-			await this.nuxtApp.$fetchModule.fetchData({
+			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+				BodyFetch<{ student: User }> & DefaultResponse
+			>({
 				method: 'put',
-				URL: `/api/directive/edit_directive/${idDirective}`,
-				spinnerStatus: true,
+				URL: `/api/parents/${idParent}/students`,
+				body: {
+					idStudent,
+				},
 				token: this.authStore.getToken,
-				body: directive,
+				spinnerStatus: true,
 			})
 			this.toastsStore.addToast({
-				message: 'Se ha editado con éxito el directivo',
+				message: 'Se ha asignado el alumno exitosamente',
+				type: 'success',
+			})
+
+			return dataFetch.body.student
+		} catch (err) {
+			const error = this.nuxtApp.$fetchModule.handleError(err)
+			this.toastsStore.addToast({
+				message: error.message,
+				type: 'error',
+			})
+			return null
+		}
+	}
+
+	async editParent(parent: User, idParent: string) {
+		try {
+			this.validatorsParent(parent)
+			await this.nuxtApp.$fetchModule.fetchData({
+				method: 'put',
+				URL: `/api/parents/${idParent}`,
+				spinnerStatus: true,
+				token: this.authStore.getToken,
+				body: parent,
+			})
+			this.toastsStore.addToast({
+				message: 'Se ha editado con éxito el apoderado',
 				type: 'success',
 			})
 			return true

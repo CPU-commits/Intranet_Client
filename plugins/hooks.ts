@@ -46,7 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 								await nuxtApp.vueApp.$nuxt.$fetchModule.fetchData<
 									{ access_token: string } & DefaultResponse
 								>({
-									URL: `/api/refresh`,
+									URL: `/api/authentication/refresh`,
 									method: 'get',
 									headers: {
 										refresh_token: data.refresh_token,

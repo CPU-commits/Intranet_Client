@@ -12,6 +12,7 @@ definePageMeta({
 		UserTypesKeys.DIRECTIVE,
 		UserTypesKeys.DIRECTOR,
 		UserTypesKeys.TEACHER,
+		UserTypesKeys.ATTORNEY,
 	],
 })
 // Router

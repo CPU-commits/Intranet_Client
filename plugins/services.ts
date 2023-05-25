@@ -20,6 +20,7 @@ import { PublicationsService } from '~~/services/publications.service'
 import { WorkService } from '~~/services/work.service'
 import { FormService } from '~~/services/form.service'
 import { NotificationsService } from '~~/services/notifications.service'
+import { ParentService } from '~~/services/parent.service'
 import { ErrorService } from '~/services/error.service'
 
 export default defineNuxtPlugin(() => {
@@ -48,6 +49,7 @@ export default defineNuxtPlugin(() => {
 			notificationService: new NotificationsService(),
 			filesService,
 			reportService: new ErrorService(),
+			parentService: new ParentService(),
 		},
 	}
 })

@@ -37,6 +37,7 @@ async function downloadGrades() {
 				auth.userTypeIs(
 					UserTypesKeys.STUDENT,
 					UserTypesKeys.STUDENT_DIRECTIVE,
+					UserTypesKeys.ATTORNEY,
 				)
 			"
 			:class="path === `${base}/tareas` ? 'Selected' : ''"

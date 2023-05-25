@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // Types
-
 import { UserTypesKeys } from '~~/models/user/user.model'
 
 // Router
@@ -27,6 +26,20 @@ const url = route.path
 					<li :class="url === '/admin/colegio' ? 'Selected' : ''">
 						<i class="fa-solid fa-building-columns" />
 						<span>Colegio</span>
+					</li>
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeNotIs(UserTypesKeys.LIBRARIAN)"
+					class="NuxtLink"
+					to="/admin/apoderados"
+				>
+					<li
+						:class="{
+							Selected: url.startsWith('/admin/apoderados'),
+						}"
+					>
+						<i class="fa-solid fa-user"></i>
+						<span>Apoderados</span>
 					</li>
 				</NuxtLink>
 				<NuxtLink

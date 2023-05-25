@@ -42,9 +42,12 @@ watch(
 				<ul>
 					<li
 						v-if="
-							auth.getUserType === UserTypesKeys.TEACHER ||
-							auth.getUserType === UserTypesKeys.STUDENT ||
-							auth.getUserType === UserTypesKeys.STUDENT_DIRECTIVE
+							auth.userTypeIs(
+								UserTypesKeys.TEACHER,
+								UserTypesKeys.STUDENT,
+								UserTypesKeys.STUDENT_DIRECTIVE,
+								UserTypesKeys.ATTORNEY,
+							)
 						"
 					>
 						<NuxtLink class="NuxtLink" to="/aula_virtual">

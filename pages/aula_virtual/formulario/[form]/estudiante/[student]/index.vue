@@ -1,7 +1,6 @@
 <script setup lang="ts">
 // Utils
 import { UserTypesKeys } from '~~/models/user/user.model'
-import { intToRoman } from '~~/utils/format'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = ref(
@@ -12,7 +11,7 @@ const title = ref(
 // Guard
 definePageMeta({
 	middleware: 'role',
-	roles: [UserTypesKeys.TEACHER],
+	roles: [UserTypesKeys.TEACHER, UserTypesKeys.ATTORNEY],
 })
 // Nuxtapp
 const { $fetchModule } = useNuxtApp()

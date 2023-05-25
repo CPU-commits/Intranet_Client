@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // Type
+import { UserTypesKeys } from '~/models/user/user.model'
 import type { ItemQuestion } from '~~/models/form/form.model'
 import { intToChar } from '~~/utils/format'
 
@@ -11,6 +12,7 @@ const props = defineProps<{
 	idStudent: string
 }>()
 // Stores
+const authStore = useAuthStore()
 const form = useFormStore()
 
 // Form
@@ -57,7 +59,12 @@ if (props.question.type === 'written' && form.getAnswers[index]?.evaluate)
 			</pre
 			>
 			<br />
-			<template v-if="form.hasPoints">
+			<template
+				v-if="
+					!form.hasPoints &&
+					!authStore.userTypeIs(UserTypesKeys.TEACHER)
+				"
+			>
 				<label for="points">Puntaje final</label>
 				<div class="Points">
 					<HTMLInput
@@ -89,7 +96,6 @@ if (props.question.type === 'written' && form.getAnswers[index]?.evaluate)
 			class="Answer"
 		>
 			<span>{{ intToChar(i) }})</span>
-			<!-- eslint-disable vue/no-mutating-props -->
 			<input
 				v-model="question.answer"
 				:value="i.toString()"
@@ -107,6 +113,9 @@ if (props.question.type === 'written' && form.getAnswers[index]?.evaluate)
 				Correcta
 			</span>
 		</div>
+		<small v-if="!question.answer">
+			<strong>Sin respuesta</strong>
+		</small>
 		<small v-if="question.type === 'alternatives'">
 			Pregunta sin puntaje
 		</small>

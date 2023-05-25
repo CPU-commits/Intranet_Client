@@ -15,6 +15,7 @@ definePageMeta({
 		UserTypesKeys.STUDENT,
 		UserTypesKeys.STUDENT_DIRECTIVE,
 		UserTypesKeys.TEACHER,
+		UserTypesKeys.ATTORNEY,
 	],
 })
 // Nuxtapp

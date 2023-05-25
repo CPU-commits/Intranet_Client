@@ -43,7 +43,7 @@ export type ErrorFetch = {
 	statusCode: number
 }
 
-export const ERROR_ABORT = 'The user aborted a request. ()'
+export const ERROR_ABORT = 'The user aborted a request'
 
 export class Fetch {
 	private publicApi: string | undefined

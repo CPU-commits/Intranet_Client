@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Types
 import type { Student } from '~~/models/user/student.model'
-import { UserTypesKeys } from '~~/models/user/user.model'
+import { User, UserTypesKeys } from '~~/models/user/user.model'
 import { ErrorFetch } from '~~/common/fetchModule'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
@@ -9,14 +9,20 @@ const title = schoolName
 	? `Libro de Vida - ${schoolName} - Intranet`
 	: 'Libro de Vida - Intranet'
 // Nuxtapp
-const { $fetchModule, $studentsService } = useNuxtApp()
+const { $fetchModule, $studentsService, $parentService } = useNuxtApp()
 // Stores
 const auth = useAuthStore()
 
 // Data
 const students = ref<Array<Student> | null>(null)
+const studentsUsers = ref<Array<User> | null>(null)
 
 const error = ref<ErrorFetch | null>(null)
+
+onMounted(async () => {
+	if (auth.userTypeIs(UserTypesKeys.ATTORNEY))
+		studentsUsers.value = await $parentService.getParentStudent()
+})
 // Provide total for navigate
 const total = ref(0)
 provide('total', total)
@@ -56,6 +62,7 @@ const search = ref('')
 				auth.userTypeNotIs(
 					UserTypesKeys.STUDENT,
 					UserTypesKeys.STUDENT_DIRECTIVE,
+					UserTypesKeys.ATTORNEY,
 				)
 			"
 		>
@@ -95,7 +102,31 @@ const search = ref('')
 				>No hay alumnos...</span
 			>
 		</section>
-		<Booklife v-else />
+		<Booklife
+			v-else-if="
+				auth.userTypeIs(
+					UserTypesKeys.STUDENT,
+					UserTypesKeys.STUDENT_DIRECTIVE,
+				)
+			"
+		/>
+		<section v-else>
+			<HTMLTable :header="['Nombre', 'RUT', 'Libro de vida']">
+				<tr v-for="student in studentsUsers" :key="student._id">
+					<td>
+						{{ student.name }}
+						{{ student.first_lastname }}
+					</td>
+					<td>{{ student.rut }}</td>
+					<td>
+						<HTMLAIcon
+							:href="`/libro_vida/${student._id}`"
+							class-item="fa-solid fa-book-open"
+						/>
+					</td>
+				</tr>
+			</HTMLTable>
+		</section>
 
 		<SpinnerGet />
 		<Error v-if="error" :err="error" />

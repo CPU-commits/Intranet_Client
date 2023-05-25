@@ -3,8 +3,6 @@
 import type { AnswerWEvaluate } from '~~/models/classroom/answer.model'
 import type { ItemQuestion } from '~~/models/form/form.model'
 import type { User } from '~~/models/user/user.model'
-// Utils
-import { formatDate, intToChar } from '~~/utils/format'
 
 // Props
 const props = defineProps<{
@@ -165,6 +163,9 @@ function keyDown() {
 				Correcta
 			</span>
 		</div>
+		<small v-if="!question.answer">
+			<strong>Sin respuesta</strong>
+		</small>
 		<small v-if="question.type === 'alternatives'">
 			Pregunta sin puntaje
 		</small>

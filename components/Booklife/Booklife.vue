@@ -106,7 +106,15 @@ async function deleteObservation(id: string) {
 			<h3>
 				Observaciones {{ semester.year }} - {{ semester.semester }}°
 			</h3>
-			<header>
+			<header
+				v-if="
+					auth.userTypeNotIs(
+						UserTypesKeys.STUDENT,
+						UserTypesKeys.STUDENT_DIRECTIVE,
+						UserTypesKeys.ATTORNEY,
+					)
+				"
+			>
 				<HTMLButtonText :click="toggleModalAdd">
 					<i class="fa-solid fa-plus" /> Agregar observaci&oacute;n
 				</HTMLButtonText>

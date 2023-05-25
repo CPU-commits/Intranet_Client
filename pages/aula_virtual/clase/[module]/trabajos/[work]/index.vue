@@ -20,6 +20,7 @@ definePageMeta({
 		UserTypesKeys.STUDENT,
 		UserTypesKeys.STUDENT_DIRECTIVE,
 		UserTypesKeys.TEACHER,
+		UserTypesKeys.ATTORNEY,
 	],
 })
 // Nuxtapp
@@ -46,6 +47,7 @@ if (typeof idWork !== 'string')
 
 // Components
 const ClassWorkStudent = resolveComponent('ClassWorkStudent')
+const ClassWorkParent = resolveComponent('ClassWorkParent')
 const ClassWorkTeacher = resolveComponent('ClassWorkTeacher')
 // Data
 const work = ref<Work | null>(null)
@@ -74,14 +76,17 @@ onMounted(async () => {
 				total_points: number
 			}>?,
 		] = [$workService.getWork(idWork)]
-		if (auth.userTypeIs(UserTypesKeys.TEACHER))
+		if (auth.userTypeIs(UserTypesKeys.TEACHER, UserTypesKeys.ATTORNEY))
 			promises.push($workService.getStudentsStatus(idModule, idWork))
 
 		const dataFetch = await Promise.all(promises)
 		work.value = dataFetch[0].work
 		formAccess.value = dataFetch[0].form_access
 
-		if (auth.userTypeIs(UserTypesKeys.TEACHER) && dataFetch[1]) {
+		if (
+			auth.userTypeIs(UserTypesKeys.TEACHER, UserTypesKeys.ATTORNEY) &&
+			dataFetch[1]
+		) {
 			formHasPoints.value = dataFetch[0].form_has_points ?? false
 			// Teacher
 			students.value = dataFetch[1].students
@@ -174,6 +179,8 @@ onMounted(async () => {
 						:is="
 							auth.userTypeIs(UserTypesKeys.TEACHER)
 								? ClassWorkTeacher
+								: auth.userTypeIs(UserTypesKeys.ATTORNEY)
+								? ClassWorkParent
 								: ClassWorkStudent
 						"
 						:id-work="idWork"
@@ -248,6 +255,8 @@ i {
 
 .Work__content {
 	overflow-x: auto;
+	display: flex;
+	justify-content: center;
 }
 
 .Work__content section {
