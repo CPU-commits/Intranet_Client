@@ -39,6 +39,12 @@ const formStudent: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
 	rut: '',
 	registration_number: '',
 	course: '',
+	gender: '',
+	birthday: '',
+	address: {
+		country: '',
+		street_number_name: '',
+	},
 })
 const course = ref('')
 // Change status
@@ -201,13 +207,12 @@ async function changeStatus() {
 			<HTMLTable
 				v-if="students"
 				:header="[
-					'Nombre',
-					'Ap. P',
-					'Ap. M',
+					'Nombres',
+					'Apellido P.',
+					'Apellido M.',
 					'RUT',
-					'Curso',
-					'Matricula',
 					'Estado',
+					'Más',
 					'',
 				]"
 				:navigate="{
@@ -223,14 +228,6 @@ async function changeStatus() {
 					<td>{{ student.first_lastname }}</td>
 					<td>{{ student.second_lastname }}</td>
 					<td>{{ student.rut }}</td>
-					<td>
-						{{
-							student.course
-								? `${student.course.course.course} ${student.course.section}`
-								: 'Sin curso'
-						}}
-					</td>
-					<td>{{ student.registration_number }}</td>
 					<td>{{ student.status ? 'Activo' : 'Inactivo' }}</td>
 					<td>
 						<HTMLButtonIcon
@@ -245,7 +242,7 @@ async function changeStatus() {
 								}
 							"
 							type="button"
-							class-item="fa-solid fa-pen-to-square"
+							class-item="fa-solid fa-ellipsis"
 						/>
 					</td>
 				</tr>
@@ -264,7 +261,7 @@ async function changeStatus() {
 				<h2>Agregar estudiante</h2>
 			</template>
 			<HTMLForm :form="uploadStudent">
-				<label for="name">Nombre</label>
+				<label for="name">Nombres</label>
 				<HTMLInput id="name" v-model:value="formStudent.name" />
 				<label for="fln">Apellido Paterno</label>
 				<HTMLInput
@@ -290,6 +287,24 @@ async function changeStatus() {
 						{{ section.section }}
 					</option>
 				</HTMLSelect>
+				<label for="gender">Sexo</label>
+				<HTMLSelect id="gender" v-model:value="formStudent.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="address">Direcci&oacute;n</label>
+				<HTMLAddress
+					id="address"
+					v-model:value="formStudent.address.street_number_name"
+					v-model:address="formStudent.address"
+				/>
+				<label for="birthday">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthday"
+					v-model:value="formStudent.birthday"
+					type="date"
+				/>
 				<label for="registration_number">Matricula</label>
 				<HTMLInput
 					id="registration_number"
@@ -307,7 +322,7 @@ async function changeStatus() {
 				</h2>
 			</template>
 			<HTMLForm v-if="studentEdit" :form="editStudent">
-				<label for="nameE">Nombre</label>
+				<label for="nameE">Nombres</label>
 				<HTMLInput id="nameE" v-model:value="studentEdit.name" />
 				<label for="flnE">Apellido Paterno</label>
 				<HTMLInput
@@ -333,6 +348,23 @@ async function changeStatus() {
 						{{ section.section }}
 					</option>
 				</HTMLSelect>
+				<label for="gender">Sexo</label>
+				<HTMLSelect id="gender" v-model:value="studentEdit.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="address">Direcci&oacute;n</label>
+				<HTMLAddress
+					id="address"
+					v-model:value="studentEdit.address.street_number_name"
+				/>
+				<label for="birthday">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthday"
+					v-model:value="studentEdit.birthday"
+					type="date"
+				/>
 				<label for="registration_numberE">Matricula</label>
 				<HTMLInput
 					id="registration_numberE"

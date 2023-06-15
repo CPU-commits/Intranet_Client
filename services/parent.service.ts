@@ -1,4 +1,5 @@
 // Types
+import { Address } from '~/models/address/address'
 import { Parent } from '~/models/user/parent.model'
 import type { DefaultResponse } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
@@ -117,7 +118,7 @@ export class ParentService {
 			)
 	}
 
-	async uploadParent(parent: User) {
+	async uploadParent(parent: User & { address: Address }) {
 		try {
 			this.validatorsParent(parent)
 			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // Types
+import { Address } from '~/models/address/address'
 import type { ErrorFetch } from '~~/common/fetchModule'
 import type { Parent } from '~~/models/user/parent.model'
 import type { User } from '~~/models/user/user.model'
@@ -34,6 +35,12 @@ const formParent = reactive({
 	first_lastname: '',
 	second_lastname: '',
 	rut: '',
+	email: '',
+	address: {
+		street_number_name: '',
+		country: '',
+	} as Address,
+	phone: '',
 })
 // Change status
 const why = ref('')
@@ -83,7 +90,9 @@ function initForm(newParent: Parent) {
 }
 
 async function uploadParent() {
-	const dataFetch = await $parentService.uploadParent(formParent as User)
+	const dataFetch = await $parentService.uploadParent(
+		formParent as User & { address: Address },
+	)
 	if (dataFetch !== undefined) initForm(dataFetch)
 }
 
@@ -164,8 +173,8 @@ async function assignStudent(idStudent: string) {
 				v-if="parents"
 				:header="[
 					'Nombre',
-					'Ap. P',
-					'Ap. M',
+					'Apellido. P',
+					'Apellido. M',
 					'RUT',
 					'Estudiantes',
 					'Estado',
@@ -240,6 +249,16 @@ async function assignStudent(idStudent: string) {
 					id="sln"
 					v-model:value="formParent.second_lastname"
 				/>
+				<label for="address">Direcci&oacute;n</label>
+				<HTMLAddress
+					id="address"
+					v-model:value="formParent.address.street_number_name"
+					v-model:address="formParent.address"
+				/>
+				<label for="">Telef&oacute;no</label>
+				<HTMLInput v-model:value="formParent.phone" type="phone" />
+				<label for="">Email</label>
+				<HTMLInput v-model:value="formParent.email" />
 				<label for="rut">RUT</label>
 				<HTMLInput id="rut" v-model:value="formParent.rut" />
 				<HTMLButton type="submit">Agregar apoderado</HTMLButton>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // Types
+import { Address } from '~/models/address/address'
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
@@ -20,6 +21,15 @@ const college = reactive({
 	direction: '',
 	phone: '',
 	email: '',
+	address: {
+		street_number_name: '',
+		building_site_number: '',
+		city: '',
+		postal_code: '',
+		country: '',
+		lat: 0,
+		lng: 0,
+	} as Address,
 })
 
 const error = ref<ErrorFetch | null>(null)
@@ -49,29 +59,23 @@ onMounted(async () => {
 			<!-- Data -->
 			<h2>Colegio</h2>
 			<br />
-			<HTMLVerticalTable>
-				<tr>
-					<td>Dirección</td>
-					<td><HTMLInput v-model:value="college.direction" /></td>
-				</tr>
-				<tr>
-					<td>Telef&oacute;no</td>
-					<td><HTMLInput v-model:value="college.phone" /></td>
-				</tr>
-				<tr>
-					<td>Email</td>
-					<td>
-						<HTMLInput v-model:value="college.email" type="email" />
-					</td>
-				</tr>
-			</HTMLVerticalTable>
-			<br />
-			<HTMLButton
-				:click="() => $collegeService.uploadCollegeData(college)"
-				type="button"
-			>
-				Actualizar datos
-			</HTMLButton>
+			<HTMLForm :form="() => $collegeService.uploadCollegeData(college)">
+				<label for="address">Direcci&oacute;n</label>
+				<HTMLAddress
+					id="address"
+					v-model:value="college.direction"
+					v-model:address="college.address"
+				/>
+				<label for="phone">Telef&oacute;no</label>
+				<HTMLInput id="phone" v-model:value="college.phone" />
+				<label for="email">Email</label>
+				<HTMLInput
+					id="email"
+					v-model:value="college.email"
+					type="email"
+				/>
+				<HTMLButton type="submit"> Actualizar datos </HTMLButton>
+			</HTMLForm>
 
 			<SpinnerGet />
 			<Error v-if="error" :err="error" />

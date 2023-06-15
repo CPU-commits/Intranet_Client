@@ -14,6 +14,7 @@ export default defineNuxtConfig({
 			SHORT_NAME: 'Sc',
 			CLIENT_URL: 'https://example.com',
 			ENABLED_WS: true,
+			GEO_KEY: '',
 		},
 		cookies: {
 			CRYPTO_KEY: 'E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfU',

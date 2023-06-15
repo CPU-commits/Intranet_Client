@@ -43,6 +43,9 @@ export class StudentsService {
 	) {
 		if (student.name === '' || student.name.length > 100)
 			throw new Error('Debe existir un nombre de máx. 100 carac.')
+		const names = student.name.trim().split(' ').length
+		if (names !== 2)
+			throw new Error('Debe registrar los dos nombres del estudiante')
 		if (
 			student.first_lastname === '' ||
 			student.first_lastname.length > 100
@@ -61,6 +64,10 @@ export class StudentsService {
 			throw new Error(
 				'Debe existir un RUT en formato 12345678-9 (Mín. 10 carac.)',
 			)
+		if (student.gender !== 'h' && student.gender !== 'm')
+			throw new Error('Debe seleccionar un sexo para el estudiante')
+		if (student.birthday === '')
+			throw new Error('Debe indicar la fecha de nacimiento del alumno')
 		if (
 			student.registration_number === '' ||
 			(student.registration_number as string).length > 100
@@ -85,6 +92,7 @@ export class StudentsService {
 				URL: '/api/students/new_student',
 				body: {
 					...student,
+					name: student.name.trim(),
 					course: student.course !== '' ? student.course : undefined,
 				},
 				spinnerStatus: true,

@@ -88,6 +88,7 @@ const closeModal = () => {
 	max-height: 80%;
 	position: absolute;
 	top: 30px;
+	max-height: calc(100vh - 50px);
 	overflow-y: auto;
 	overflow-x: hidden;
 	width: 60%;

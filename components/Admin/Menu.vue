@@ -168,6 +168,12 @@ const url = route.path
 						<span>Aula Virtual</span>
 					</li>
 				</NuxtLink>
+				<NuxtLink class="NuxtLink" to="/admin/data">
+					<li :class="{ Selected: url.startsWith('/admin/data') }">
+						<i class="fa-solid fa-chart-simple"></i>
+						<span>Data</span>
+					</li>
+				</NuxtLink>
 				<NuxtLink class="NuxtLink" to="/admin/biblioteca">
 					<li
 						:class="

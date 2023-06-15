@@ -28,6 +28,7 @@ export interface User {
 	rut: string
 	status?: number
 	email?: string
+	phone?: string
 	_id: string
 	user_type: keyof typeof UserTypes
 }
