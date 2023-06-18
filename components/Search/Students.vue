@@ -3,14 +3,15 @@
 import type { Student } from '~~/models/user/student.model'
 import { ErrorFetch } from '~~/common/fetchModule'
 
-defineProps<{
+const props = defineProps<{
 	classItem: string
 	text: string
 	button: {
 		isLink: boolean
-		func?: (idStudent: string) => any
+		func?: (student: Student) => any
 		href?: string
 	}
+	filter?: Array<string>
 }>()
 // Nuxtapp
 const { $fetchModule, $studentsService } = useNuxtApp()
@@ -23,6 +24,8 @@ const error = ref<ErrorFetch | null>(null)
 const total = ref(0)
 provide('total', total)
 
+onMounted(() => getStudents(true))
+
 async function getStudents(getTotal = false, skip?: number) {
 	try {
 		const dataFetch = await $studentsService.getStudents(
@@ -30,6 +33,7 @@ async function getStudents(getTotal = false, skip?: number) {
 			skip,
 			search.value,
 			true,
+			props.filter,
 		)
 		if (getTotal || !students.value) {
 			students.value = dataFetch.users
@@ -78,7 +82,7 @@ const search = ref('')
 					/>
 					<HTMLButtonIcon
 						v-else-if="!button.isLink && button.func"
-						:click="() => (button.func as Function)(student._id)"
+						:click="() => (button.func as Function)(student)"
 						type="button"
 						:class-item="classItem"
 					/>

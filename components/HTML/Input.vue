@@ -20,10 +20,14 @@ defineProps({
 	keyup: {
 		type: Function,
 	},
+	checked: {
+		type: Boolean,
+	},
 })
 
 defineEmits<{
 	(e: 'update:value', value: any): void
+	(e: 'update:checked', checked: boolean): void
 }>()
 </script>
 
@@ -33,10 +37,14 @@ defineEmits<{
 		:class="type === 'color' ? 'Color' : ''"
 		:value="value"
 		:type="type"
+		:checked="checked"
 		:placeholder="placeholder"
 		@keyup="keyup ?? null"
 		@input="
 			$emit('update:value', ($event.target as HTMLInputElement).value)
+		"
+		@change="
+			$emit('update:checked', ($event.target as HTMLInputElement).checked)
 		"
 	/>
 </template>

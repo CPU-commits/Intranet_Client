@@ -17,11 +17,13 @@ export class StudentsService {
 		skip?: number,
 		search?: string,
 		actived?: boolean,
+		filter?: Array<string>,
 	) {
 		let URL = `/api/students/get_students?total=${total}&limit=${this.LIMIT}`
 		if (actived) URL += `&actived=${actived}`
 		if (search) URL += `&search=${search}`
 		if (skip && skip >= 0) URL += `&skip=${skip}`
+		if (filter) URL += `&filter=${filter}`
 		const data = await this.nuxtApp.$fetchModule.fetchData<
 			BodyFetch<Students> & DefaultResponse
 		>({
