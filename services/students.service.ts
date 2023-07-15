@@ -73,6 +73,8 @@ export class StudentsService {
 			(student.registration_number as string).length > 100
 		)
 			throw new Error('Debe existir una matricula')
+		if (student.number_list === '' || student.number_list.length > 100)
+			throw new Error('DEbe existir un número de lista')
 	}
 
 	async uploadStudent(

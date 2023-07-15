@@ -41,10 +41,7 @@ const formStudent: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
 	course: '',
 	gender: '',
 	birthday: '',
-	address: {
-		country: '',
-		street_number_name: '',
-	},
+	number_list: '',
 })
 const course = ref('')
 // Change status
@@ -293,12 +290,6 @@ async function changeStatus() {
 					<option value="h">Hombre</option>
 					<option value="m">Mujer</option>
 				</HTMLSelect>
-				<label for="address">Direcci&oacute;n</label>
-				<HTMLAddress
-					id="address"
-					v-model:value="formStudent.address.street_number_name"
-					v-model:address="formStudent.address"
-				/>
 				<label for="birthday">Fecha de nacimiento</label>
 				<HTMLInput
 					id="birthday"
@@ -309,6 +300,11 @@ async function changeStatus() {
 				<HTMLInput
 					id="registration_number"
 					v-model:value="formStudent.registration_number"
+				/>
+				<label for="number_list">N&uacute;mero de lista</label>
+				<HTMLInput
+					id="number_list"
+					v-model:value="formStudent.number_list"
 				/>
 				<HTMLButton type="submit">Agregar estudiante</HTMLButton>
 			</HTMLForm>
@@ -354,11 +350,6 @@ async function changeStatus() {
 					<option value="h">Hombre</option>
 					<option value="m">Mujer</option>
 				</HTMLSelect>
-				<label for="address">Direcci&oacute;n</label>
-				<HTMLAddress
-					id="address"
-					v-model:value="studentEdit.address.street_number_name"
-				/>
 				<label for="birthday">Fecha de nacimiento</label>
 				<HTMLInput
 					id="birthday"
@@ -369,6 +360,11 @@ async function changeStatus() {
 				<HTMLInput
 					id="registration_numberE"
 					v-model:value="studentEdit.registration_number"
+				/>
+				<label for="number_listE">N&uacute;mero de lista</label>
+				<HTMLInput
+					id="numer_listE"
+					v-model:value="studentEdit.number_list"
 				/>
 				<HTMLButton type="submit">Editar estudiante</HTMLButton>
 			</HTMLForm>

@@ -30,6 +30,8 @@ export interface User {
 	email?: string
 	phone?: string
 	_id: string
+	birthday: string
+	gender: 'h' | 'm' | ''
 	user_type: keyof typeof UserTypes
 }
 

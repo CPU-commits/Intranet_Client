@@ -4,7 +4,7 @@ import { Subject } from '~/models/subject/subject.model'
 import { ErrorFetch } from '~~/common/fetchModule'
 import type { Course, Section } from '~~/models/course/course.model'
 import type { Teacher, Teachers } from '~~/models/user/teacher.model'
-import { UserTypesKeys } from '~~/models/user/user.model'
+import { User, UserTypesKeys } from '~~/models/user/user.model'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = schoolName
@@ -33,7 +33,9 @@ const formTeacher = reactive({
 	first_lastname: '',
 	second_lastname: '',
 	rut: '',
-})
+	birthday: '',
+	gender: '',
+}) satisfies Omit<Omit<User, '_id'>, 'user_type'>
 const subject = ref('')
 // Change status
 const why = ref('')
@@ -219,12 +221,13 @@ function filterTeacherImparted(
 				v-if="teachers"
 				:header="[
 					'Nombre',
-					'Ap. P',
-					'Ap. M',
+					'Apellido. P',
+					'Apellido. M',
 					'RUT',
 					'Estado',
 					'Materias',
-					'',
+					'Perf. Prof.',
+					'Más',
 				]"
 				:navigate="{
 					activate: true,
@@ -253,6 +256,16 @@ function filterTeacherImparted(
 						/>
 					</td>
 					<td>
+						<span v-if="!teacher.degree_or_certificate"
+							>ADVERTENCIA!</span
+						>
+						<HTMLButtonIcon
+							type="button"
+							:click="() => {}"
+							class-item="fa-solid fa-user-tie"
+						/>
+					</td>
+					<td>
 						<HTMLButtonIcon
 							:click="
 								() => {
@@ -263,7 +276,7 @@ function filterTeacherImparted(
 								}
 							"
 							type="button"
-							class-item="fa-solid fa-pen-to-square"
+							class-item="fa-solid fa-ellipsis"
 						/>
 					</td>
 				</tr>
@@ -296,6 +309,18 @@ function filterTeacherImparted(
 				/>
 				<label for="rut">RUT</label>
 				<HTMLInput id="rut" v-model:value="formTeacher.rut" />
+				<label for="gender">Sexo</label>
+				<HTMLSelect id="gender" v-model:value="formTeacher.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="birthday">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthday"
+					v-model:value="formTeacher.birthday"
+					type="date"
+				/>
 				<HTMLButton type="submit">Agregar profesor</HTMLButton>
 			</HTMLForm>
 		</Modal>
@@ -371,6 +396,18 @@ function filterTeacherImparted(
 				/>
 				<label for="rutE">RUT</label>
 				<HTMLInput id="rutE" v-model:value="teacherEdit.user.rut" />
+				<label for="gender">Sexo</label>
+				<HTMLSelect id="gender" v-model:value="teacherEdit.user.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="birthday">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthday"
+					v-model:value="teacherEdit.user.birthday"
+					type="date"
+				/>
 				<HTMLButton type="submit">Editar profesor</HTMLButton>
 			</HTMLForm>
 			<button

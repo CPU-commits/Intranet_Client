@@ -54,6 +54,12 @@ export class TeacherService {
 			throw new Error(
 				'Debe existir un RUT en formato 12345678-9 (Mín. 10 carac.)',
 			)
+		if (formTeacher.birthday === '')
+			throw new Error(
+				'Debe seleccionar una fecha de nacimiento para el profesor',
+			)
+		if (formTeacher.gender === '')
+			throw new Error('Debe seleccionar un sexo para el profesor')
 	}
 
 	async uploadTeacher(teacher: Omit<Omit<User, '_id'>, 'user_type'>) {
