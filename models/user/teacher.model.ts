@@ -21,12 +21,14 @@ export interface DegreeOrCertificate {
 		| 'faith'
 		| 'career_related'
 		| 'not_accredited'
+		| ''
 	verification_method:
 		| 'official_transcript'
 		| 'transcript_copy'
 		| 'degree_copy'
 		| 'grade_report'
 		| 'other'
+		| ''
 }
 
 export interface Teacher {

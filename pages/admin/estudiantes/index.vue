@@ -30,7 +30,10 @@ const toggleModalStatus = () => {
 	modalEdit.value = false
 }
 // Form
-const formStudent: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
+const formStudent: Omit<
+	Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>,
+	'registration'
+> & {
 	course: string
 } = reactive({
 	name: '',
@@ -41,7 +44,7 @@ const formStudent: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
 	course: '',
 	gender: '',
 	birthday: '',
-	number_list: '',
+	number_of_list: '',
 })
 const course = ref('')
 // Change status
@@ -210,7 +213,6 @@ async function changeStatus() {
 					'RUT',
 					'Estado',
 					'Más',
-					'',
 				]"
 				:navigate="{
 					activate: true,
@@ -227,18 +229,8 @@ async function changeStatus() {
 					<td>{{ student.rut }}</td>
 					<td>{{ student.status ? 'Activo' : 'Inactivo' }}</td>
 					<td>
-						<HTMLButtonIcon
-							:click="
-								() => {
-									studentEdit = Object.assign({}, student)
-									studentPosition = i
-									course = student?.course?._id
-										? student.course._id
-										: ''
-									modalEdit = true
-								}
-							"
-							type="button"
+						<HTMLAIcon
+							:href="`/admin/estudiantes/${student._id}`"
 							class-item="fa-solid fa-ellipsis"
 						/>
 					</td>
@@ -301,10 +293,13 @@ async function changeStatus() {
 					id="registration_number"
 					v-model:value="formStudent.registration_number"
 				/>
-				<label for="number_list">N&uacute;mero de lista</label>
+				<label v-if="formStudent.course !== ''" for="number_list"
+					>N&uacute;mero de lista</label
+				>
 				<HTMLInput
+					v-if="formStudent.course !== ''"
 					id="number_list"
-					v-model:value="formStudent.number_list"
+					v-model:value="formStudent.number_of_list"
 				/>
 				<HTMLButton type="submit">Agregar estudiante</HTMLButton>
 			</HTMLForm>
@@ -364,7 +359,7 @@ async function changeStatus() {
 				<label for="number_listE">N&uacute;mero de lista</label>
 				<HTMLInput
 					id="numer_listE"
-					v-model:value="studentEdit.number_list"
+					v-model:value="studentEdit.number_of_list"
 				/>
 				<HTMLButton type="submit">Editar estudiante</HTMLButton>
 			</HTMLForm>

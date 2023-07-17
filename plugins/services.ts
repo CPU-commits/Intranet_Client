@@ -22,6 +22,7 @@ import { FormService } from '~~/services/form.service'
 import { NotificationsService } from '~~/services/notifications.service'
 import { ParentService } from '~~/services/parent.service'
 import { ErrorService } from '~/services/error.service'
+import { DegreesOrCertificateService } from '~/services/degrees.service'
 
 export default defineNuxtPlugin(() => {
 	const filesService = new FilesService()
@@ -50,6 +51,7 @@ export default defineNuxtPlugin(() => {
 			filesService,
 			reportService: new ErrorService(),
 			parentService: new ParentService(),
+			degreesService: new DegreesOrCertificateService(),
 		},
 	}
 })

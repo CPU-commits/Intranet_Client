@@ -36,10 +36,44 @@ export class StudentsService {
 		return data.body
 	}
 
+	async getStudent(idStudent: string) {
+		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			BodyFetch<{
+				student: Student
+			}>
+		>({
+			spinnerStatus: true,
+			URL: `/api/students/${idStudent}`,
+			method: 'get',
+			token: this.authStore.getToken,
+		})
+
+		return dataFetch.body.student
+	}
+
+	async getRegistrationTypes() {
+		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			BodyFetch<{
+				types: Array<{ value: string; text: string }>
+			}>
+		>({
+			method: 'get',
+			URL: '/api/students/registration/types',
+			token: this.authStore.getToken,
+		})
+
+		return dataFetch.body.types
+	}
+
 	private validatorsStudent(
 		student:
 			| Student
-			| Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>,
+			| (Omit<
+					Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>,
+					'registration'
+			  > & {
+					course: string
+			  }),
 	) {
 		if (student.name === '' || student.name.length > 100)
 			throw new Error('Debe existir un nombre de máx. 100 carac.')
@@ -73,12 +107,20 @@ export class StudentsService {
 			(student.registration_number as string).length > 100
 		)
 			throw new Error('Debe existir una matricula')
-		if (student.number_list === '' || student.number_list.length > 100)
-			throw new Error('DEbe existir un número de lista')
+		if (
+			student.course !== '' &&
+			(!student.number_of_list ||
+				student.number_of_list === '' ||
+				(student.number_of_list?.length ?? 0) > 100)
+		)
+			throw new Error('Debe existir un número de lista')
 	}
 
 	async uploadStudent(
-		student: Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'> & {
+		student: Omit<
+			Omit<Omit<Omit<Student, '_id'>, 'user_type'>, 'course'>,
+			'registration'
+		> & {
 			course: string
 		},
 	) {
@@ -175,6 +217,53 @@ export class StudentsService {
 				type: 'error',
 			})
 			return false
+		}
+	}
+
+	async updateRegistration(
+		idStudent: string,
+		registration: { type: string; file: File | null },
+	) {
+		try {
+			validators(
+				{
+					type: {
+						type: 'string',
+						custom_name: 'Matrícula',
+						min: 1,
+					},
+				},
+				registration,
+			)
+			// FormData
+			const formData = new FormData()
+
+			formData.set('type', registration.type)
+			if (registration.file)
+				formData.set('file', registration.file as File)
+
+			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+				BodyFetch<{ file: string | null }>
+			>({
+				method: 'put',
+				URL: `/api/students/${idStudent}/registration`,
+				token: this.authStore.getToken,
+				body: formData,
+			})
+
+			this.toastsStore.addToast({
+				message:
+					'Se ha actualizado el estado del estudiante exitosamente',
+				type: 'success',
+			})
+			return dataFetch.body.file
+		} catch (err) {
+			const error = this.nuxtApp.$fetchModule.handleError(err)
+
+			this.toastsStore.addToast({
+				message: error.message,
+				type: 'error',
+			})
 		}
 	}
 

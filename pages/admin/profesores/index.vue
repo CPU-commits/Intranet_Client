@@ -3,7 +3,7 @@
 import { Subject } from '~/models/subject/subject.model'
 import { ErrorFetch } from '~~/common/fetchModule'
 import type { Course, Section } from '~~/models/course/course.model'
-import type { Teacher, Teachers } from '~~/models/user/teacher.model'
+import type { DegreeOrCertificate, Teacher, Teachers } from '~~/models/user/teacher.model'
 import { User, UserTypesKeys } from '~~/models/user/user.model'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
@@ -16,7 +16,7 @@ definePageMeta({
 	roles: [UserTypesKeys.DIRECTOR, UserTypesKeys.DIRECTIVE],
 })
 // Nuxtapp
-const { $fetchModule, $teacherService, $courseService } = useNuxtApp()
+const { $fetchModule, $teacherService, $courseService, $degreesService } = useNuxtApp()
 
 // Search
 const search = ref('')
@@ -26,6 +26,7 @@ const modal = ref(false)
 const modalSubjects = ref(false)
 const modalEdit = ref(false)
 const modalStatus = ref(false)
+const modalProfile = ref(false)
 
 // Form
 const formTeacher = reactive({
@@ -43,6 +44,7 @@ const why = ref('')
 // Data
 const teachers = ref<Teachers | null>(null)
 const courses = ref<Array<Course> | null>(null)
+const typesDegree = ref<Array<{ text: string; value: string }> | null>(null)
 
 const error = ref<ErrorFetch | null>(null)
 // Provide total for nav
@@ -53,9 +55,11 @@ onMounted(async () => {
 		const data = await Promise.all([
 			getTeachers(true),
 			$courseService.getCourses(),
+			$degreesService.getDegreesTypes(),
 		])
 
 		courses.value = data[1]
+		typesDegree.value = data[2]
 	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		error.value = _err
@@ -80,6 +84,16 @@ async function getTeachers(getTotal = false, skip?: number, search?: string) {
 	}
 }
 
+// Form profile
+const profile = ref<DegreeOrCertificate>({
+	_id: '',
+	title_or_subject: '',
+	type: '',
+	award_date: '',
+	institution: '',
+	accreditation: '',
+	verification_method: '',
+})
 // Form edit
 const teacherEdit = ref<Teacher | null>(null)
 const teacherPosition = ref(0)
@@ -256,14 +270,21 @@ function filterTeacherImparted(
 						/>
 					</td>
 					<td>
-						<span v-if="!teacher.degree_or_certificate"
-							>ADVERTENCIA!</span
-						>
 						<HTMLButtonIcon
 							type="button"
-							:click="() => {}"
+							:click="
+								() => {
+									modalProfile = true
+									teacherPosition = i
+									if (teacher.degree_or_certificate)
+										profile = teacher.degree_or_certificate
+								}
+							"
 							class-item="fa-solid fa-user-tie"
 						/>
+						<span v-if="!teacher.degree_or_certificate">
+							¡Sin perfil profesional!
+						</span>
 					</td>
 					<td>
 						<HTMLButtonIcon
@@ -443,6 +464,92 @@ function filterTeacherImparted(
 				<label for="why">Motivo</label>
 				<HTMLTextArea v-model:value="why" />
 				<HTMLButton type="submit">Cambiar estado</HTMLButton>
+			</HTMLForm>
+		</Modal>
+
+		<Modal v-model:opened="modalProfile">
+			<template #title>
+				<h2>Perfil profesional</h2>
+			</template>
+			<HTMLForm
+				:form="
+					async () => {
+						if (
+							await $degreesService.uploadDegree(
+								profile,
+								teachers?.users[teacherPosition].user._id ?? '',
+							)
+						)
+							modalProfile = false
+					}
+				"
+			>
+				<label for="title">Titulo</label>
+				<HTMLInput
+					id="title"
+					v-model:value="profile.title_or_subject"
+				/>
+				<label for="type">Nivel educaci&oacute;n</label>
+				<HTMLSelect id="type" v-model:value="profile.type">
+					<option value="">Seleccione nivel</option>
+					<option
+						v-for="({ value, text }, i) in typesDegree"
+						:key="i"
+						:value="value"
+					>
+						{{ text }}
+					</option>
+				</HTMLSelect>
+				<label for="date">Fecha de obtenci&oacute;n</label>
+				<HTMLInput
+					id="date"
+					v-model:value="profile.award_date"
+					type="date"
+				/>
+				<label for="institution">Instituci&oacute;n</label>
+				<HTMLInput
+					id="institution"
+					v-model:value="profile.institution"
+				/>
+				<label for="accreditation">Acreditaci&oacute;n</label>
+				<HTMLSelect
+					id="accreditation"
+					v-model:value="profile.accreditation"
+				>
+					<option value="">Seleccione una acreditaci&oacute;n</option>
+					<option value="regional">Regional</option>
+					<option value="programmatic">Program&aacute;tica</option>
+					<option value="national">Nacional</option>
+					<option value="faith">Fe</option>
+					<option value="career_related">
+						Relacionado con una carrera
+					</option>
+					<option value="not_accredited">
+						Sin acreditaci&oacute;n
+					</option>
+				</HTMLSelect>
+				<label for="method">M&eacute;todo de verificaci&oacute;n</label>
+				<HTMLSelect
+					id="method"
+					v-model:value="profile.verification_method"
+				>
+					<option value="">Seleccione un m&eacute;todo</option>
+					<option value="official_transcript">
+						Transcripci&oacute;n oficial
+					</option>
+					<option value="transcript_copy">
+						Copia de transcripci&oacute;n
+					</option>
+					<option value="degree_copy">Copia de grado</option>
+					<option value="grade_report">
+						Reporte de calificaciones
+					</option>
+					<option value="other">Otro</option>
+				</HTMLSelect>
+
+				<HTMLButton type="submit">
+					Subir perfil profesional
+				</HTMLButton>
 			</HTMLForm>
 		</Modal>
 	</NuxtLayout>

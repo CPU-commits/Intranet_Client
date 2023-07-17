@@ -62,7 +62,7 @@ export class FilesService {
 		return dataFetch.body ?? []
 	}
 
-	async downloadFile(idFile: string) {
+	async downloadFile(idFile: string, justDownload = false) {
 		try {
 			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
 				BodyFetch<{
@@ -76,6 +76,7 @@ export class FilesService {
 				token: this.authStore.getToken,
 			})
 
+			if (justDownload) this.downloadFileUrl(dataFetch.body.token)
 			return dataFetch.body.token
 		} catch (err) {
 			const _err = this.nuxtApp.$fetchModule.handleError(err)

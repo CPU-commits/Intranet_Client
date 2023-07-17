@@ -41,13 +41,15 @@ const formParent = reactive({
 		country: '',
 	} as Address,
 	phone: '',
+	gender: '',
+	birthday: '',
 })
 // Change status
 const why = ref('')
 // Data
 const parents = ref<Array<Parent> | null>(null)
 const students = ref<Array<User> | null>(null)
-const parentEdit = ref<User | null>(null)
+const parentEdit = ref<Parent | null>(null)
 const parentPosition = ref(0)
 const idParent = ref('')
 
@@ -178,7 +180,7 @@ async function assignStudent(idStudent: string) {
 					'RUT',
 					'Estudiantes',
 					'Estado',
-					'',
+					'Más',
 				]"
 				:navigate="{
                     activate: true,
@@ -221,7 +223,7 @@ async function assignStudent(idStudent: string) {
 								}
 							"
 							type="button"
-							class-item="fa-solid fa-pen-to-square"
+							class-item="fa-solid fa-ellipsis"
 						/>
 					</td>
 				</tr>
@@ -248,6 +250,18 @@ async function assignStudent(idStudent: string) {
 				<HTMLInput
 					id="sln"
 					v-model:value="formParent.second_lastname"
+				/>
+				<label for="gender">Sexo</label>
+				<HTMLSelect id="gender" v-model:value="formParent.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="birthday">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthday"
+					v-model:value="formParent.birthday"
+					type="date"
 				/>
 				<label for="address">Direcci&oacute;n</label>
 				<HTMLAddress
@@ -285,6 +299,28 @@ async function assignStudent(idStudent: string) {
 					id="slnE"
 					v-model:value="parentEdit.second_lastname"
 				/>
+				<label for="gender">Sexo</label>
+				<HTMLSelect id="gender" v-model:value="parentEdit.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="birthday">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthday"
+					v-model:value="parentEdit.birthday"
+					type="date"
+				/>
+				<label for="address">Direcci&oacute;n</label>
+				<HTMLAddress
+					id="address"
+					v-model:value="parentEdit.address.street_number_name"
+					v-model:address="parentEdit.address"
+				/>
+				<label for="">Telef&oacute;no</label>
+				<HTMLInput v-model:value="parentEdit.phone" type="phone" />
+				<label for="">Email</label>
+				<HTMLInput v-model:value="parentEdit.email" />
 				<label for="rutE">RUT</label>
 				<HTMLInput id="rutE" v-model:value="parentEdit.rut" />
 				<HTMLButton type="submit">Editar apoderado</HTMLButton>

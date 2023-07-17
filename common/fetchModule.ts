@@ -129,7 +129,13 @@ export class Fetch {
 	 */
 	handleError(error: unknown, save = true): ErrorFetch {
 		let errorFetch: ErrorFetch
-		if (this.isFetchError(error)) {
+		if (error instanceof ValidatorsError) {
+			errorFetch = {
+				success: false,
+				message: capitalizeFirstLetter(error.message),
+				statusCode: 500,
+			}
+		} else if (this.isFetchError(error)) {
 			const message = error.data?.message ?? error.message
 			errorFetch = {
 				success: false,

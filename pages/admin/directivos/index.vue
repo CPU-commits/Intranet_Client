@@ -33,7 +33,9 @@ const formDirective = reactive({
 	first_lastname: '',
 	second_lastname: '',
 	rut: '',
-})
+	gender: '',
+	birthday: '',
+}) as User
 // Change status
 const why = ref('')
 // Data
@@ -75,6 +77,8 @@ function initForm(newDirective: User) {
 	formDirective.name = ''
 	formDirective.rut = ''
 	formDirective.second_lastname = ''
+	formDirective.birthday = ''
+	formDirective.gender = ''
 
 	directives.value?.users.push(newDirective)
 }
@@ -211,6 +215,18 @@ async function changeStatus() {
 					id="sln"
 					v-model:value="formDirective.second_lastname"
 				/>
+				<label for="gender">Sexo</label>
+				<HTMLSelect id="gender" v-model:value="formDirective.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="birthday">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthday"
+					v-model:value="formDirective.birthday"
+					type="date"
+				/>
 				<label for="rut">RUT</label>
 				<HTMLInput id="rut" v-model:value="formDirective.rut" />
 				<HTMLButton type="submit">Agregar directivo</HTMLButton>
@@ -236,6 +252,18 @@ async function changeStatus() {
 				<HTMLInput
 					id="slnE"
 					v-model:value="directiveEdit.second_lastname"
+				/>
+				<label for="genderE">Sexo</label>
+				<HTMLSelect id="genderE" v-model:value="directiveEdit.gender">
+					<option value="">Seleccione un sexo</option>
+					<option value="h">Hombre</option>
+					<option value="m">Mujer</option>
+				</HTMLSelect>
+				<label for="birthdayE">Fecha de nacimiento</label>
+				<HTMLInput
+					id="birthdayE"
+					v-model:value="directiveEdit.birthday"
+					type="date"
 				/>
 				<label for="rutE">RUT</label>
 				<HTMLInput id="rutE" v-model:value="directiveEdit.rut" />

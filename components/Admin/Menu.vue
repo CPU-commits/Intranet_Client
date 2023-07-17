@@ -24,7 +24,7 @@ const url = route.path
 					to="/admin/colegio"
 				>
 					<li :class="url === '/admin/colegio' ? 'Selected' : ''">
-						<i class="fa-solid fa-building-columns" />
+						<i class="fa-solid fa-school" />
 						<span>Colegio</span>
 					</li>
 				</NuxtLink>
@@ -174,6 +174,12 @@ const url = route.path
 						<span>Data</span>
 					</li>
 				</NuxtLink>
+				<NuxtLink class="NuxtLink" to="/admin/ede">
+					<li :class="{ Selected: url.startsWith('/admin/ede') }">
+						<i class="fa-solid fa-building-columns" />
+						<span>EDE</span>
+					</li>
+				</NuxtLink>
 				<NuxtLink class="NuxtLink" to="/admin/biblioteca">
 					<li
 						:class="
@@ -238,7 +244,6 @@ li {
 	z-index: 9;
 	border-left: 2px solid transparent;
 	display: flex;
-	align-items: center;
 	gap: 5px;
 }
 

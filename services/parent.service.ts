@@ -4,7 +4,6 @@ import { Parent } from '~/models/user/parent.model'
 import type { DefaultResponse } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
 import { User } from '~~/models/user/user.model'
-import validator from '~~/utils/validator'
 
 export class ParentService {
 	private readonly authStore = useAuthStore()
@@ -92,30 +91,61 @@ export class ParentService {
 		}
 	}
 
-	private validatorsParent(formDirective: User) {
-		if (formDirective.name === '' || formDirective.name.length > 100)
-			throw new Error('Debe existir un nombre de máx. 100 carac.')
-		if (
-			formDirective.first_lastname === '' ||
-			formDirective.first_lastname.length > 100
+	private validatorsParent(formParent: User) {
+		validators(
+			{
+				name: {
+					type: 'string',
+					custom_name: 'Nombre',
+					min: 1,
+					max: 100,
+				},
+				first_lastname: {
+					type: 'string',
+					custom_name: 'Apellido Paterno',
+					min: 1,
+					max: 100,
+				},
+				second_lastname: {
+					type: 'string',
+					custom_name: 'Apellido Materno',
+					min: 1,
+					max: 100,
+				},
+				gender: {
+					type: 'string',
+					custom_name: 'Sexo',
+					min: 1,
+				},
+				birthday: {
+					type: 'string',
+					custom_name: 'Fecha de nacimiento',
+					min: 1,
+				},
+				address: {
+					type: 'address',
+					custom_name: 'Dirección',
+				},
+				phone: {
+					type: 'string',
+					custom_name: 'Telefóno',
+					min: 1,
+				},
+				email: {
+					type: 'string',
+					custom_name: 'Email',
+					min: 1,
+					is_email: true,
+				},
+				rut: {
+					type: 'string',
+					custom_name: 'RUT',
+					min: 1,
+					is_rut: true,
+				},
+			},
+			formParent,
 		)
-			throw new Error(
-				'Debe existir un apellido paterno de máx. 100 carac.',
-			)
-		if (
-			formDirective.second_lastname === '' ||
-			formDirective.second_lastname.length > 100
-		)
-			throw new Error(
-				'Debe existir un apellido materno de máx. 100 carac.',
-			)
-		if (
-			formDirective.rut.length < 10 ||
-			!validator.rutValidator(formDirective.rut)
-		)
-			throw new Error(
-				'Debe existir un RUT en formato 12345678-9 (Mín. 10 carac.)',
-			)
 	}
 
 	async uploadParent(parent: User & { address: Address }) {
