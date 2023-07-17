@@ -27,6 +27,7 @@ interface ConfigFetch {
 		url?: string
 		onChangePath?: boolean
 	}
+	params?: { [x: string]: unknown }
 	signal?: AbortSignal
 	responseType?: 'blob' | 'text' | 'json' | 'stream' | 'arrayBuffer'
 	scopeSpinner?: string
@@ -224,7 +225,18 @@ export class Fetch {
 	 * @param config The configuration of the fetch request
 	 * @returns A promise with the response from the fetch request
 	 */
-	async fetchData<T = DefaultResponse>(config: ConfigFetch): Promise<T> {
+	async fetchData<T extends DefaultResponse>(
+		config: ConfigFetch,
+	): Promise<T> {
+		// Add Params
+		if (config.params) {
+			let hasQuery = config.URL.includes('?')
+			for (const [key, value] of Object.entries(config.params)) {
+				config.URL += `${hasQuery ? '&' : '?'}${key}=${value}`
+				hasQuery = true
+			}
+		}
+
 		const key = config.URL.split('?')[0]
 		// Abort all fetchs
 		const abortKey = config.abort?.url === 'same' ? key : config?.abort?.url

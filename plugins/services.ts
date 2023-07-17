@@ -23,12 +23,14 @@ import { NotificationsService } from '~~/services/notifications.service'
 import { ParentService } from '~~/services/parent.service'
 import { ErrorService } from '~/services/error.service'
 import { DegreesOrCertificateService } from '~/services/degrees.service'
+import { AssistanceService } from '~/services/assistance.service'
 
 export default defineNuxtPlugin(() => {
 	const filesService = new FilesService()
+	const fetchModule = new Fetch()
 	return {
 		provide: {
-			fetchModule: new Fetch(),
+			fetchModule,
 			semesterService: new SemestersService(),
 			moduleService: new ModulesService(),
 			gradesService: new GradesService(filesService),
@@ -52,6 +54,7 @@ export default defineNuxtPlugin(() => {
 			reportService: new ErrorService(),
 			parentService: new ParentService(),
 			degreesService: new DegreesOrCertificateService(),
+			assistanceService: new AssistanceService(fetchModule),
 		},
 	}
 })

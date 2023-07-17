@@ -23,6 +23,7 @@ defineEmits<{
 			<table>
 				<thead class="Thead">
 					<tr>
+						<slot name="header" />
 						<!-- eslint-disable vue/no-v-html -->
 						<td
 							v-for="(tdElement, i) in header"

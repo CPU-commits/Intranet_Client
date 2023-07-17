@@ -60,6 +60,19 @@ export class CourseService {
 		return dataFetch.body.cycles
 	}
 
+	async getSection(idSection: string) {
+		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			BodyFetch<{ section: Section }>
+		>({
+			method: 'get',
+			URL: `/api/course/section/${idSection}`,
+			spinnerStatus: true,
+			token: this.authStore.getToken,
+		})
+
+		return dataFetch.body.section
+	}
+
 	async getSections() {
 		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
 			BodyFetch<{
@@ -129,6 +142,7 @@ export class CourseService {
 			URL: `/api/students/get_students_course/${idCourse}`,
 			spinnerStatus: true,
 			token: this.authStore.getToken,
+			scopeSpinner: 'course:students',
 		})
 		return dataFetch.body
 	}

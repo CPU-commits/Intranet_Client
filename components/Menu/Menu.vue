@@ -182,6 +182,25 @@ async function logout() {
 						</li>
 					</NuxtLink>
 					<NuxtLink
+						v-if="
+							auth.userTypeIs(
+								UserTypesKeys.TEACHER,
+								UserTypesKeys.DIRECTOR,
+								UserTypesKeys.DIRECTIVE,
+							)
+						"
+						class="NuxtLink"
+						to="/asistencia"
+						@click="ahref"
+					>
+						<li
+							:class="{ selected: url.startsWith('/asistencia') }"
+						>
+							<i class="fa-solid fa-square-check"></i>
+							<span>Asistencia</span>
+						</li>
+					</NuxtLink>
+					<NuxtLink
 						class="NuxtLink"
 						to="/soporte/app/aula_virtual"
 						@click="ahref"

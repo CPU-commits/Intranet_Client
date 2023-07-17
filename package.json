@@ -75,6 +75,7 @@
 		"nuxt-jsonld": "^2.0.7",
 		"object-to-formdata": "^4.4.2",
 		"pinia": "^2.0.27",
+		"postinstall": "^0.8.0",
 		"redis": "^4.5.1",
 		"roman-numerals": "^0.3.2",
 		"socket.io-client": "^4.5.4",

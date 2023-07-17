@@ -382,7 +382,7 @@ async function assignStudent(idStudent: string) {
 			<SearchStudents
 				:button="{
 					isLink: false,
-					func: assignStudent,
+					func: (student) => assignStudent(student._id),
 				}"
 				text="Asignar"
 				class-item="fa-solid fa-user-plus"
