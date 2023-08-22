@@ -13,7 +13,7 @@ enum HTTPMethods {
 	'delete',
 }
 
-interface ConfigFetch {
+export interface ConfigFetch {
 	method: keyof typeof HTTPMethods
 	URL: string
 
@@ -172,6 +172,7 @@ export class Fetch {
 		token,
 		responseType,
 		signal,
+		headers,
 	}: ConfigFetch) {
 		if (!this.publicApi) {
 			const config = useRuntimeConfig()
@@ -183,6 +184,7 @@ export class Fetch {
 			responseType,
 			headers: {
 				Authorization: `Bearer ${token}` ?? '',
+				...headers,
 			},
 			method,
 			body,
@@ -225,13 +227,13 @@ export class Fetch {
 	 * @param config The configuration of the fetch request
 	 * @returns A promise with the response from the fetch request
 	 */
-	async fetchData<T extends DefaultResponse>(
-		config: ConfigFetch,
-	): Promise<T> {
+	async fetchData<T = DefaultResponse>(config: ConfigFetch): Promise<T> {
 		// Add Params
 		if (config.params) {
 			let hasQuery = config.URL.includes('?')
-			for (const [key, value] of Object.entries(config.params)) {
+			for (const [key, value] of Object.entries(config.params).filter(
+				([_, value]) => value !== undefined,
+			)) {
 				config.URL += `${hasQuery ? '&' : '?'}${key}=${value}`
 				hasQuery = true
 			}

@@ -282,9 +282,6 @@ function filterTeacherImparted(
 							"
 							class-item="fa-solid fa-user-tie"
 						/>
-						<span v-if="!teacher.degree_or_certificate">
-							¡Sin perfil profesional!
-						</span>
 					</td>
 					<td>
 						<HTMLButtonIcon
@@ -300,6 +297,11 @@ function filterTeacherImparted(
 							class-item="fa-solid fa-ellipsis"
 						/>
 					</td>
+					<HTMLTDAside
+						v-if="!teacher.degree_or_certificate"
+						class-item="fa-solid fa-exclamation"
+						message="Sin perfil profesional"
+					/>
 				</tr>
 			</HTMLTable>
 			<span v-if="teachers && teachers.users.length === 0"
@@ -479,8 +481,13 @@ function filterTeacherImparted(
 								profile,
 								teachers?.users[teacherPosition].user._id ?? '',
 							)
-						)
+						) {
 							modalProfile = false
+							if (teachers?.users)
+								teachers.users[
+									teacherPosition
+								].degree_or_certificate = profile
+						}
 					}
 				"
 			>

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 // Messages
-const messages = {
+export const messages = {
 	minLengthString: (name: string, min: number) =>
 		min === 1
 			? `${name} no puede estar vacío`
@@ -16,6 +16,7 @@ const messages = {
 	isRut: (name: string) => `${name} debe ser un RUT válido (Ej: 11111111-1)`,
 	isAddress: (name: string) => `${name} no puede estar vacía`,
 	required: (name: string) => `${name} es requerido`,
+	isInt: (name: string) => `${name} debe ser un número entero`,
 }
 
 // Custom error
@@ -30,6 +31,7 @@ interface Rules {
 	custom_name: string
 	min?: number
 	max?: number
+	is_int?: boolean
 	is_rut?: boolean
 	is_email?: boolean
 	object_schema?: { [key: string]: z.ZodTypeAny }
@@ -90,6 +92,8 @@ function convertRuleToZodType(rule: Rules): z.ZodTypeAny {
 			required_error: messages.required(rule.custom_name),
 		})
 
+		if (rule.is_int !== undefined)
+			zodType = zodType.int({ message: messages.isInt(rule.custom_name) })
 		if (rule.min !== undefined)
 			zodType = zodType.min(rule.min, {
 				message: messages.minLengthString(rule.custom_name, rule.min),

@@ -1,13 +1,18 @@
+import { Fetch } from '~/common/fetchModule'
 import { BodyFetch } from '~/models/body.model'
 import { DegreeOrCertificate } from '~/models/user/teacher.model'
 
 export class DegreesOrCertificateService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getDegreesTypes() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{ types: Array<{ text: string; value: string }> }>
 		>({
 			method: 'get',
@@ -59,7 +64,7 @@ export class DegreesOrCertificateService {
 				degreeOrCertificate,
 			).transform()
 
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/degrees/${idTeacher}`,
 				token: this.authStore.getToken,
@@ -71,7 +76,7 @@ export class DegreesOrCertificateService {
 			})
 			return true
 		} catch (err) {
-			const error = this.nuxtApp.$fetchModule.handleError(err)
+			const error = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				type: 'error',
 				message: error.message,

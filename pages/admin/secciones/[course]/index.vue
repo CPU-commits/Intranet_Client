@@ -15,7 +15,8 @@ definePageMeta({
 	roles: [UserTypesKeys.DIRECTOR, UserTypesKeys.DIRECTIVE],
 })
 // Nuxtapp
-const { $teacherService, $courseService, $fetchModule } = useNuxtApp()
+const { $teacherService, $courseService, $fetchModule, $collegeService } =
+	useNuxtApp()
 // Route
 const route = useRoute()
 
@@ -34,12 +35,14 @@ const modalSections = ref(false)
 const sectionSelected = ref<Section | null>(null)
 // Forms
 const section = ref('')
+const tec = ref('')
 const files = ref<FileList | null>(null)
 const filesInput = [] as Array<HTMLInputElement>
 
 // Data
 const teachers = ref<Array<Teacher> | null>(null)
 const sections = ref<Array<Section> | null>(null)
+const tecs = ref<Array<string> | null>(null)
 const course = ref<Course | null>(null)
 const nextCourse = ref<Course | null>(null)
 const nextSections = ref<Array<Section> | null>(null)
@@ -51,13 +54,25 @@ onMounted(async () => {
 			$teacherService.getTeachers(false, 0),
 			$courseService.getSectionsCourse(courseId),
 			$courseService.getCourse(courseId),
-		])
+		]).then(async (data) => {
+			const objectData = {
+				teachers: data[0].users,
+				sections: data[1],
+				course: data[2],
+				tec: data[2].isTec
+					? await $collegeService.getRegisteredTec(data[2]._id)
+					: null,
+			}
 
-		filesInput.length = dataFetch[1].length
+			return objectData
+		})
+
+		filesInput.length = dataFetch.sections.length
 		// Asign
-		teachers.value = dataFetch[0].users
-		sections.value = dataFetch[1]
-		course.value = dataFetch[2]
+		teachers.value = dataFetch.teachers
+		sections.value = dataFetch.sections
+		course.value = dataFetch.course
+		tecs.value = dataFetch.tec
 	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		error.value = _err
@@ -87,6 +102,7 @@ async function newSection() {
 		section.value,
 		files.value ?? null,
 		typeof courseId === 'string' ? courseId : '',
+		tec.value,
 	)
 	if (sectionData !== undefined && sections.value) {
 		// New values
@@ -177,11 +193,11 @@ async function selectNextSection(sectionData: Section | null = null) {
 					'Sección',
 					'Imágen',
 					'Sección sub-siguiente',
+					'Especialidad',
 					'Profesor jefe',
 					'',
 				]"
 			>
-				<!-- eslint-disable-next-line vue/no-template-shadow -->
 				<tr v-for="(section, i) in sections" :key="section._id">
 					<td>{{ section.section }}</td>
 					<td>
@@ -194,21 +210,24 @@ async function selectNextSection(sectionData: Section | null = null) {
 							accept=".jpg, .jpeg, .png"
 							@change="() => changeFile(section._id, i)"
 						/>
-						<LazyNuxtImg
+						<NuxtImg
 							:src="section.file.url"
 							:alt="section.section"
 							@click="filesInput[i].click()"
+							@error="$event.target.src = '/img/no_image.svg'"
 						/>
 					</td>
 					<td>
 						<div v-if="!course?.isFinal" class="Next">
-							{{
-								section.is_next_section_variable
-									? 'Variable'
-									: section?.next_section
-									? `${section.next_section.section}`
-									: 'Sin asignar'
-							}}
+							<span>
+								{{
+									section.is_next_section_variable
+										? 'Variable'
+										: section?.next_section
+										? `${section.next_section.section}`
+										: 'Sin asignar'
+								}}
+							</span>
 							<div>
 								<HTMLButtonIcon
 									:click="
@@ -222,6 +241,10 @@ async function selectNextSection(sectionData: Section | null = null) {
 								/>
 							</div>
 						</div>
+						<span v-else>No aplica</span>
+					</td>
+					<td>
+						<span v-if="section.tec">{{ section.tec }}</span>
 						<span v-else>No aplica</span>
 					</td>
 					<td>
@@ -270,6 +293,17 @@ async function selectNextSection(sectionData: Section | null = null) {
 			<HTMLForm :form="newSection">
 				<label for="section">Nombre secci&oacute;n</label>
 				<HTMLInput id="section" v-model:value="section" />
+				<template v-if="course?.isTec">
+					<label for="tec">Carrera T&eacute;cnica</label>
+					<HTMLSelect id="tec" v-model:value="tec">
+						<option value="">
+							Seleccione una carrera t&eacute;cnica
+						</option>
+						<option v-for="(tec, i) in tecs" :key="i" :value="tec">
+							{{ tec }}
+						</option>
+					</HTMLSelect>
+				</template>
 				<label for="file">Im&aacute;gen</label>
 				<HTMLInputFiles
 					id="file"
@@ -293,7 +327,6 @@ async function selectNextSection(sectionData: Section | null = null) {
 				<h3>Curso {{ nextCourse.course }} ({{ nextCourse.level }}°)</h3>
 				<br />
 				<HTMLTable :header="['Sección', 'Seleccionar como siguiente']">
-					<!-- eslint-disable-next-line vue/no-template-shadow -->
 					<tr v-for="(section, i) in nextSections" :key="i">
 						<td>
 							{{ section.section }}

@@ -11,9 +11,10 @@ type Navigate = {
 
 const props = defineProps<{
 	navigate: Navigate
+	totalName?: string
 }>()
 
-const total = inject<Ref<number>>('total')
+const total = inject<Ref<number>>(props.totalName ?? 'total')
 const search = useSearch()
 // Paginate
 if (!total)

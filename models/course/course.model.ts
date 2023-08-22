@@ -5,6 +5,8 @@ import type { Cycle } from './cycle.model'
 
 export interface Course {
 	_id: string
+	key: string
+	isTec: boolean
 	course: string
 	level: number
 	// eslint-disable-next-line no-use-before-define
@@ -21,5 +23,6 @@ export interface Section {
 	next_section?: Section
 	is_next_section_variable: boolean
 	_id: string
+	tec?: string
 	file: UserFile
 }

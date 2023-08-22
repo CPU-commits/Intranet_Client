@@ -1,3 +1,4 @@
+import { CalendarBlock } from '../calendar/block.model'
 import { User } from '../user/user.model'
 
 export type Assistance<T extends User | string = User | string> = {
@@ -9,4 +10,6 @@ export type Assistance<T extends User | string = User | string> = {
 	}>
 	auditor: User
 	date: Date
+	isSigned: boolean
+	block: CalendarBlock
 }

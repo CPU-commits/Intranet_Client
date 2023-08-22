@@ -1,5 +1,5 @@
 // Types
-import type { DefaultResponse } from '~~/common/fetchModule'
+import type { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import type { GradeProgram } from '~~/models/classroom/grade.model'
 import type {
@@ -12,11 +12,15 @@ import { Hits } from '~~/models/es/hist.model'
 export class ModulesService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
 	private readonly LIMIT = 20
 
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
+
 	async getModules() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			{
 				body: { modules: Array<ClassroomModule> }
 			} & DefaultResponse
@@ -29,7 +33,7 @@ export class ModulesService {
 	}
 
 	async getClassModules() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				modules?: Array<ClassroomModule>
 			}> &
@@ -48,7 +52,7 @@ export class ModulesService {
 		let query = `?limit=${this.LIMIT}`
 		if (total) query += `&total=true`
 		if (skip > 0) query += `&skip=${skip}`
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				modules?: Array<ClassroomModule>
 				total: number
@@ -68,7 +72,7 @@ export class ModulesService {
 	}
 
 	async getModule(idModule: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				module: ClassroomModule
 			}> &
@@ -85,7 +89,7 @@ export class ModulesService {
 
 	async getModuleGrades(idModule: string) {
 		const dataFetch = await Promise.all([
-			this.nuxtApp.$fetchModule.fetchData<
+			this.fetch.fetchData<
 				{
 					body: {
 						students?: Array<StudentGrade>
@@ -97,7 +101,7 @@ export class ModulesService {
 				method: 'get',
 				spinnerStatus: true,
 			}),
-			this.nuxtApp.$fetchModule.fetchData<
+			this.fetch.fetchData<
 				{
 					body: {
 						programs?: Array<GradeProgram>
@@ -119,7 +123,7 @@ export class ModulesService {
 	async getDirectivesModule(
 		idModule: string,
 	): Promise<DirectiveModule | null> {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			{
 				body: { directives: DirectiveModule }
 			} & DefaultResponse
@@ -133,7 +137,7 @@ export class ModulesService {
 	}
 
 	async getDirectivesStatus() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			{
 				body: {
 					directives: Array<{
@@ -168,7 +172,7 @@ export class ModulesService {
 	}
 
 	async search(idModule: string, search: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				hits: Hits
 			}> &
@@ -191,7 +195,7 @@ export class ModulesService {
 		idModule: string,
 	) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/classroom/directives/add_directive/${idModule}`,
 				body: directives,
@@ -203,7 +207,7 @@ export class ModulesService {
 				type: 'success',
 			})
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -214,7 +218,7 @@ export class ModulesService {
 	// Classroom
 	async addSection(subSection: string, idModule: string) {
 		try {
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					inserted_id: string
 				}> &
@@ -228,7 +232,7 @@ export class ModulesService {
 			})
 			return dataFetch.body.inserted_id
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

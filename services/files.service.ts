@@ -1,12 +1,16 @@
 import { serialize } from 'object-to-formdata'
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { UserFile } from '~~/models/file/file.model'
 
 export class FilesService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	blobPartToUrl(part: BlobPart, type: string) {
 		const blob = new Blob([part], { type })
@@ -29,7 +33,7 @@ export class FilesService {
 			formData.append(`transformer[${i}][value]`, trans.value)
 		})
 
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				excelData: [
 					{
@@ -51,7 +55,7 @@ export class FilesService {
 	}
 
 	async getFiles() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<Array<UserFile> | null> & DefaultResponse
 		>({
 			method: 'get',
@@ -64,7 +68,7 @@ export class FilesService {
 
 	async downloadFile(idFile: string, justDownload = false) {
 		try {
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					token: string
 				}> &
@@ -79,7 +83,7 @@ export class FilesService {
 			if (justDownload) this.downloadFileUrl(dataFetch.body.token)
 			return dataFetch.body.token
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -89,7 +93,7 @@ export class FilesService {
 
 	async downloadFileClassroom(idFile: string, idModule: string) {
 		try {
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					token: string
 				}> &
@@ -102,7 +106,7 @@ export class FilesService {
 			})
 			return dataFetch.body.token
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -137,7 +141,7 @@ export class FilesService {
 			if (files) form.append('file', files[0])
 			form.append('title', fileForm.title)
 			// Send request
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<UserFile> & DefaultResponse
 			>({
 				method: 'post',
@@ -153,7 +157,7 @@ export class FilesService {
 
 			return dataFetch.body
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -163,7 +167,7 @@ export class FilesService {
 
 	async deleteFile(idFile: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				spinnerStatus: true,
 				token: this.authStore.getToken,
@@ -176,7 +180,7 @@ export class FilesService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -187,7 +191,7 @@ export class FilesService {
 
 	async changePermissions(permissions: string, idFile: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/files/change_permissions/${idFile}`,
 				body: { permissions },
@@ -196,7 +200,7 @@ export class FilesService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',

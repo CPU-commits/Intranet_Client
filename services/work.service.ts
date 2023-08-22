@@ -1,5 +1,5 @@
 import type { FilesService } from './files.service'
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { FormAccess } from '~~/models/classroom/form_access.model'
 import { Grade } from '~~/models/classroom/grade.model'
@@ -12,15 +12,16 @@ import { formatDateUTC } from '~~/utils/format'
 export class WorkService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
 	private readonly filesService: FilesService
 
-	constructor(filesServices: FilesService) {
+	constructor(fetch: Fetch, filesServices: FilesService) {
+		this.fetch = fetch
 		this.filesService = filesServices
 	}
 
 	async getWorks(idModule: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				works?: Array<Work>
 			}> &
@@ -36,7 +37,7 @@ export class WorkService {
 	}
 
 	async getWork(idWork: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				work: Work
 				files_uploaded: FilesUploadedClassroom
@@ -56,7 +57,7 @@ export class WorkService {
 	}
 
 	async getModulesWork() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				works: Array<Work & { status: number }>
 			}> &
@@ -72,7 +73,7 @@ export class WorkService {
 	}
 
 	async getStudentsStatus(idModule: string, idWork: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				students: Array<StudentAccess>
 				total_points: number
@@ -89,7 +90,7 @@ export class WorkService {
 	}
 
 	async downloadFiles(idStudent: string, idWork: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BlobPart & DefaultResponse
 		>({
 			method: 'get',
@@ -109,7 +110,7 @@ export class WorkService {
 
 	async deleteWork(idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/works/delete_work/${idWork}`,
 				spinnerStatus: true,
@@ -121,7 +122,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -146,9 +147,9 @@ export class WorkService {
 		if (work.type === 'form' && work.form === '')
 			throw new Error('Debe seleccionar un formulario asignado')
 		if (work.type === 'files') {
-			if (work.pattern.length === 0)
+			if (work.pattern && work.pattern.length === 0)
 				throw new Error('La pauta debe tener mín. 1 item')
-			work.pattern.forEach((item, i) => {
+			work.pattern?.forEach((item, i) => {
 				if (item.title === '' || item.title.length > 100)
 					throw new Error(
 						`El titulo ${
@@ -172,6 +173,8 @@ export class WorkService {
 					)
 			})
 		}
+		if (work.type === 'in-person' && work.sessions?.length === 0)
+			throw new Error('Debe al menos seleccionar una sessión')
 		if (work.date_start === '')
 			throw new Error('Debe indicar una fecha inicio de acceso')
 		if (work.time_start === '')
@@ -202,21 +205,24 @@ export class WorkService {
 		try {
 			this.validateWork(newWork)
 
-			const work: any = {
-				title: newWork.title,
-				is_qualified: newWork.is_qualified === 'true',
-				type: newWork.type,
-				date_start: formatDateUTC(
-					new Date(`${newWork.date_start} ${newWork.time_start}`),
-				),
-				date_limit: formatDateUTC(
-					new Date(`${newWork.date_limit} ${newWork.time_limit}`),
-				),
-			}
+			const work = new Map<string, any>(
+				Object.entries({
+					title: newWork.title,
+					is_qualified: newWork.is_qualified === 'true',
+					type: newWork.type,
+					date_start: formatDateUTC(
+						new Date(`${newWork.date_start} ${newWork.time_start}`),
+					),
+					date_limit: formatDateUTC(
+						new Date(`${newWork.date_limit} ${newWork.time_limit}`),
+					),
+					virtual: newWork.virtual,
+				}),
+			)
 			if (newWork.description !== '')
-				work.description = newWork.description
+				work.set('description', newWork.description)
 			if (filesAttached.length > 0 || linksAttached.length > 0)
-				work.attached = [
+				work.set('attached', [
 					...filesAttached.map((file) => {
 						return {
 							type: 'file',
@@ -230,30 +236,43 @@ export class WorkService {
 							title: link.title,
 						}
 					}),
-				]
-			if (newWork.is_qualified === 'true') work.grade = newWork.grade
+				])
+			if (newWork.is_qualified === 'true')
+				work.set('grade', newWork.grade)
 			if (newWork.type === 'form') {
-				work.form = newWork.form
-				work.form_access =
-					newWork.form_access === '' ? 'default' : newWork.form_access
-				if (work.form_access === 'wtime') {
+				work.set('form', newWork.form)
+				work.set(
+					'form_access',
+					newWork.form_access === ''
+						? 'default'
+						: newWork.form_access,
+				)
+				if (work.get('form_access') === 'wtime') {
 					const splitTime = newWork.time_access.split(':')
-					work.time_access =
+					work.set(
+						'time_access',
 						parseInt(splitTime[0]) * 60 ** 2 +
-						parseInt(splitTime[1]) * 60
+							parseInt(splitTime[1]) * 60,
+					)
 				}
 			}
-			if (newWork.type === 'files')
-				work.pattern = newWork.pattern.map((item) => {
-					return {
-						...item,
-						points: Number(item.points),
-					}
-				})
-			await this.nuxtApp.$fetchModule.fetchData({
+			if (newWork.type === 'files' && newWork.pattern)
+				work.set(
+					'pattern',
+					newWork.pattern.map((item) => {
+						return {
+							...item,
+							points: Number(item.points),
+						}
+					}),
+				)
+			if (newWork.type === 'in-person' && newWork.sessions)
+				work.set('sessions', newWork.sessions)
+
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/c/classroom/works/upload_work/${idModule}`,
-				body: work,
+				body: Object.fromEntries(work),
 				spinnerStatus: true,
 				token: this.authStore.getToken,
 			})
@@ -263,7 +282,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -388,6 +407,7 @@ export class WorkService {
 			date_limit: formatDateUTC(
 				new Date(`${dates.limit_date} ${dates.limit_hour}`),
 			),
+			sessions: work?.sessions,
 		}
 	}
 
@@ -409,7 +429,7 @@ export class WorkService {
 	) {
 		try {
 			this.validateWorkEdit(work, dates, timeAccess)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/c/classroom/works/update_work/${work._id}`,
 				body: this.buildDataUpdateWork(
@@ -428,7 +448,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -451,7 +471,7 @@ export class WorkService {
 				? 'upload_evaluate_files'
 				: 'upload_reevaluate_files'
 
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/c/classroom/works/${route}/${idWork}/${idStudent}`,
 				body: data,
@@ -464,7 +484,40 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
+			this.toastsStore.addToast({
+				message: _err.message,
+				type: 'error',
+			})
+			return false
+		}
+	}
+
+	async uploadEvaluateInperson(
+		data: { in_date: string; block: string; pregrade: number },
+		idStudent: string,
+		idWork: string,
+		isRevised: boolean,
+	) {
+		try {
+			const route = !isRevised
+				? 'upload_evaluate_inperson'
+				: 'upload_reevaluate_inperson'
+
+			await this.fetch.fetchData({
+				method: 'post',
+				URL: `/api/c/classroom/works/${route}/${idWork}/${idStudent}`,
+				body: data,
+				spinnerStatus: true,
+				token: this.authStore.getToken,
+			})
+			this.toastsStore.addToast({
+				message: 'Se ha evaluado al alumno exitosamente',
+				type: 'success',
+			})
+			return true
+		} catch (err) {
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -481,7 +534,7 @@ export class WorkService {
 			filesStored.forEach((file) => {
 				form.append('files[]', file)
 			})
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/c/classroom/works/upload_files/${idWork}`,
 				body: form,
@@ -494,7 +547,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -505,7 +558,7 @@ export class WorkService {
 
 	async deleteItem(idWork: string, idItem: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/works/delete_item_pattern/${idWork}/${idItem}`,
 				spinnerStatus: true,
@@ -513,7 +566,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -524,7 +577,7 @@ export class WorkService {
 
 	async deleteFile(idAttached: string, idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/works/delete_attached/${idWork}/${idAttached}`,
 				spinnerStatus: true,
@@ -532,7 +585,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -543,7 +596,7 @@ export class WorkService {
 
 	async deleteLink(idAttached: string, idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/works/delete_attached/${idWork}/${idAttached}`,
 				token: this.authStore.getToken,
@@ -551,7 +604,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -562,7 +615,7 @@ export class WorkService {
 
 	async deleteFileWork(id: string, idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/works/delete_file_work/${idWork}/${id}`,
 				spinnerStatus: true,
@@ -574,7 +627,7 @@ export class WorkService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',

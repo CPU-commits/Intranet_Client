@@ -1,6 +1,6 @@
 // Types
 import type { FilesService } from './files.service'
-import type { DefaultResponse } from '~~/common/fetchModule'
+import type { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { GradeProgram } from '~~/models/classroom/grade.model'
 import { GradeSee, StudentGrade } from '~~/models/classroom/student_grade.model'
@@ -8,15 +8,16 @@ import { GradeSee, StudentGrade } from '~~/models/classroom/student_grade.model'
 export class GradesService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
 	private readonly filesService: FilesService
 
-	constructor(filesServices: FilesService) {
+	constructor(fetch: Fetch, filesServices: FilesService) {
+		this.fetch = fetch
 		this.filesService = filesServices
 	}
 
 	async getGradeConfig() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			{
 				body: {
 					gradeConfig: {
@@ -35,7 +36,7 @@ export class GradesService {
 	}
 
 	async getGradePrograms(idModule: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				programs?: Array<GradeProgram>
 			}> &
@@ -51,7 +52,7 @@ export class GradesService {
 	}
 
 	async getStudentsGrades(idModule: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				students?: Array<StudentGrade>
 			}> &
@@ -66,7 +67,7 @@ export class GradesService {
 	}
 
 	async getStudentGrades(idModule: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				grades: Array<GradeSee>
 			}> &
@@ -81,7 +82,7 @@ export class GradesService {
 	}
 
 	async downloadGrades() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BlobPart & DefaultResponse
 		>({
 			method: 'get',
@@ -97,7 +98,7 @@ export class GradesService {
 	}
 
 	async downloadGradesSemester(idSemester: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BlobPart & DefaultResponse
 		>({
 			method: 'get',
@@ -112,7 +113,7 @@ export class GradesService {
 	}
 
 	async exportGrades(idModule: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BlobPart & DefaultResponse
 		>({
 			method: 'get',
@@ -140,7 +141,7 @@ export class GradesService {
 			)
 				throw new Error('Las calificaciones deben ser enteros')
 
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/classroom/update_grades_config`,
 				body: gradeConfig,
@@ -153,7 +154,7 @@ export class GradesService {
 				type: 'success',
 			})
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -224,7 +225,7 @@ export class GradesService {
 					}
 				}),
 			}
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					_id: string
 				}> &
@@ -245,7 +246,7 @@ export class GradesService {
 				_id: dataFetch.body._id,
 			}
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -255,7 +256,7 @@ export class GradesService {
 
 	async deleteProgram(idProgram: string, idModule: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/grades/delete_program/${idModule}/${idProgram}`,
 				token: this.authStore.getToken,
@@ -263,7 +264,7 @@ export class GradesService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -284,7 +285,7 @@ export class GradesService {
 	) {
 		try {
 			// Fetch data
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					_id: string
 				}> &
@@ -299,7 +300,7 @@ export class GradesService {
 
 			return dataFetch.body._id
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -309,7 +310,7 @@ export class GradesService {
 
 	async updateGrade(idModule: string, idGrade: string, grade: number) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/c/classroom/grades/update_grade/${idModule}/${idGrade}`,
 				body: {
@@ -321,7 +322,7 @@ export class GradesService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

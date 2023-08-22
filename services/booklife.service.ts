@@ -1,4 +1,4 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { Observation } from '~~/models/booklife/observation.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
@@ -6,7 +6,11 @@ import { UserTypesKeys } from '~~/models/user/user.model'
 export class BooklifeService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getSemesterObservations(idSemester: string, idStudent?: string) {
 		let URL: string
@@ -21,7 +25,7 @@ export class BooklifeService {
 			URL = `/api/booklife/get_booklife_student/${idStudent}?semester=${idSemester}`
 		}
 		// Get data
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				observations?: Array<Observation>
 			}> &
@@ -53,7 +57,7 @@ export class BooklifeService {
 				observation: observation.observation,
 				type: observation.type === 'true',
 			}
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					observation: Observation
 				}> &
@@ -68,7 +72,7 @@ export class BooklifeService {
 
 			return dataFetch.body.observation
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -81,7 +85,7 @@ export class BooklifeService {
 		try {
 			if (observation === '')
 				throw new Error('La observación no puede estar vacía')
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/booklife/update_observation/${id}`,
 				body: { observation },
@@ -89,7 +93,7 @@ export class BooklifeService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -100,7 +104,7 @@ export class BooklifeService {
 
 	async deleteObservation(id: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				URL: `/api/booklife/delete_observation/${id}`,
 				token: this.authStore.getToken,
 				spinnerStatus: true,
@@ -112,7 +116,7 @@ export class BooklifeService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

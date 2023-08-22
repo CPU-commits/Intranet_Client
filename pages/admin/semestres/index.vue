@@ -106,6 +106,8 @@ async function updateSemester() {
 					'Año',
 					'Semestre',
 					'Estado',
+					'Calendario',
+					'Eventos',
 					'Inicializar semestre',
 					'Editar',
 				]"
@@ -121,6 +123,18 @@ async function updateSemester() {
 								? 'En espera'
 								: 'Vigente'
 						}}
+					</td>
+					<td>
+						<HTMLAIcon
+							class-item="fa-solid fa-calendar-days"
+							:href="`/admin/semestres/${semester._id}/calendario`"
+						/>
+					</td>
+					<td>
+						<HTMLAIcon
+							class-item="fa-solid fa-calendar-xmark"
+							:href="`/admin/semestres/${semester._id}/eventos`"
+						/>
 					</td>
 					<td>
 						<HTMLButtonIcon

@@ -63,7 +63,11 @@ function stringStatus(status: number) {
 								v-if="work.type === 'form'"
 								class="fa-solid fa-clipboard"
 							/>
-							<i v-else class="fa-solid fa-file-arrow-up" />
+							<i
+								v-else-if="work.type === 'files'"
+								class="fa-solid fa-file-arrow-up"
+							/>
+							<i v-else class="fa-solid fa-school-flag"></i>
 							{{ work.title }}
 							<i
 								v-if="work.is_qualified"
@@ -152,6 +156,7 @@ h3 {
 	background-color: white;
 	border-radius: 10px;
 	padding: 20px;
+	gap: 5px;
 }
 
 .Work footer {

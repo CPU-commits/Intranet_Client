@@ -1,4 +1,4 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { AnswerWEvaluate } from '~~/models/classroom/answer.model'
 import { FormType, ItemQuestion, UserForm } from '~~/models/form/form.model'
@@ -8,10 +8,14 @@ import { intToRoman } from '~~/utils/format'
 export class FormService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getForms() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				forms?: Array<UserForm>
 			}> &
@@ -27,7 +31,7 @@ export class FormService {
 	}
 
 	async getForm(idForm: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				form: UserForm
 				answers?: Array<AnswerWEvaluate>
@@ -53,7 +57,7 @@ export class FormService {
 	}
 
 	async getFormUser(idForm: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				form: UserForm
 			}> &
@@ -69,7 +73,7 @@ export class FormService {
 	}
 
 	async getFormStudent(idStudent: string, idWork: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				answers?: Array<AnswerWEvaluate>
 				form: UserForm
@@ -246,7 +250,7 @@ export class FormService {
 		try {
 			this.validateForm(form)
 			const data = this.buildData(form)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: '/api/c/classroom/forms/upload_form',
 				body: data,
@@ -259,7 +263,7 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -289,7 +293,7 @@ export class FormService {
 					points: points ? parseInt(points.toString()) : undefined,
 				}
 			})
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/c/classroom/forms/update_form/${idForm}`,
 				spinnerStatus: true,
@@ -302,7 +306,7 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -313,7 +317,7 @@ export class FormService {
 
 	async grade(idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/c/classroom/works/grade_form/${idWork}`,
 				spinnerStatus: true,
@@ -325,7 +329,7 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -336,7 +340,7 @@ export class FormService {
 
 	async gradeFiles(idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/c/classroom/works/grade_files/${idWork}`,
 				spinnerStatus: true,
@@ -348,7 +352,30 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
+			this.toastStore.addToast({
+				message: _err.message,
+				type: 'error',
+			})
+			return false
+		}
+	}
+
+	async gradeInperson(idWork: string) {
+		try {
+			await this.fetch.fetchData({
+				method: 'post',
+				URL: `/api/c/classroom/works/grade_inperson/${idWork}`,
+				spinnerStatus: true,
+				token: this.authStore.getToken,
+			})
+			this.toastStore.addToast({
+				message: 'Se ha evaluado el trabajo exitosamente',
+				type: 'success',
+			})
+			return true
+		} catch (err) {
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -371,7 +398,7 @@ export class FormService {
 
 	async saveQuestion(question: ItemQuestion, idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				URL: `/api/c/classroom/works/save_answer/${idWork}/${question._id}`,
 				method: 'post',
 				body: this.buildDataQuestion(question),
@@ -379,7 +406,7 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -390,7 +417,7 @@ export class FormService {
 
 	async finishForm(formAnswers: Array<any> | undefined, idWork: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/c/classroom/works/finish_form/${idWork}`,
 				body: {
@@ -405,7 +432,7 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -429,7 +456,7 @@ export class FormService {
 			if (pointsNumber < 0)
 				throw new Error('El puntaje debe ser mayor a cero')
 			// Fetch
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/c/classroom/works/upload_points_question/${idWork}/${idQuestion}/${idStudent}`,
 				body: { points: pointsNumber },
@@ -444,7 +471,7 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -455,7 +482,7 @@ export class FormService {
 
 	async deleteForm(idForm: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/forms/delete_form/${idForm}`,
 				spinnerStatus: true,
@@ -467,7 +494,7 @@ export class FormService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

@@ -9,7 +9,7 @@ const props = defineProps<{
 	button: {
 		isLink: boolean
 		func?: (student: Student) => any
-		href?: string
+		href?: (idStudent: string) => string
 	}
 	filter?: Array<string>
 }>()
@@ -77,7 +77,7 @@ const search = ref('')
 				<td>
 					<HTMLAIcon
 						v-if="button.isLink && button.href"
-						:href="button.href"
+						:href="(() => (button.href as Function)(student._id))()"
 						:class-item="classItem"
 					/>
 					<HTMLButtonIcon
@@ -99,10 +99,6 @@ const search = ref('')
 <style scoped>
 .dark-mode .SearchStudents {
 	background-color: var(--color-main-dark-contrast);
-}
-
-.light-mode .SearchStudents {
-	box-shadow: var(--box-shadow);
 }
 
 .SearchStudents {

@@ -1,4 +1,6 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { Service } from './service'
+import { RecordTypes } from '~/models/assistance/record'
+import { PresenceStatus } from '~/models/assistance/student'
 import { BodyFetch } from '~~/models/body.model'
 import { Student, Students } from '~~/models/user/student.model'
 import { Voting } from '~~/models/voting/voting.model'
@@ -6,10 +8,7 @@ import { Voting } from '~~/models/voting/voting.model'
 import { formateDateInput } from '~~/utils/format'
 import validator from '~~/utils/validator'
 
-export class StudentsService {
-	private readonly authStore = useAuthStore()
-	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+export class StudentsService extends Service {
 	private readonly LIMIT = 30
 
 	async getStudents(
@@ -24,13 +23,10 @@ export class StudentsService {
 		if (search) URL += `&search=${search}`
 		if (skip && skip >= 0) URL += `&skip=${skip}`
 		if (filter) URL += `&filter=${filter}`
-		const data = await this.nuxtApp.$fetchModule.fetchData<
-			BodyFetch<Students> & DefaultResponse
-		>({
+		const data = await this.fetch<BodyFetch<Students>>({
 			spinnerStatus: true,
 			URL,
 			method: 'get',
-			token: this.authStore.getToken,
 			abort: {
 				url: 'same',
 			},
@@ -39,7 +35,7 @@ export class StudentsService {
 	}
 
 	async getStudent(idStudent: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch<
 			BodyFetch<{
 				student: Student
 			}>
@@ -47,21 +43,33 @@ export class StudentsService {
 			spinnerStatus: true,
 			URL: `/api/students/${idStudent}`,
 			method: 'get',
-			token: this.authStore.getToken,
 		})
 
 		return dataFetch.body.student
 	}
 
+	async getStudentPresenceStatus(idStudent: string) {
+		return await this.fetch<
+			BodyFetch<{
+				status: {
+					status: keyof typeof PresenceStatus
+					org: keyof typeof RecordTypes
+				}
+			}>
+		>({
+			method: 'get',
+			URL: `/api/students/${idStudent}/presence_status`,
+		}).then(({ body }) => body.status)
+	}
+
 	async getRegistrationTypes() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch<
 			BodyFetch<{
 				types: Array<{ value: string; text: string }>
 			}>
 		>({
 			method: 'get',
 			URL: '/api/students/registration/types',
-			token: this.authStore.getToken,
 		})
 
 		return dataFetch.body.types
@@ -128,11 +136,10 @@ export class StudentsService {
 	) {
 		try {
 			this.validatorsStudent(student)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch<
 				BodyFetch<{
 					student: Student
-				}> &
-					DefaultResponse
+				}>
 			>({
 				method: 'post',
 				URL: '/api/students/new_student',
@@ -140,22 +147,21 @@ export class StudentsService {
 					...student,
 					name: student.name.trim(),
 					course: student.course !== '' ? student.course : undefined,
+					number_of_list:
+						student.number_of_list !== ''
+							? student.number_of_list
+							: undefined,
 				},
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha agregado el estudiante exitosamente',
 				type: 'success',
 			})
 
 			return dataFetch.body.student
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 		}
 	}
 
@@ -168,7 +174,7 @@ export class StudentsService {
 	) {
 		try {
 			for (const student of students) this.validatorsStudent(student)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'post',
 				URL: '/api/students/new_students',
 				body: students.map((student) => ({
@@ -176,19 +182,14 @@ export class StudentsService {
 					course: student.course !== '' ? student.course : undefined,
 				})),
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se han agregado los estudiantes exitosamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
@@ -196,7 +197,7 @@ export class StudentsService {
 	async editStudent(student: Student, course: string) {
 		try {
 			this.validatorsStudent(student)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'put',
 				URL: `/api/students/edit_student/${student._id}`,
 				body: {
@@ -204,20 +205,14 @@ export class StudentsService {
 					course: course !== '' ? course : undefined,
 				},
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha editado con éxito el estudiante',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
@@ -244,28 +239,22 @@ export class StudentsService {
 			if (registration.file)
 				formData.set('file', registration.file as File)
 
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch<
 				BodyFetch<{ file: string | null }>
 			>({
 				method: 'put',
 				URL: `/api/students/${idStudent}/registration`,
-				token: this.authStore.getToken,
 				body: formData,
 			})
 
-			this.toastsStore.addToast({
+			this.addToast({
 				message:
 					'Se ha actualizado el estado del estudiante exitosamente',
 				type: 'success',
 			})
 			return dataFetch.body.file
 		} catch (err) {
-			const error = this.nuxtApp.$fetchModule.handleError(err)
-
-			this.toastsStore.addToast({
-				message: error.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 		}
 	}
 
@@ -273,40 +262,33 @@ export class StudentsService {
 		try {
 			if (why.length > 535 || why === '')
 				throw new Error('Debe existir un motivo de máx 535 cárac.')
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'post',
 				URL: `/api/students/change_status/${idStudent}`,
 				body: { why },
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha cambiado el estado del estudiante exitosamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
 
 	// Voting
 	async getVoting() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch<
 			BodyFetch<{
 				voting: Voting | null
-			}> &
-				DefaultResponse
+			}>
 		>({
 			method: 'get',
 			URL: '/api/students/get_voting',
 			spinnerStatus: true,
-			token: this.authStore.getToken,
 		})
 		return dataFetch.body.voting
 			? {
@@ -322,14 +304,12 @@ export class StudentsService {
 	}
 
 	async getStudentVote() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch<
 			BodyFetch<{
 				my_vote: boolean | null
-			}> &
-				DefaultResponse
+			}>
 		>({
 			method: 'get',
-			token: this.authStore.getToken,
 			spinnerStatus: true,
 			URL: '/api/students/get_my_vote',
 		})
@@ -340,23 +320,18 @@ export class StudentsService {
 		try {
 			if (vote === '')
 				throw new Error('Debe seleccionar una lista a votar')
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'post',
 				URL: `/api/students/vote/${vote}`,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha votado satisfactoriamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
@@ -374,14 +349,13 @@ export class StudentsService {
 		}>
 	}) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'post',
 				URL: '/api/students/upload_voting',
 				body: voting,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se han subido las votaciones exitosamente',
 				type: 'success',
 			})
@@ -391,11 +365,7 @@ export class StudentsService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
@@ -413,24 +383,19 @@ export class StudentsService {
 		}>
 	}) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'put',
 				URL: '/api/students/edit_voting',
 				body: voting,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha actualizado las votaciones exitosamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}

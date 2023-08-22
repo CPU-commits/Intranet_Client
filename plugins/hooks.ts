@@ -49,7 +49,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 									URL: `/api/authentication/refresh`,
 									method: 'get',
 									headers: {
-										refresh_token: data.refresh_token,
+										'X-Refresh': data.refresh_token,
 									},
 								})
 							data.access_token = dataFetch.access_token

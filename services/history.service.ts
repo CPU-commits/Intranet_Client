@@ -1,13 +1,16 @@
 // Types
-import type { DefaultResponse } from '~~/common/fetchModule'
+import type { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
 import type { History } from '~~/models/history/history.model'
 import { User } from '~~/models/user/user.model'
 
 export class HistoryService {
 	private readonly authStore = useAuthStore()
-	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getHistory(
 		total = false,
@@ -18,7 +21,7 @@ export class HistoryService {
 		let query = `?total=${total}&skip=${skip}&limit=${limit}`
 		if (extraQueryParams) query += extraQueryParams
 
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				history: {
 					history: Array<History>
@@ -36,7 +39,7 @@ export class HistoryService {
 	}
 
 	async getPersons() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				persons: Array<User>
 			}> &

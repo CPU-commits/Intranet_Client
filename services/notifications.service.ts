@@ -1,4 +1,4 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import type { NotificationType } from '~~/models/notification/notification.model'
 import type { NotificationPreferences } from '~~/models/notification/preferences.model'
@@ -6,10 +6,14 @@ import type { NotificationPreferences } from '~~/models/notification/preferences
 export class NotificationsService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getNotificationPreferences() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<NotificationPreferences> & DefaultResponse
 		>({
 			method: 'get',
@@ -24,7 +28,7 @@ export class NotificationsService {
 	async changeNotificationPreference(
 		notificationPreferences: NotificationPreferences,
 	) {
-		await this.nuxtApp.$fetchModule.fetchData({
+		await this.fetch.fetchData({
 			method: 'post',
 			URL: '/api/notifications/change_preferences',
 			token: this.authStore.getToken,
@@ -36,7 +40,7 @@ export class NotificationsService {
 	}
 
 	async getNotifications(total = false, skip = 0) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				notifications: Array<NotificationType>
 				total: number
@@ -54,7 +58,7 @@ export class NotificationsService {
 	}
 
 	async getNotificationsCount() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				count: number
 			}> &
@@ -70,14 +74,14 @@ export class NotificationsService {
 
 	async deleteNotification(idNotification: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/notifications/delete_notification/${idNotification}`,
 				token: this.authStore.getToken,
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

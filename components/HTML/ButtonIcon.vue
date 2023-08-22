@@ -52,6 +52,7 @@ onBeforeUpdate(() => {
 <template>
 	<button
 		ref="btn"
+		class="HTMLButtonIcon"
 		:class="selected ? 'Selected' : ''"
 		:title="title"
 		type="button"
@@ -64,8 +65,8 @@ onBeforeUpdate(() => {
 	</button>
 </template>
 
-<style scoped>
-button {
+<style lang="scss">
+.HTMLButtonIcon {
 	background: transparent;
 	border: none;
 	width: var(--one-hundred);
@@ -75,30 +76,33 @@ button {
 	gap: 5px;
 }
 
-button:hover i,
-button:hover .Text {
+.HTMLButtonIcon:hover i,
+.HTMLButtonIcon:hover .Text {
 	color: var(--hover-i);
+	i {
+		color: var(--hover-i);
+	}
 }
 
-i,
-.Text {
+.HTMLButtonIcon i,
+.HTMLButtonIcon .Text {
 	font-size: 1rem;
-	transition: all 0.4s ease;
+	transition: color 0.4s ease;
 	color: var(--color-i);
 }
 
-.Selected {
+.HTMLButtonIcon .Selected {
 	color: var(--color-main) !important;
 }
 
 @media (max-width: 767.98px) {
-	i {
+	.HTMLButtonIcon i {
 		font-size: 0.8rem;
 	}
 }
 
 @media (max-width: 575.98px) {
-	i {
+	.HTMLButtonIcon i {
 		font-size: 0.72rem;
 	}
 }

@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 // Types
 import { ErrorFetch } from '~/common/fetchModule'
-import { Section } from '~/models/course/course.model'
-import { FetchGet } from '~/models/fetch/defaults.model'
+import { AssistanceBlock } from '~/models/assistance/blocks'
 // Meta
 const schoolName = useRuntimeConfig().public.COLLEGE_NAME
 const title = schoolName
@@ -13,22 +12,19 @@ const { $assistanceService, $fetchModule } = useNuxtApp()
 
 // Data
 const error = ref<ErrorFetch | null>(null)
-const sections = ref<Array<Section & { exists_assistance: boolean }> | null>(
-	null,
-)
+const blocks = ref<Array<AssistanceBlock> | null>(null)
 
-onMounted(() => getSections({ total: true }))
+onMounted(() => getBlocks())
 
 // Total
 const total = ref(0)
 provide('total', total)
 
-async function getSections(params?: FetchGet) {
+async function getBlocks() {
 	try {
-		const dataFetch = await $assistanceService.getSections(params)
+		const dataFetch = await $assistanceService.getBlocks()
 
-		if (params?.total) total.value = dataFetch.total
-		sections.value = dataFetch.sections
+		blocks.value = dataFetch
 	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		error.value = _err
@@ -46,31 +42,47 @@ async function getSections(params?: FetchGet) {
 		<!-- Body -->
 		<h2>Asistencia {{ formatDateLL(new Date()) }}</h2>
 		<HTMLTable
-			:header="['Curso', 'Asistencia diaria', '']"
-			:navigate="{
-				activate: true,
-				max: 20,
-				async fn(page) {
-					await getSections({
-						skip: page * 20,
-					})
-				},
-			}"
+			v-if="blocks && blocks.length > 0"
+			:header="[
+				'Curso',
+				'Materia',
+				'Bloque',
+				'Asistencia diaria',
+				'Sincronizada',
+				'Firmado',
+			]"
 		>
-			<tr v-for="section in sections" :key="section._id">
+			<tr v-for="(block, i) in blocks" :key="i">
 				<td>
-					{{ section.course.course }}
-					{{ section.section }}
+					{{ block.course }}
+					{{ block.section.section }}
+				</td>
+				<td>{{ block.subject }}</td>
+				<td>
+					({{ block.block.number }}) {{ block.block.hour_start }} -
+					{{ block.block.hour_finish }}
 				</td>
 				<td>
 					<HTMLAIcon
 						class-item="fa-solid fa-list-check"
-						:href="`/asistencia/${section._id}`"
+						:href="`/asistencia/${block.section._id}/${block.block._id}`"
 					/>
 				</td>
 				<td>
 					<i
-						v-if="section.exists_assistance"
+						v-if="block.exists_assistance"
+						class="fa-solid fa-circle-check"
+						title="Asistencia subida"
+					/>
+					<i
+						v-else
+						class="fa-solid fa-circle-xmark"
+						title="Asistencia sin subir"
+					/>
+				</td>
+				<td>
+					<i
+						v-if="block.exists_assistance && block.signed"
 						class="fa-solid fa-circle-check"
 						title="Asistencia subida"
 					/>
@@ -82,13 +94,17 @@ async function getSections(params?: FetchGet) {
 				</td>
 			</tr>
 		</HTMLTable>
+		<article v-else-if="blocks && blocks.length === 0" class="NoAssist">
+			<NuxtImg src="/img/beach.svg" alt="Mujer en la playa" />
+			<i>Parece que hoy no hay asistencia...</i>
+		</article>
 
 		<SpinnerGet />
 		<Error v-if="error" :err="error" />
 	</section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .dark-mode .Assistance {
 	background-color: var(--color-main-dark-contrast);
 }
@@ -107,6 +123,15 @@ async function getSections(params?: FetchGet) {
 
 h2 {
 	margin-bottom: 15px;
+}
+
+.NoAssist {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	img {
+		max-height: 400px;
+	}
 }
 
 @media (max-width: 575.98px) {

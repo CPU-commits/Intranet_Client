@@ -43,6 +43,7 @@ onMounted(() => {
 	border-radius: 10px;
 	overflow: auto;
 	background-color: white;
+	height: fit-content;
 }
 
 .Panel__content {

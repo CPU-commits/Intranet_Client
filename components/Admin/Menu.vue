@@ -23,7 +23,11 @@ const url = route.path
 					class="NuxtLink"
 					to="/admin/colegio"
 				>
-					<li :class="url === '/admin/colegio' ? 'Selected' : ''">
+					<li
+						:class="
+							url.includes('/admin/colegio') ? 'Selected' : ''
+						"
+					>
 						<i class="fa-solid fa-school" />
 						<span>Colegio</span>
 					</li>
@@ -148,7 +152,7 @@ const url = route.path
 							url.startsWith('/admin/semestres') ? 'Selected' : ''
 						"
 					>
-						<i class="fa-solid fa-calendar-days" />
+						<i class="fa-solid fa-calendar-week"></i>
 						<span>Semestres</span>
 					</li>
 				</NuxtLink>
@@ -205,7 +209,7 @@ const url = route.path
 						"
 					>
 						<i class="fa-solid fa-square-check"></i>
-						<span>Asistencia</span>
+						<span>Asistencia diaria</span>
 					</li>
 				</NuxtLink>
 				<NuxtLink

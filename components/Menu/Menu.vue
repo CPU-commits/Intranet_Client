@@ -197,7 +197,24 @@ async function logout() {
 							:class="{ selected: url.startsWith('/asistencia') }"
 						>
 							<i class="fa-solid fa-square-check"></i>
-							<span>Asistencia</span>
+							<span>Asistencia diaria</span>
+						</li>
+					</NuxtLink>
+					<NuxtLink
+						v-if="
+							auth.userTypeIs(
+								UserTypesKeys.TEACHER,
+								UserTypesKeys.DIRECTOR,
+								UserTypesKeys.DIRECTIVE,
+							)
+						"
+						class="NuxtLink"
+						to="/registros"
+						@click="ahref"
+					>
+						<li :class="{ selected: url.startsWith('/registros') }">
+							<i class="fa-solid fa-road"></i>
+							<span>Registros de entrada y salida</span>
 						</li>
 					</NuxtLink>
 					<NuxtLink
@@ -354,6 +371,7 @@ button {
 	transition: color 0.4s ease;
 	display: flex;
 	gap: 10px;
+	align-items: center;
 }
 
 .Menu li a {

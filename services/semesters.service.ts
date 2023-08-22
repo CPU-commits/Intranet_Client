@@ -1,5 +1,5 @@
 // Types
-import type { DefaultResponse } from '~~/common/fetchModule'
+import type { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import type { ClassroomModule } from '~~/models/classroom/modules.model'
 import type {
@@ -11,10 +11,14 @@ import type { Student } from '~~/models/user/student.model'
 export class SemestersService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getSemesters() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				semesters: Array<Semester>
 			}> &
@@ -28,8 +32,23 @@ export class SemestersService {
 		return dataFetch.body.semesters
 	}
 
+	async getSemester(idSemester: string) {
+		const dataFetch = await this.fetch.fetchData<
+			BodyFetch<{
+				semester: Semester
+			}>
+		>({
+			method: 'get',
+			URL: `/api/semesters/${idSemester}`,
+			spinnerStatus: true,
+			token: this.authStore.getToken,
+		})
+
+		return dataFetch.body.semester
+	}
+
 	async getYears() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			{ body: { years: Array<{ year: number }> } } & DefaultResponse
 		>({
 			method: 'get',
@@ -41,7 +60,7 @@ export class SemestersService {
 	}
 
 	async getParticipatedSemesters() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				semesters: Array<Semester>
 			}> &
@@ -56,7 +75,7 @@ export class SemestersService {
 	}
 
 	async getCurrentSemester() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				semester: Semester
 			}> &
@@ -71,7 +90,7 @@ export class SemestersService {
 	}
 
 	async getFinishSemester() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				finish_semester: FinishSemester
 			}> &
@@ -85,8 +104,22 @@ export class SemestersService {
 		return dataFetch.body.finish_semester
 	}
 
+	async getModulesSemester(idSemester: string) {
+		const dataFetch = await this.fetch.fetchData<
+			BodyFetch<{
+				modules: Array<ClassroomModule>
+			}>
+		>({
+			method: 'get',
+			token: this.authStore.getToken,
+			URL: `/api/classroom/get_populated_modules_semester/${idSemester}`,
+		})
+
+		return dataFetch.body.modules
+	}
+
 	async getSemesterYear(year: number) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			{ body: { semesters: Array<Semester> } } & DefaultResponse
 		>({
 			method: 'get',
@@ -133,7 +166,7 @@ export class SemestersService {
 		finishedSemesters.forEach((semester) => {
 			if (semester.semester === 1) {
 				promises.first.promises.push(
-					this.nuxtApp.$fetchModule.fetchData({
+					this.fetch.fetchData({
 						method: 'get',
 						token: this.authStore.getToken,
 						URL: `/api/classroom/get_populated_modules_semester/${semester._id}`,
@@ -142,7 +175,7 @@ export class SemestersService {
 				promises.first.semester = semester
 			} else {
 				promises.second.promises.push(
-					this.nuxtApp.$fetchModule.fetchData<
+					this.fetch.fetchData<
 						{
 							body: {
 								modules: Array<ClassroomModule>
@@ -153,7 +186,7 @@ export class SemestersService {
 						token: this.authStore.getToken,
 						URL: `/api/classroom/get_populated_modules_semester/${semester._id}`,
 					}),
-					this.nuxtApp.$fetchModule.fetchData<
+					this.fetch.fetchData<
 						{
 							body: {
 								students: Array<Student>
@@ -220,7 +253,7 @@ export class SemestersService {
 	async addSemester(semester: { year: string; semester: string }) {
 		try {
 			this.validatorsSemester(semester)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					semester: Semester
 				}> &
@@ -239,7 +272,7 @@ export class SemestersService {
 
 			return dataFetch.body.semester
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -249,7 +282,7 @@ export class SemestersService {
 
 	async initSemester(idSemester: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/semesters/init_semester/${idSemester}`,
 				spinnerStatus: true,
@@ -261,7 +294,7 @@ export class SemestersService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -277,7 +310,7 @@ export class SemestersService {
 				semester: semester.semester.toString(),
 			})
 
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					semester: Semester
 				}> &
@@ -296,7 +329,7 @@ export class SemestersService {
 
 			return dataFetch.body.semester
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -306,7 +339,7 @@ export class SemestersService {
 
 	async interruptFinishSemester() {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: '/api/semesters/interrupt_finish_Semester',
 				spinnerStatus: true,
@@ -320,7 +353,7 @@ export class SemestersService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -339,7 +372,7 @@ export class SemestersService {
 	}) {
 		try {
 			// Fecth
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: '/api/semesters/finish_semester',
 				spinnerStatus: true,
@@ -353,7 +386,7 @@ export class SemestersService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',

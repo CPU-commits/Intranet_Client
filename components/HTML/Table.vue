@@ -1,4 +1,3 @@
-<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 // Types
 type Navigate = {
@@ -9,6 +8,7 @@ type Navigate = {
 defineProps<{
 	header: Array<string>
 	navigate?: Navigate
+	totalName?: string
 }>()
 
 // Memo
@@ -18,7 +18,7 @@ defineEmits<{
 </script>
 
 <template>
-	<div>
+	<div class="Container">
 		<section class="Table">
 			<table>
 				<thead class="Thead">
@@ -42,12 +42,17 @@ defineEmits<{
 		<HTMLNav
 			v-if="navigate?.activate"
 			:navigate="navigate"
+			:total-name="totalName"
 			@memo="(value: any) => $emit('memo', value)"
 		/>
 	</div>
 </template>
 
 <style scoped>
+.Container {
+	position: relative;
+}
+
 .Table {
 	overflow-x: auto;
 	width: 100%;

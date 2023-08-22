@@ -46,7 +46,8 @@ html {
 	select,
 	td,
 	summary,
-	pre {
+	pre,
+	legend {
 		color: white;
 	}
 }
@@ -312,6 +313,27 @@ button {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+// Fieldsets
+.light-mode fieldset {
+	border: 1px solid var(--color-light);
+	padding: 8px;
+	width: 100%;
+	border-radius: 3px;
+}
+
+.dark-mode fieldset {
+	border: 1px solid var(--color-light);
+	padding: 8px;
+	width: 100%;
+	border-radius: 3px;
+}
+
+fieldset {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 // Media queries

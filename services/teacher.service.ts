@@ -1,4 +1,4 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { Teacher, Teachers } from '~~/models/user/teacher.model'
 import { User } from '~~/models/user/user.model'
@@ -7,14 +7,18 @@ import validator from '~~/utils/validator'
 export class TeacherService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
 	private readonly LIMIT = 30
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getTeachers(total = false, skip?: number, search?: string) {
 		let URL = `/api/teachers/get_teachers?total=${total}&limit=${this.LIMIT}`
 		if (search) URL += `&search=${search}`
 		if (skip && skip >= 0) URL += `&skip=${skip}`
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<Teachers> & DefaultResponse
 		>({
 			URL,
@@ -65,7 +69,7 @@ export class TeacherService {
 	async uploadTeacher(teacher: Omit<Omit<User, '_id'>, 'user_type'>) {
 		try {
 			this.validatorsTeacher(teacher)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					teacher: Teacher
 				}> &
@@ -83,7 +87,7 @@ export class TeacherService {
 			})
 			return dataFetch.body.teacher
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -96,7 +100,7 @@ export class TeacherService {
 	) {
 		try {
 			for (const teacher of teachers) this.validatorsTeacher(teacher)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: '/api/teachers/new_teachers',
 				body: teachers,
@@ -109,7 +113,7 @@ export class TeacherService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -121,7 +125,7 @@ export class TeacherService {
 	async editTeacher(teacher: Teacher) {
 		try {
 			this.validatorsTeacher(teacher.user)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/teachers/edit_teacher/${teacher.user._id}`,
 				body: teacher.user,
@@ -135,7 +139,7 @@ export class TeacherService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -150,7 +154,7 @@ export class TeacherService {
 			if (subject === '')
 				throw new Error('Debe seleccionar una materia - curso')
 			const subjectCourse = subject.split('-')
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<Teacher> & DefaultResponse
 			>({
 				method: 'post',
@@ -168,7 +172,7 @@ export class TeacherService {
 			})
 			return dataFetch.body
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -178,7 +182,7 @@ export class TeacherService {
 
 	async deleteSubjectCourse(idImparted: string, idTeacher: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/teachers/delete_subject_course/${idTeacher}/${idImparted}`,
 				spinnerStatus: true,
@@ -192,7 +196,7 @@ export class TeacherService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -205,7 +209,7 @@ export class TeacherService {
 		try {
 			if (why.length > 535 || why === '')
 				throw new Error('Debe existir un motivo de máx 535 cárac.')
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/directive/change_status/${idTeacher}`,
 				body: { why },
@@ -219,7 +223,7 @@ export class TeacherService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',

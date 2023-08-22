@@ -71,29 +71,20 @@ onMounted(async () => {
 				form_has_points: boolean
 				grade: Grade
 			}>,
-			Promise<{
-				students: Array<StudentAccess>
-				total_points: number
-			}>?,
+			Promise<void>?,
 		] = [$workService.getWork(idWork)]
 		if (auth.userTypeIs(UserTypesKeys.TEACHER, UserTypesKeys.ATTORNEY))
-			promises.push($workService.getStudentsStatus(idModule, idWork))
+			promises.push(getStudents())
 
 		const dataFetch = await Promise.all(promises)
 		work.value = dataFetch[0].work
 		formAccess.value = dataFetch[0].form_access
 
-		if (
-			auth.userTypeIs(UserTypesKeys.TEACHER, UserTypesKeys.ATTORNEY) &&
-			dataFetch[1]
-		) {
-			formHasPoints.value = dataFetch[0].form_has_points ?? false
-			// Teacher
-			students.value = dataFetch[1].students
-			totalPoints.value = dataFetch[1].total_points
-		} else {
+		if (auth.userTypeNotIs(UserTypesKeys.TEACHER, UserTypesKeys.ATTORNEY)) {
 			filesUploaded.value = dataFetch[0].files_uploaded
 			grade.value = dataFetch[0].grade
+		} else {
+			formHasPoints.value = dataFetch[0].form_has_points ?? false
 		}
 		// Fix obj null
 		if (
@@ -109,6 +100,16 @@ onMounted(async () => {
 		error.value = $fetchModule.handleError(err)
 	}
 })
+
+async function getStudents() {
+	const studentsData = await $workService.getStudentsStatus(
+		idModule as string,
+		idWork as string,
+	)
+	// Teacher
+	students.value = studentsData.students
+	totalPoints.value = studentsData.total_points
+}
 </script>
 
 <template>
@@ -127,7 +128,11 @@ onMounted(async () => {
 							v-if="work.type === 'form'"
 							class="fa-solid fa-clipboard"
 						></i>
-						<i v-else class="fa-solid fa-file-arrow-up"></i>
+						<i
+							v-else-if="work.type === 'files'"
+							class="fa-solid fa-file-arrow-up"
+						></i>
+						<i v-else class="fa-solid fa-school-flag"></i>
 						{{ work.title }}
 					</h2>
 					<div v-if="work.is_qualified" class="Grade">
@@ -192,6 +197,7 @@ onMounted(async () => {
 						:form_access="formAccess"
 						:files_uploaded="filesUploaded"
 						:grade="grade"
+						@update="getStudents"
 					/>
 				</section>
 				<footer>
@@ -261,7 +267,6 @@ i {
 
 .Work__content section {
 	padding: 20px;
-	border: 2px solid var(--color-light);
 	margin: 20px;
 	width: fit-content;
 	display: flex;

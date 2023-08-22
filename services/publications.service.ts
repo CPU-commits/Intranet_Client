@@ -1,4 +1,4 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { Publication } from '~~/models/classroom/publication.model'
 import { Attached, AttachedType } from '~~/models/file/attached.model'
@@ -7,10 +7,14 @@ import { UserFile } from '~~/models/file/file.model'
 export class PublicationsService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getPublications(idModule: string, section: number, query: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				publications?: Array<Publication>
 				total: number
@@ -32,7 +36,7 @@ export class PublicationsService {
 	}
 
 	async getPublication(idModule: string, idPublication: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				publication: Publication
 			}> &
@@ -79,7 +83,7 @@ export class PublicationsService {
 				content: text,
 				attached,
 			}
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					_id: string
 					attached_ids: Array<string>
@@ -127,7 +131,7 @@ export class PublicationsService {
 				},
 			}
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -137,7 +141,7 @@ export class PublicationsService {
 
 	async editPublication(idPublication: string, publication: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/c/classroom/publications/update/${idPublication}`,
 				body: { content: publication },
@@ -150,7 +154,7 @@ export class PublicationsService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -161,7 +165,7 @@ export class PublicationsService {
 
 	async deletePublication(idPublication: string, idModule: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/publications/delete/${idPublication}/${idModule}`,
 				spinnerStatus: true,
@@ -173,7 +177,7 @@ export class PublicationsService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -184,7 +188,7 @@ export class PublicationsService {
 
 	async deleteAttached(id: string, idModule: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/c/classroom/publications/delete_attached/${id}/${idModule}`,
 				token: this.authStore.getToken,
@@ -192,7 +196,7 @@ export class PublicationsService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

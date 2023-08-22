@@ -58,6 +58,7 @@ const newWork = reactive({
 	time_limit: '',
 	form_access: '',
 	time_access: '',
+	virtual: true,
 })
 const linksAttached = ref<Array<Link>>([])
 const filesAttached = ref<Array<UserFile>>([])

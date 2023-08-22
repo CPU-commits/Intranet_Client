@@ -1,6 +1,7 @@
 import { Fetch } from "~/common/fetchModule"
 import { AssistanceService } from "~/services/assistance.service"
 import { BooklifeService } from "~/services/booklife.service"
+import { CalendarService } from "~/services/calendar.service"
 import { CollegeService } from "~/services/college.service"
 import { CourseService } from "~/services/course.service"
 import { DegreesOrCertificateService } from "~/services/degrees.service"
@@ -51,6 +52,7 @@ declare module '#app' {
 		$parentService: ParentService
 		$assistanceService: AssistanceService
 		$degreesService: DegreesOrCertificateService
+		$calendarService: CalendarService
 	}
 }
 
@@ -81,6 +83,7 @@ declare module 'vue' {
 		$parentService: ParentService
 		$assistanceService: AssistanceService
 		$degreesService: DegreesOrCertificateService
+		$calendarService: CalendarService
 	}
 }
 

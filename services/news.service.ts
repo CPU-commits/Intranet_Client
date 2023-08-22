@@ -1,12 +1,16 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { News } from '~~/models/news/news.model'
 
 export class NewsService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
 	private readonly LIMIT = 10
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getNews(limit?: number, total = false, skip?: number, type?: string) {
 		let URL = '/api/news/get_news'
@@ -16,7 +20,7 @@ export class NewsService {
 		if (skip) URL += `&skip=${skip}`
 		if (type) URL += `&type=${type}`
 
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				news?: Array<News>
 				total?: number
@@ -35,7 +39,7 @@ export class NewsService {
 	}
 
 	async getSingleNews(idNews: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				news: News
 			}> &
@@ -98,7 +102,7 @@ export class NewsService {
 	) {
 		try {
 			this.validatorsNews(news, files)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: '/api/news/new_news',
 				body: this.buildForm(news, files),
@@ -111,7 +115,7 @@ export class NewsService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -123,7 +127,7 @@ export class NewsService {
 	async updateNews(news: News, files: FileList | null, idNews: string) {
 		try {
 			this.validatorsNews(news, files, true)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/news/update_news/${idNews}`,
 				body: this.buildForm(news, files),
@@ -136,7 +140,7 @@ export class NewsService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -147,7 +151,7 @@ export class NewsService {
 
 	async likeNews(like: boolean, idNews: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/news/like_news/${idNews}`,
 				token: this.authStore.getToken,
@@ -171,7 +175,7 @@ export class NewsService {
 
 	async deleteNews(idNews: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				URL: `/api/news/delete_news/${idNews}`,
 				method: 'delete',
 				spinnerStatus: true,
@@ -183,7 +187,7 @@ export class NewsService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

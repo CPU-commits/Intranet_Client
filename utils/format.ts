@@ -3,12 +3,14 @@
 import pkg from 'roman-numerals'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
+import utc from 'dayjs/plugin/utc'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { UserTypes, UserTypesKeys } from '~~/models/user/user.model'
 import { $DATE } from '~~/models/file/file.model'
 const { toRoman } = pkg
 
 dayjs.locale('es')
+dayjs.extend(utc)
 dayjs.extend(relativeTime)
 
 function getDate(date: string | Date | $DATE) {
@@ -27,6 +29,10 @@ export function formatDateLL(date: string | Date) {
 	return capitalizeFirstLetter(dayjs(date).format('MMMM DD, YYYY'))
 }
 
+export function formatDateLLUTC(date: string | Date) {
+	return capitalizeFirstLetter(dayjs(date).utc().format('MMMM DD, YYYY'))
+}
+
 export function formatMiniDate(date: string | Date) {
 	return dayjs(date).format('MM/DD HH:mm')
 }
@@ -37,6 +43,10 @@ export function timeAgo(date: string | Date) {
 
 export function removeTime(date: string | Date) {
 	return dayjs(date).startOf('day').format('YYYY-MM-DD')
+}
+
+export function removeTimeUTC(date: string | Date) {
+	return dayjs(date).utc().startOf('day').format('YYYY-MM-DD')
 }
 
 export function getOnlyTime(date: string | Date) {
@@ -72,11 +82,15 @@ export function urlify(text: string) {
 }
 
 export function formatDateUTC(date: string | Date) {
-	return dayjs(date).format('YYYY-MM-DD HH:mm')
+	return dayjs(date).utc().format('YYYY-MM-DD HH:mm')
 }
 
 export function formateDateInput(date: string | Date) {
 	return dayjs(date).format('YYYY-MM-DD')
+}
+
+export function formateDateInputUTC(date: string | Date) {
+	return dayjs(date).utc().format('YYYY-MM-DD')
 }
 
 export function intToChar(int: number) {
@@ -114,6 +128,7 @@ export function formatUserType(userType: keyof typeof UserTypes) {
 	return ''
 }
 
-export function capitalizeFirstLetter(string: string) {
+export function capitalizeFirstLetter(string: string | Array<string>) {
+	if (string instanceof Array) return string.join(' ')
 	return string.charAt(0).toUpperCase() + string.slice(1)
 }

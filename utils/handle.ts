@@ -1,4 +1,8 @@
-export function handleErrorMessage(message: string, state = 500) {
+export function handleErrorMessage(
+	message: string | Array<string>,
+	state = 500,
+) {
+	if (message instanceof Array) return message.join(' ')
 	if (!message.startsWith('Fetch') && !message.startsWith('fetch'))
 		return message
 	if (state === 400) return 'Ups... Parece que algo se olvidó'

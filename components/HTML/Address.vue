@@ -62,7 +62,10 @@ function searchAddress(value: string) {
 		})
 		isLoading.value = false
 
-		addresses.value = data.results
+		const results = data.results.filter(
+			(result) => result.components.house_number && result.formatted,
+		)
+		addresses.value = results
 	}, 500)
 }
 

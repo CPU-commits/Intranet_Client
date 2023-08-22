@@ -138,7 +138,11 @@ async function assignStudent(idStudent: string) {
 		idParent.value,
 		idStudent,
 	)
-	if (student) students.value?.push(student)
+	if (student) {
+		students.value?.push(student)
+		if (parents.value && parentPosition.value !== null && students.value)
+			parents.value[parentPosition.value].students = students.value
+	}
 }
 </script>
 
@@ -204,6 +208,7 @@ async function assignStudent(idStudent: string) {
 								() => {
 									idParent = parent._id
 									modalStudents = true
+									parentPosition = i
 									getParentStudents(parent._id)
 								}
 							"
@@ -226,6 +231,11 @@ async function assignStudent(idStudent: string) {
 							class-item="fa-solid fa-ellipsis"
 						/>
 					</td>
+					<HTMLTDAside
+						v-if="!parent.students"
+						class-item="fa-solid fa-exclamation"
+						message="No tiene asignado estudiante(s)"
+					/>
 				</tr>
 			</HTMLTable>
 			<span v-if="parents && parents.length === 0">

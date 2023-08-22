@@ -1,5 +1,7 @@
 import type { User } from '../user/user.model'
 import type { Attached } from '../file/attached.model'
+import type { CalendarBlock } from '../calendar/block.model'
+import type { RegisteredCalendarBlock } from '../calendar/calendar.model'
 import type { GradeProgram } from './grade.model'
 
 export type WorkPatternItem = {
@@ -13,6 +15,7 @@ export enum WorkType {
 	'',
 	'files',
 	'form',
+	'in-person',
 }
 
 export type WorkBuild = {
@@ -20,15 +23,20 @@ export type WorkBuild = {
 	description?: string
 	is_qualified: string
 	grade?: string
-	type: keyof typeof WorkType
-	form: string
-	pattern: Array<WorkPatternItem>
+	type?: keyof typeof WorkType
+	form?: string
+	pattern?: Array<WorkPatternItem>
+	sessions?: Array<{
+		block: string
+		dates: Array<string>
+	}>
 	date_start: string
 	time_start: string
 	date_limit: string
 	time_limit: string
 	form_access: string
 	time_access: string
+	virtual: boolean
 }
 
 export type Work = {
@@ -39,6 +47,13 @@ export type Work = {
 	title: string
 	description?: string
 	is_qualified: string
+	sessions?: Array<{
+		block: string
+		dates: Array<string>
+	}>
+	blocks?: Array<
+		Omit<RegisteredCalendarBlock, 'block'> & { block: CalendarBlock }
+	>
 	is_revised: boolean
 	grade: GradeProgram
 	type: keyof typeof WorkType

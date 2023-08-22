@@ -1,14 +1,18 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { AnyUser } from '~~/models/user/user.model'
 
 export class UserService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getUserData() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				user: AnyUser
 			}> &
@@ -24,7 +28,7 @@ export class UserService {
 
 	async changeEmail(email: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: '/api/users/change_email',
 				body: { email },
@@ -36,7 +40,7 @@ export class UserService {
 				type: 'success',
 			})
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -46,7 +50,7 @@ export class UserService {
 
 	async recoverPassword(contact: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: '/api/users/recover_password',
 				body: {
@@ -60,7 +64,7 @@ export class UserService {
 				type: 'success',
 			})
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',

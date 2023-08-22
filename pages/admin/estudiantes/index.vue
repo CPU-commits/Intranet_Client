@@ -234,6 +234,11 @@ async function changeStatus() {
 							class-item="fa-solid fa-ellipsis"
 						/>
 					</td>
+					<HTMLTDAside
+						v-if="student.status && !student.registration"
+						class-item="fa-solid fa-exclamation"
+						message="Falta matricula"
+					/>
 				</tr>
 			</HTMLTable>
 			<span v-if="students && students.users.length === 0"

@@ -1,16 +1,20 @@
-import { ErrorFetch } from '@/common/fetchModule'
+import { ErrorFetch, Fetch } from '@/common/fetchModule'
 
 export class ErrorService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async uploadReport(
 		report: { description?: string; type: string },
 		error?: ErrorFetch,
 	) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				URL: '/api/reports',
 				method: 'post',
 				body: {
@@ -26,7 +30,7 @@ export class ErrorService {
 
 			return true
 		} catch (err) {
-			const error = this.nuxtApp.$fetchModule.handleError(err, false)
+			const error = this.fetch.handleError(err, false)
 			this.toastsStore.addToast({
 				message: error.message,
 				type: 'error',

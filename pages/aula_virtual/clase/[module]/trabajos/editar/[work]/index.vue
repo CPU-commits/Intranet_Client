@@ -6,14 +6,6 @@ import type { Work } from '~~/models/classroom/work.model'
 import type { UserFile } from '~~/models/file/file.model'
 import type { UserForm } from '~~/models/form/form.model'
 import { UserTypesKeys } from '~~/models/user/user.model'
-// Utils
-import { dateIsBefore } from '~~/utils/dates'
-import {
-	formatDate,
-	getOnlyTime,
-	removeTime,
-	secondsToHoursFormat,
-} from '~~/utils/format'
 
 type Link = {
 	title: string
@@ -81,6 +73,8 @@ onMounted(async () => {
 			$gradesService.getGradePrograms(idModule),
 			$formService.getForms(),
 		])
+		if (dataFetch[0].work.type === 'in-person') router.go(1)
+
 		work.value = dataFetch[0].work
 		gradePrograms.value = dataFetch[1]
 		forms.value = dataFetch[2]

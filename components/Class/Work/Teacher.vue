@@ -1,13 +1,11 @@
-<!-- eslint-disable camelcase -->
 <!-- eslint-disable vue/no-setup-props-destructure -->
-<!-- eslint-disable vue/prop-name-casing -->
 <script setup lang="ts">
 // Types
 import type { StudentAccess } from '~~/models/classroom/students_access.model'
 import { Work } from '~~/models/classroom/work.model'
 // Utils
 import { dateIsBefore } from '~~/utils/dates'
-import { formatDate } from '~~/utils/format'
+import { formatDate, removeTimeUTC } from '~~/utils/format'
 
 // Props
 const { students, work, idWork, totalPoints, formHasPoints } = defineProps<{
@@ -19,12 +17,22 @@ const { students, work, idWork, totalPoints, formHasPoints } = defineProps<{
 }>()
 // Nuxtapp
 const { $formService, $workService, $filesService } = useNuxtApp()
+// Emits
+const emit = defineEmits<{
+	(e: 'update'): void
+}>()
 // Router
 const router = useRouter()
 
 // Modal
 const modal = ref(false)
+const modalEval = ref(false)
 
+// Set evaluate session
+const evalSession = reactive({
+	session: '',
+	pregrade: '',
+})
 // Set evaluate files
 const studentE = ref<StudentAccess | null>(null)
 const index = ref(0)
@@ -70,6 +78,9 @@ if (work.type === 'form') {
 			work.is_revised ? 'Reevaluar' : 'Evaluar',
 		)
 	}
+} else if (work.type === 'in-person') {
+	if (dateIsBefore(work.date_limit, now))
+		header.push('Sesión', work.is_revised ? 'Reevaluar' : 'Evaluar')
 }
 
 async function grade() {
@@ -79,6 +90,11 @@ async function grade() {
 
 async function gradeFiles() {
 	const updated = await $formService.gradeFiles(idWork)
+	if (updated) router.push('../trabajos')
+}
+
+async function gradeInperson() {
+	const updated = await $formService.gradeInperson(idWork)
 	if (updated) router.push('../trabajos')
 }
 
@@ -117,6 +133,26 @@ async function uploadEvaluateFiles() {
 		// Set new values
 		students[index.value].files_uploaded.evaluate = data
 }
+
+async function uploadEvaluateInperson() {
+	const splitedRes = evalSession.session.split('*')
+	const data = {
+		in_date: removeTimeUTC(splitedRes[0]),
+		block: splitedRes[1],
+		pregrade: Number(evalSession.pregrade),
+	}
+
+	const uploaded = await $workService.uploadEvaluateInperson(
+		data,
+		studentE.value?.user._id ?? '',
+		idWork,
+		work.is_revised,
+	)
+	if (uploaded) {
+		emit('update')
+		modalEval.value = false
+	}
+}
 </script>
 
 <template>
@@ -129,11 +165,14 @@ async function uploadEvaluateFiles() {
 					{{ student.user.second_lastname }}
 				</td>
 				<td>{{ student.user.rut }}</td>
-				<td>
+				<td v-if="work.type !== 'in-person'">
 					{{
-						work.type === 'form'
-							? getStudentStatusForm(student)
-							: getStudentStatusFiles(student)
+						(() => {
+							if (work.type === 'form')
+								return getStudentStatusForm(student)
+							else if (work.type === 'files')
+								return getStudentStatusFiles(student)
+						})()
 					}}
 				</td>
 				<template v-if="dateIsBefore(work.date_limit, now)">
@@ -268,6 +307,41 @@ async function uploadEvaluateFiles() {
 						</td>
 						<td v-else><i class="fa-solid fa-ban" /></td>
 					</template>
+					<template
+						v-if="
+							work.type === 'in-person' &&
+							dateIsBefore(work.date_limit, now)
+						"
+					>
+						<td v-if="student.session">
+							{{ student.session.block.block.hour_start }} -
+							{{ student.session.block.block.hour_finish }}
+							{{ formatDateLLUTC(student.session.in_date) }}
+						</td>
+						<td v-else>Sin evaluar</td>
+						<td>
+							<HTMLButtonIcon
+								:click="
+									() => {
+										modalEval = true
+										studentE = student
+										index = i
+										if (!student.session) {
+											evalSession.session = ''
+											evalSession.pregrade = ''
+										} else {
+											evalSession.session = `${removeTimeUTC(
+												student.session.in_date,
+											)}*${student.session.block._id}`
+											evalSession.pregrade =
+												student.session.pregrade.toString()
+										}
+									}
+								"
+								class-item="fa-solid fa-pencil"
+							/>
+						</td>
+					</template>
 				</template>
 			</tr>
 		</HTMLTable>
@@ -280,7 +354,9 @@ async function uploadEvaluateFiles() {
 		<footer
 			v-else-if="
 				dateIsBefore(work.date_limit, now) &&
-				(formHasPoints || work.type === 'files')
+				(formHasPoints ||
+					work.type === 'files' ||
+					work.type === 'in-person')
 			"
 			class="Button"
 		>
@@ -288,11 +364,9 @@ async function uploadEvaluateFiles() {
 			<HTMLButton
 				:click="
 					() => {
-						if (work.type === 'files') {
-							gradeFiles()
-						} else {
-							grade()
-						}
+						if (work.type === 'files') gradeFiles()
+						else if (work.type === 'in-person') gradeInperson()
+						else grade()
 					}
 				"
 				type="button"
@@ -331,6 +405,41 @@ async function uploadEvaluateFiles() {
 					<span v-if="!work.is_revised">Evaluar alumno</span>
 					<span v-else>Reevaluar alumno</span>
 				</HTMLButton>
+			</HTMLForm>
+		</Modal>
+
+		<Modal v-model:opened="modalEval">
+			<template #title>
+				<h2>
+					Evaluaci&oacute;n {{ studentE?.user.name }}
+					{{ studentE?.user.first_lastname }}
+				</h2>
+			</template>
+			<HTMLForm :form="uploadEvaluateInperson">
+				<label for="session">Sesi&oacute;n</label>
+				<HTMLSelect id="session" v-model:value="evalSession.session">
+					<option value="">Seleccione una sesi&oacute;n</option>
+					<!-- eslint-disable-next-line vue/no-v-for-template-key -->
+					<template v-for="(session, i) in work.sessions" :key="i">
+						<option
+							v-for="(date, j) in session.dates"
+							:key="j"
+							:value="`${removeTimeUTC(date)}*${session.block}`"
+						>
+							{{ work.blocks?.at(i)?.block.hour_start }} -
+							{{ work.blocks?.at(i)?.block.hour_finish }}
+							{{ formatDateLLUTC(date) }}
+						</option>
+					</template>
+				</HTMLSelect>
+				<label for="pregrade">Calificaci&oacute;n</label>
+				<HTMLInput
+					id="pregrade"
+					v-model:value="evalSession.pregrade"
+					type="number"
+				/>
+
+				<HTMLButton type="submit">Subir evaluaci&oacute;n</HTMLButton>
 			</HTMLForm>
 		</Modal>
 	</section>

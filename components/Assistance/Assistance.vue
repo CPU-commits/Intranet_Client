@@ -14,9 +14,11 @@ const props = withDefaults(
 			exists?: boolean
 		}>
 		students: Array<User>
+		idBlock?: string
 		upload?: boolean
 		auditor?: User | null
 		ignore?: boolean
+		isSigned?: boolean
 		idSection?: string
 		fullCourseName?: string
 		editable?: boolean
@@ -26,9 +28,11 @@ const props = withDefaults(
 		upload: true,
 		auditor: null,
 		ignore: false,
+		isSigned: false,
 		idSection: '',
 		fullCourseName: '',
 		editable: false,
+		idBlock: '',
 		funcEditable() {},
 	},
 )
@@ -53,37 +57,44 @@ const emits = defineEmits<{
 }>()
 // Form
 watch(assistance, async (newAssistance, oldAssistance) => {
-	try {
-		if (newAssistance && oldAssistance && !ignore.value && props.upload) {
-			status.value = 'loading'
-			await $assistanceService.uploadAssistance(
-				newAssistance,
-				props.idSection,
-			)
-			// Set auditor
-			status.value = 'sync'
+	if (!props.isSigned)
+		try {
+			if (
+				newAssistance &&
+				oldAssistance &&
+				!ignore.value &&
+				props.upload
+			) {
+				status.value = 'loading'
+				await $assistanceService.uploadAssistance(
+					newAssistance,
+					props.idSection,
+					props.idBlock,
+				)
+				// Set auditor
+				status.value = 'sync'
 
-			const authStore = useAuthStore()
-			auditor.value = {
-				name: authStore.getName,
-				user_type: authStore.getUserType,
-			} as User
+				const authStore = useAuthStore()
+				auditor.value = {
+					name: authStore.getName,
+					user_type: authStore.getUserType,
+				} as User
 
-			emits('update:auditor', auditor.value)
+				emits('update:auditor', auditor.value)
+			}
+			ignore.value = false
+		} catch (err) {
+			status.value = 'error'
+
+			toastsStore.addToast({
+				message: `No se ha podido subir la asistencia del curso ${props.fullCourseName}`,
+				type: 'error',
+			})
+			ignore.value = true
+			assistance.value = oldAssistance
+		} finally {
+			emits('update:assistance', assistance.value)
 		}
-		ignore.value = false
-	} catch (err) {
-		status.value = 'error'
-
-		toastsStore.addToast({
-			message: `No se ha podido subir la asistencia del curso ${props.fullCourseName}`,
-			type: 'error',
-		})
-		ignore.value = true
-		assistance.value = oldAssistance
-	} finally {
-		emits('update:assistance', assistance.value)
-	}
 })
 
 const isAllChecked = computed(() => {
@@ -112,6 +123,7 @@ function update() {
 						value=""
 						:checked="isAllChecked"
 						type="checkbox"
+						:disabled="isSigned"
 						@click="toggleMark"
 					/>
 				</td>
@@ -129,6 +141,7 @@ function update() {
 						v-model:checked="assistance[i].assist"
 						value=""
 						type="checkbox"
+						:disabled="isSigned"
 						@change="update"
 					/>
 				</td>
@@ -159,8 +172,10 @@ function update() {
 		<footer>
 			<br />
 			<small v-if="status === 'sync'">
-				<i class="fa-solid fa-circle-check"></i>
+				<i v-if="isSigned" class="fa-solid fa-check-double"></i>
+				<i v-else-if="assistance" class="fa-solid fa-check"></i>
 				Informaci&oacute;n sincronizada
+				<span v-if="isSigned">y firmada</span>
 			</small>
 			<small v-else-if="status === 'loading'">
 				<i class="fa-solid fa-spinner"></i>

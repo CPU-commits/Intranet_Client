@@ -23,6 +23,9 @@ defineProps({
 	checked: {
 		type: Boolean,
 	},
+	disabled: {
+		type: Boolean,
+	},
 })
 
 defineEmits<{
@@ -39,6 +42,7 @@ defineEmits<{
 		:type="type"
 		:checked="checked"
 		:placeholder="placeholder"
+		:disabled="disabled"
 		@keyup="keyup ?? null"
 		@input="
 			$emit('update:value', ($event.target as HTMLInputElement).value)

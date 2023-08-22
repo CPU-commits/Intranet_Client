@@ -55,7 +55,11 @@ const studentsModal = ref(false)
 							v-if="work.type === 'form'"
 							class="fa-solid fa-clipboard"
 						/>
-						<i v-else class="fa-solid fa-file-arrow-up"></i>
+						<i
+							v-else-if="work.type === 'files'"
+							class="fa-solid fa-file-arrow-up"
+						></i>
+						<i v-else class="fa-solid fa-school-flag"></i>
 						{{ work.title }}
 					</h5>
 					<small>

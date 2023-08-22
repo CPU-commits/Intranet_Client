@@ -50,8 +50,9 @@ onMounted(async () => {
 
 		if (dataFetch[0]) {
 			student.value = dataFetch[0]
-			course.value = dataFetch[0].course._id
+			course.value = dataFetch[0].course?._id
 		}
+
 		sections.value = dataFetch[1]
 		registrationTypes.value = dataFetch[2]
 	} catch (err) {

@@ -77,7 +77,12 @@ function getPointsEvaluated(pattern: string) {
 </script>
 
 <template>
-	<section>
+	<section
+		v-if="
+			dateIsBefore(work.date_limit, new Date()) ||
+			work.type !== 'in-person'
+		"
+	>
 		<template v-if="work.type === 'form'">
 			<span v-if="work.form_access === 'wtime'">
 				Tiempo de acceso una vez abierto:
@@ -95,7 +100,7 @@ function getPointsEvaluated(pattern: string) {
 				</HTMLAButton>
 			</div>
 		</template>
-		<template v-else>
+		<template v-else-if="work.type === 'files'">
 			<template v-if="!work.is_revised">
 				<h3>Subir archivos</h3>
 				<HTMLInputFiles
@@ -193,8 +198,9 @@ function getPointsEvaluated(pattern: string) {
 				:click="() => (modal = true)"
 				title="Rubrica de evaluación"
 				class-item="fa-solid fa-scroll"
-			/>
-			Pauta
+			>
+				Pauta
+			</HTMLButtonIcon>
 		</div>
 
 		<!-- Modals -->
@@ -283,8 +289,6 @@ h4 {
 
 .Pattern {
 	display: flex;
-	width: 100%;
-	justify-content: flex-start;
 	gap: 5px;
 }
 

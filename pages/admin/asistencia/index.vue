@@ -2,7 +2,6 @@
 // Types
 import type { Ref } from 'vue'
 import { Section } from '~/models/course/course.model'
-import { FetchGet } from '~/models/fetch/defaults.model'
 import type { ErrorFetch } from '~~/common/fetchModule'
 import { UserTypesKeys } from '~~/models/user/user.model'
 // Meta
@@ -16,25 +15,19 @@ definePageMeta({
 	roles: [UserTypesKeys.DIRECTIVE, UserTypesKeys.DIRECTOR],
 })
 // Nuxt App
-const { $fetchModule, $assistanceService } = useNuxtApp()
+const { $fetchModule, $courseService } = useNuxtApp()
 
 // Data
 const error: Ref<ErrorFetch | null> = ref(null)
-const sections = ref<Array<Section & { exists_assistance: boolean }> | null>(
-	null,
-)
+const sections = ref<Array<Section> | null>(null)
 
-onMounted(() => getSections({ total: true }))
-// Total
-const total = ref(0)
-provide('total', total)
+onMounted(() => getSections())
 
-async function getSections(params?: FetchGet) {
+async function getSections() {
 	try {
-		const dataFetch = await $assistanceService.getSections(params)
+		const dataFetch = await $courseService.getSections()
 
-		if (params?.total) total.value = dataFetch.total
-		sections.value = dataFetch.sections
+		sections.value = dataFetch
 	} catch (err) {
 		const _err = $fetchModule.handleError(err)
 		error.value = _err
@@ -53,26 +46,15 @@ async function getSections(params?: FetchGet) {
 		<AdminPanel :nav="false">
 			<h2>Asistencia</h2>
 
-			<HTMLTable
-				:header="['Curso', 'Asistencias por día']"
-				:navigate="{
-					activate: true,
-					max: 20,
-					async fn(page) {
-						await getSections({
-							skip: page * 20,
-						})
-					},
-				}"
-			>
-				<tr v-for="section in sections" :key="section._id">
+			<HTMLTable :header="['Curso', 'Asistencias']">
+				<tr v-for="(section, i) in sections" :key="i">
 					<td>
 						{{ section.course.course }}
 						{{ section.section }}
 					</td>
 					<td>
 						<HTMLAIcon
-							class-item="fa-solid fa-list-check"
+							class-item="fa-solid fa-eye"
 							:href="`/admin/asistencia/${section._id}`"
 						/>
 					</td>

@@ -1,15 +1,19 @@
-import { DefaultResponse } from '~~/common/fetchModule'
+import { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { Annoucement } from '~~/models/home/annoucement.model'
 
 export class HomeService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getAnnoucements(total = false, skip = 0, limit = 20) {
 		const query = `?total=${total}&skip=${skip}&limit=${limit}`
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				annoucements: Array<Annoucement> | null
 				total: number
@@ -26,7 +30,7 @@ export class HomeService {
 
 	async uploadAnnoucement(annoucement: string, files: Array<string>) {
 		try {
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					_id: string
 				}> &
@@ -49,7 +53,7 @@ export class HomeService {
 
 			return dataFetch.body._id
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -59,7 +63,7 @@ export class HomeService {
 
 	async deleteAnnoucement(idAnnoucement: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/annoucements/delete_annoucement/${idAnnoucement}`,
 				token: this.authStore.getToken,
@@ -71,7 +75,7 @@ export class HomeService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

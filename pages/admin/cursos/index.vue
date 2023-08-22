@@ -15,7 +15,7 @@ definePageMeta({
 	roles: [UserTypesKeys.DIRECTOR, UserTypesKeys.DIRECTIVE],
 })
 // Nuxtapp
-const { $fetchModule, $courseService } = useNuxtApp()
+const { $fetchModule, $courseService, $collegeService } = useNuxtApp()
 
 // Modal
 const modalCycle = ref(false)
@@ -30,6 +30,7 @@ const toggleEdit = (i: number) => {
 // Forms
 const cycle = ref('')
 const courseForm = {
+	key: '',
 	course: '',
 	cycle: '',
 	level: 0,
@@ -44,6 +45,12 @@ const courseEdit = ref<Course | null>(null)
 // Data
 const courses = ref<Array<Course> | null>(null)
 const cycles = ref<Array<Cycle> | null>(null)
+const grades = ref<Array<{
+	key: string
+	level: string
+	specialty: string | null
+	value: string
+}> | null>(null)
 
 const error = ref<ErrorFetch | null>(null)
 onMounted(async () => {
@@ -51,9 +58,11 @@ onMounted(async () => {
 		const dataFetch = await Promise.all([
 			$courseService.getCourses(),
 			$courseService.getCycles(),
+			$collegeService.getRegisteredGrades(),
 		])
 		courses.value = dataFetch[0]
 		cycles.value = dataFetch[1]
+		grades.value = dataFetch[2]
 		// Dangers init
 		recalculateDangers()
 	} catch (err) {
@@ -281,7 +290,24 @@ async function deleteCourse(id: string) {
 			</template>
 			<HTMLForm :form="newCourse">
 				<label for="course">Curso</label>
-				<HTMLInput id="course" v-model:value="courseForm.course" />
+				<HTMLSelect
+					id="course"
+					value=""
+					@update:value="(value: string) => {
+						courseForm.key = value
+						courseForm.course = value.split(':').at(1) ?? ''
+					}"
+				>
+					<option value="">Selecciona un curso</option>
+					<option
+						v-for="(grade, i) in grades"
+						:key="i"
+						:value="grade.key"
+					>
+						{{ grade.value }}
+						({{ grade.level.split(':').at(1) }})
+					</option>
+				</HTMLSelect>
 				<label for="cycle">Ciclo</label>
 				<HTMLSelect id="cycle" v-model:value="courseForm.cycle">
 					<option value="">Seleccione un ciclo</option>

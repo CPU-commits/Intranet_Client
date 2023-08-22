@@ -80,6 +80,9 @@ export default defineNuxtConfig({
 		},
 		plugins: [eslint()],
 	},
+	devtools: {
+		enabled: true,
+	},
 	app: {
 		head: {
 			title: 'Intranet',

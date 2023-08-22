@@ -62,14 +62,21 @@ function deleteWork(index: number) {
 			</Head>
 			<!-- Body -->
 			<h2>Trabajos</h2>
-			<NuxtLink
-				v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"
-				to="trabajos/nuevo_trabajo"
-			>
-				<i class="fa-solid fa-plus" /> Nuevo trabajo
-			</NuxtLink>
+			<nav class="Works__nav">
+				<NuxtLink
+					v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"
+					to="trabajos/nuevo_trabajo"
+				>
+					<i class="fa-solid fa-plus" /> Nuevo trabajo virtual
+				</NuxtLink>
+				<NuxtLink
+					v-if="auth.userTypeIs(UserTypesKeys.TEACHER)"
+					to="trabajos/nuevo_presencial"
+				>
+					<i class="fa-solid fa-plus" /> Nuevo trabajo presencial
+				</NuxtLink>
+			</nav>
 
-			<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 			<!-- eslint-disable vue/attributes-order -->
 			<ClassWork
 				v-if="works"
@@ -103,6 +110,13 @@ function deleteWork(index: number) {
 	margin: 20px;
 	padding: 15px;
 	border-radius: 10px;
+}
+
+.Works__nav {
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+	padding: 10px;
 }
 
 .NoWorks {

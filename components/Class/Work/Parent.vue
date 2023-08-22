@@ -51,6 +51,9 @@ if (work.type === 'form') {
 			'Puntaje',
 		)
 	}
+} else if (work.type === 'in-person') {
+	if (dateIsBefore(work.date_limit, now) && work.is_revised)
+		header.push('Calificación')
 }
 
 function getStudentStatusFiles(student: StudentAccess) {
@@ -68,7 +71,12 @@ async function downloadFiles(idStudent: string, index: number) {
 </script>
 
 <template>
-	<section>
+	<section
+		v-if="
+			dateIsBefore(work.date_limit, new Date()) ||
+			work.type !== 'in-person'
+		"
+	>
 		<HTMLTable :header="header">
 			<tr v-for="(student, i) in students" :key="i">
 				<td>
@@ -77,7 +85,7 @@ async function downloadFiles(idStudent: string, index: number) {
 					{{ student.user.second_lastname }}
 				</td>
 				<td>{{ student.user.rut }}</td>
-				<td>
+				<td v-if="work.type !== 'in-person'">
 					{{
 						work.type === 'form'
 							? getStudentStatusForm(student)
@@ -192,6 +200,9 @@ async function downloadFiles(idStudent: string, index: number) {
 							}}
 							/{{ totalPoints }}
 						</td>
+					</template>
+					<template v-else-if="work.type === 'in-person'">
+						<td>{{ student.session.pregrade }}</td>
 					</template>
 				</template>
 			</tr>

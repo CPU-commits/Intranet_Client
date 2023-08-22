@@ -23,6 +23,7 @@ const toastsStore = useToastsStore()
 // Router
 const route = useRoute()
 
+// const idSemester = route.params.semester as string
 const idSection = route.params.section as string
 // Modal
 const modalAdd = ref(false)
@@ -232,7 +233,7 @@ async function uploadAssistance() {
 			<br />
 			<HTMLTable
 				v-if="assistances"
-				:header="['Fecha', 'Ver asistencia', 'Auditor']"
+				:header="['Fecha', 'Bloque', 'Ver asistencia', 'Auditor']"
 				:navigate="{
 					activate: true,
 					max: 10,
@@ -248,6 +249,11 @@ async function uploadAssistance() {
 					:key="assistance._id"
 				>
 					<td>{{ formatDateLL(assistance.date) }}</td>
+					<td>
+						({{ assistance.block.number }})
+						{{ assistance.block.hour_start }} -
+						{{ assistance.block.hour_finish }}
+					</td>
 					<td>
 						<HTMLButtonIcon
 							class-item="fa-solid fa-eye"
@@ -294,6 +300,7 @@ async function uploadAssistance() {
 					:id-section="idSection"
 					:full-course-name="fullCourseName"
 					:auditor="assistances[indexAss].auditor"
+					:is-signed="assistances[indexAss].isSigned"
 					@update:assistance="updateAssistance"
 					@update:auditor="
 						(auditor) => ((assistances as Array<AssistanceType>)[indexAss].auditor = auditor)
@@ -320,6 +327,7 @@ async function uploadAssistance() {
 						:students="students"
 						:upload="false"
 						:editable="true"
+						:is-signed="true"
 						:func-editable="removeStudent"
 					/>
 					<footer class="Assitance__footer">

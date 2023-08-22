@@ -1,38 +1,43 @@
+import { Service } from './service'
 import { DefaultResponse } from '~~/common/fetchModule'
 import { BodyFetch } from '~~/models/body.model'
 import { Specialty } from '~~/models/subject/specialty.model'
 import { Subject } from '~~/models/subject/subject.model'
 
-export class SubjectService {
-	private readonly authStore = useAuthStore()
-	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
-
+export class SubjectService extends Service {
 	async getSubjects() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch<
 			BodyFetch<{
 				subjects: Array<Subject>
-			}> &
-				DefaultResponse
+			}>
 		>({
 			method: 'get',
 			URL: '/api/subjects/get_subjects',
-			token: this.authStore.getToken,
 			spinnerStatus: true,
 		})
 		return dataFetch.body.subjects
 	}
 
+	async getCourseSubjects(idCourse: string) {
+		const dataFetch = await this.fetch<
+			BodyFetch<{ subjects: Array<Subject> }>
+		>({
+			method: 'get',
+			URL: `/api/subjects/course/${idCourse}`,
+			spinnerStatus: true,
+		})
+
+		return dataFetch.body.subjects
+	}
+
 	async getSpecialties() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch<
 			BodyFetch<{
 				specialties: Array<Specialty>
-			}> &
-				DefaultResponse
+			}>
 		>({
 			URL: '/api/subjects/get_specialties',
 			method: 'get',
-			token: this.authStore.getToken,
 			spinnerStatus: true,
 		})
 		return dataFetch.body.specialties
@@ -45,7 +50,7 @@ export class SubjectService {
 				throw new Error(
 					'Debe existir una especialidad de máx. 100 cárac.',
 				)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch<
 				BodyFetch<{
 					specialty: Specialty
 				}> &
@@ -55,41 +60,31 @@ export class SubjectService {
 				URL: '/api/subjects/new_specialty',
 				body: { specialty },
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha agregado la especialidad exitosamente',
 				type: 'success',
 			})
 			return dataFetch.body.specialty
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 		}
 	}
 
 	async deleteSpecialty(idSpecialty: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'delete',
 				URL: `/api/subjects/delete_specialty/${idSpecialty}`,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha eliminado la especialidad exitosamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
@@ -99,7 +94,7 @@ export class SubjectService {
 		try {
 			if (subject.subject === '' || subject.subject.length > 100)
 				throw new Error('Debe existir una materia de máx. 100 cárac.')
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch<
 				BodyFetch<{
 					subject: Subject
 				}> &
@@ -115,42 +110,32 @@ export class SubjectService {
 							: subject.specialty,
 				},
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha agregado la especialidad exitosamente',
 				type: 'success',
 			})
 
 			return dataFetch.body.subject
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 		}
 	}
 
 	async deleteSubject(idSubject: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'delete',
 				URL: `/api/subjects/delete_subject/${idSubject}`,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha eliminado la materia exitosamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
@@ -162,7 +147,7 @@ export class SubjectService {
 				throw new Error(
 					'Debe seleccionar una materia que anclar al curso',
 				)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch<
 				BodyFetch<{
 					subject: Subject
 				}> &
@@ -175,32 +160,26 @@ export class SubjectService {
 					subject: subjectAnchor,
 				},
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha anclado la materia al curso exitosamente',
 				type: 'success',
 			})
 
 			return dataFetch.body.subject
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 		}
 	}
 
 	async deleteSubjectCourse(idSubject: string, idCourse: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'delete',
 				URL: `/api/subjects/delete_subject_course/${idSubject}/${idCourse}`,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message:
 					'Se ha eliminado el anclaje de la materia al curso exitosamente',
 				type: 'success',
@@ -208,11 +187,7 @@ export class SubjectService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}

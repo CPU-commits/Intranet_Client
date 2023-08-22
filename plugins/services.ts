@@ -24,37 +24,39 @@ import { ParentService } from '~~/services/parent.service'
 import { ErrorService } from '~/services/error.service'
 import { DegreesOrCertificateService } from '~/services/degrees.service'
 import { AssistanceService } from '~/services/assistance.service'
+import { CalendarService } from '~/services/calendar.service'
 
 export default defineNuxtPlugin(() => {
-	const filesService = new FilesService()
 	const fetchModule = new Fetch()
+	const filesService = new FilesService(fetchModule)
 	return {
 		provide: {
 			fetchModule,
-			semesterService: new SemestersService(),
-			moduleService: new ModulesService(),
-			gradesService: new GradesService(filesService),
-			libraryService: new LibraryService(),
-			directivesService: new DirectivesService(),
-			collegeService: new CollegeService(),
-			courseService: new CourseService(),
-			studentsService: new StudentsService(),
-			historyService: new HistoryService(),
-			subjectService: new SubjectService(),
-			teacherService: new TeacherService(),
-			newsService: new NewsService(),
-			homeService: new HomeService(),
-			booklifeService: new BooklifeService(),
-			userService: new UserService(),
-			publicationsService: new PublicationsService(),
-			workService: new WorkService(filesService),
-			formService: new FormService(),
-			notificationService: new NotificationsService(),
+			semesterService: new SemestersService(fetchModule),
+			moduleService: new ModulesService(fetchModule),
+			gradesService: new GradesService(fetchModule, filesService),
+			libraryService: new LibraryService(fetchModule),
+			directivesService: new DirectivesService(fetchModule),
+			collegeService: new CollegeService(fetchModule),
+			courseService: new CourseService(fetchModule),
+			studentsService: new StudentsService(fetchModule),
+			historyService: new HistoryService(fetchModule),
+			subjectService: new SubjectService(fetchModule),
+			teacherService: new TeacherService(fetchModule),
+			newsService: new NewsService(fetchModule),
+			homeService: new HomeService(fetchModule),
+			booklifeService: new BooklifeService(fetchModule),
+			userService: new UserService(fetchModule),
+			publicationsService: new PublicationsService(fetchModule),
+			workService: new WorkService(fetchModule, filesService),
+			formService: new FormService(fetchModule),
+			notificationService: new NotificationsService(fetchModule),
 			filesService,
-			reportService: new ErrorService(),
-			parentService: new ParentService(),
-			degreesService: new DegreesOrCertificateService(),
+			reportService: new ErrorService(fetchModule),
+			parentService: new ParentService(fetchModule),
+			degreesService: new DegreesOrCertificateService(fetchModule),
 			assistanceService: new AssistanceService(fetchModule),
+			calendarService: new CalendarService(fetchModule),
 		},
 	}
 })

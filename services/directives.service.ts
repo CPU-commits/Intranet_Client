@@ -1,5 +1,5 @@
 // Types
-import type { DefaultResponse } from '~~/common/fetchModule'
+import type { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
 import type { Directives } from '~~/models/user/directive.model'
 import { User } from '~~/models/user/user.model'
@@ -8,14 +8,18 @@ import validator from '~~/utils/validator'
 export class DirectivesService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
 	private readonly LIMIT = 30
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getDirectives(total = false, skip?: number, search?: string) {
 		let URL = `/api/directive/get_directives?total=${total}&limit=${this.LIMIT}`
 		if (search) URL += `&search=${search}`
 		if (skip && skip >= 0) URL += `&skip=${skip}`
-		const data = await this.nuxtApp.$fetchModule.fetchData<
+		const data = await this.fetch.fetchData<
 			BodyFetch<Directives> & DefaultResponse
 		>({
 			URL,
@@ -34,7 +38,7 @@ export class DirectivesService {
 			if (why.length > 535 || why === '')
 				throw new Error('Debe existir un motivo de máx 535 cárac.')
 
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/directive/change_status/${idDirective}`,
 				body: { why },
@@ -49,7 +53,7 @@ export class DirectivesService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -87,7 +91,7 @@ export class DirectivesService {
 	async uploadDirective(directive: User) {
 		try {
 			this.validatorsDirective(directive)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					directive: User
 				}> &
@@ -106,7 +110,7 @@ export class DirectivesService {
 
 			return dataFetch.body.directive
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -118,7 +122,7 @@ export class DirectivesService {
 		try {
 			for (const directive of directives)
 				this.validatorsDirective(directive)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: '/api/directive/new_directives',
 				body: directives,
@@ -131,7 +135,7 @@ export class DirectivesService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -143,7 +147,7 @@ export class DirectivesService {
 	async editDirective(directive: User, idDirective: string) {
 		try {
 			this.validatorsDirective(directive)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/directive/edit_directive/${idDirective}`,
 				spinnerStatus: true,
@@ -156,7 +160,7 @@ export class DirectivesService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',

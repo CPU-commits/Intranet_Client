@@ -1,4 +1,4 @@
-import type { DefaultResponse } from '~~/common/fetchModule'
+import type { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
 import type { Course, Section } from '~~/models/course/course.model'
 import type { Cycle } from '~~/models/course/cycle.model'
@@ -8,15 +8,20 @@ type CourseForm = {
 	course: string
 	cycle: string
 	level: number
+	key: string
 }
 
 export class CourseService {
 	private readonly authStore = useAuthStore()
 	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
+
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
 
 	async getCourse(idCourse: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				course: Course
 			}> &
@@ -31,7 +36,7 @@ export class CourseService {
 	}
 
 	async getCourses() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				courses: Array<Course>
 			}> &
@@ -46,7 +51,7 @@ export class CourseService {
 	}
 
 	async getCycles() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				cycles: Array<Cycle>
 			}> &
@@ -61,7 +66,7 @@ export class CourseService {
 	}
 
 	async getSection(idSection: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{ section: Section }>
 		>({
 			method: 'get',
@@ -74,7 +79,7 @@ export class CourseService {
 	}
 
 	async getSections() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				sections: Array<Section>
 			}> &
@@ -89,7 +94,7 @@ export class CourseService {
 	}
 
 	async getVariableSections() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				sections: Array<Section>
 			}> &
@@ -104,7 +109,7 @@ export class CourseService {
 	}
 
 	async getSectionsNextLevel(idCourse: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				course: Course
 				sections: Array<Section>
@@ -120,7 +125,7 @@ export class CourseService {
 	}
 
 	async getSectionsCourse(idCourse: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				sections: Array<Section>
 			}> &
@@ -135,7 +140,7 @@ export class CourseService {
 	}
 
 	async getStudentsFromCourse(idCourse: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<Array<Student>> & DefaultResponse
 		>({
 			method: 'get',
@@ -152,7 +157,7 @@ export class CourseService {
 		try {
 			if (cycle === '' || cycle.length > 100)
 				throw new Error('Debe existir un ciclo con máx. 100 cárac.')
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					cycle: Cycle
 				}> &
@@ -170,7 +175,7 @@ export class CourseService {
 			})
 			return dataFetch.body.cycle
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -180,7 +185,7 @@ export class CourseService {
 
 	async deleteCycle(cycle: string, idCycle: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/course/delete_cycle/${idCycle}`,
 				body: { cycle },
@@ -193,7 +198,7 @@ export class CourseService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -214,7 +219,7 @@ export class CourseService {
 	async newCourse(course: CourseForm) {
 		try {
 			this.validateCourse(course)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					course: Course
 				}> &
@@ -232,7 +237,7 @@ export class CourseService {
 			})
 			return dataFetch.body.course
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -243,7 +248,7 @@ export class CourseService {
 	async updateCourse(course: Course, idCourse: string) {
 		try {
 			this.validateCourse(course)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					course: Course
 				}> &
@@ -265,7 +270,7 @@ export class CourseService {
 			})
 			return dataFetch.body.course
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -275,7 +280,7 @@ export class CourseService {
 
 	async deleteCourse(idCourse: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/course/delete_course/${idCourse}`,
 				token: this.authStore.getToken,
@@ -287,7 +292,7 @@ export class CourseService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -301,6 +306,7 @@ export class CourseService {
 		section: string,
 		files: FileList | null,
 		idCourse: string,
+		tec?: string,
 	) {
 		try {
 			if (section === '' || section.length > 100)
@@ -311,7 +317,9 @@ export class CourseService {
 			const form = new FormData()
 			form.append('section', section)
 			form.append('image', files[0])
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			if (tec) form.append('tec', tec)
+
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					section: Section
 				}> &
@@ -330,7 +338,7 @@ export class CourseService {
 			})
 			return dataFetch.body.section
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -346,7 +354,7 @@ export class CourseService {
 			} else {
 				url += `/remove_teacher_section/${idSection}`
 			}
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: url,
 				token: this.authStore.getToken,
@@ -354,7 +362,7 @@ export class CourseService {
 
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -366,7 +374,7 @@ export class CourseService {
 
 	async deleteSection(id: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/course/delete_section/${id}`,
 				spinnerStatus: true,
@@ -378,7 +386,7 @@ export class CourseService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -393,7 +401,7 @@ export class CourseService {
 				throw new Error('Debe seleccionar una imágen')
 			const form = new FormData()
 			form.append('image', files[0])
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<string> & DefaultResponse
 			>({
 				method: 'put',
@@ -404,7 +412,7 @@ export class CourseService {
 			})
 			return dataFetch.body
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -416,7 +424,7 @@ export class CourseService {
 		try {
 			let URL = `/api/course/select_next_section/${idSection}`
 			if (idNextSection) URL += `?idNextSection=${idNextSection}`
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL,
 				spinnerStatus: true,
@@ -424,7 +432,7 @@ export class CourseService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastsStore.addToast({
 				message: _err.message,
 				type: 'error',

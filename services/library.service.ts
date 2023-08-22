@@ -1,7 +1,7 @@
 // Modules
 import { serialize } from 'object-to-formdata'
 // Types
-import type { DefaultResponse } from '~~/common/fetchModule'
+import type { DefaultResponse, Fetch } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
 import { Author } from '~~/models/library/author.model'
 import type { Book } from '~~/models/library/book.model'
@@ -24,11 +24,15 @@ export type BookFilters = {
 export class LibraryService {
 	private readonly authStore = useAuthStore()
 	private readonly toastStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+	private readonly fetch: Fetch
 	private readonly LIMIT = 20
 
+	constructor(fetch: Fetch) {
+		this.fetch = fetch
+	}
+
 	async getTags() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				tags: Array<Tag>
 			}> &
@@ -43,7 +47,7 @@ export class LibraryService {
 	}
 
 	async getLibrarians() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				librarians: {
 					users: Array<User>
@@ -61,7 +65,7 @@ export class LibraryService {
 	}
 
 	async getEditorials() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				editorials: Array<Editorial>
 			}> &
@@ -91,7 +95,7 @@ export class LibraryService {
 		if (filters?.category) URL += `&category=${filters.category}`
 		if (filters?.editorial) URL += `&editorial=${filters.editorial}`
 		if (filters?.saved) URL += `&saved=true`
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				books: { total: number; books: Array<Book> }
 			}> &
@@ -109,7 +113,7 @@ export class LibraryService {
 	}
 
 	async getBook(idBook: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				book: Book
 			}> &
@@ -123,7 +127,7 @@ export class LibraryService {
 	}
 
 	async getAuthors() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				authors: Array<Author>
 			}> &
@@ -137,7 +141,7 @@ export class LibraryService {
 	}
 
 	async getAuthor(idAuthor: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+		const dataFetch = await this.fetch.fetchData<
 			BodyFetch<{
 				author: Author
 			}> &
@@ -180,7 +184,7 @@ export class LibraryService {
 	async uploadLibrarian(librarian: User) {
 		try {
 			this.validatorsLibrarian(librarian)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					librarian: User
 				}> &
@@ -199,7 +203,7 @@ export class LibraryService {
 			})
 			return dataFetch.body.librarian
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -210,7 +214,7 @@ export class LibraryService {
 	async editLibrarian(librarian: User, idLibrarian: string) {
 		try {
 			this.validatorsLibrarian(librarian)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/library/edit_librarian/${idLibrarian}`,
 				body: librarian,
@@ -224,7 +228,7 @@ export class LibraryService {
 			})
 			return librarian
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -299,7 +303,7 @@ export class LibraryService {
 			if (filesBook?.length === 0)
 				throw new Error('Debe seleccionar un PDF Con el libro')
 			this.validateBook(book)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				token: this.authStore.getToken,
 				URL: `/api/l/books/upload_book`,
@@ -312,7 +316,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -328,7 +332,7 @@ export class LibraryService {
 	) {
 		try {
 			this.validateBook(book)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/l/books/update_book/${book._id}`,
 				body: this.buildDataBook(book, filesImg, filesBook),
@@ -341,7 +345,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -352,7 +356,7 @@ export class LibraryService {
 
 	async deleteBook(idBook: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/l/books/delete_book/${idBook}`,
 				spinnerStatus: true,
@@ -364,7 +368,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -378,7 +382,7 @@ export class LibraryService {
 		try {
 			if (tag === '' || tag.length > 100)
 				throw new Error('Debe existir una categoria de máx. 100 cárac.')
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					tag: Tag
 				}> &
@@ -397,7 +401,7 @@ export class LibraryService {
 			})
 			return dataFetch.body.tag
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -407,7 +411,7 @@ export class LibraryService {
 
 	async deleteTag(idTag: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/l/tags/delete_tag/${idTag}`,
 				spinnerStatus: true,
@@ -420,7 +424,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -440,7 +444,7 @@ export class LibraryService {
 			form.append('editorial', editorial)
 			form.append('image', files[0])
 
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					editorial: Editorial
 				}> &
@@ -459,7 +463,7 @@ export class LibraryService {
 			})
 			return dataFetch.body.editorial
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -478,7 +482,7 @@ export class LibraryService {
 			const form = new FormData()
 			form.append('editorial', editorial)
 			if (files && files?.length > 0) form.append('image', files[0])
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch.fetchData<
 				BodyFetch<{
 					image: string
 				}> &
@@ -497,7 +501,7 @@ export class LibraryService {
 
 			return dataFetch.body.image
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -507,7 +511,7 @@ export class LibraryService {
 
 	async deleteEditorial(idEditorial: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/l/editorials/delete_editorial/${idEditorial}`,
 				token: this.authStore.getToken,
@@ -519,7 +523,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -607,7 +611,7 @@ export class LibraryService {
 			if (!files || files.length === 0)
 				throw new Error('Debe seleccionar una imagen para el autor')
 			this.validateAuthor(author)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/l/authors/upload_author`,
 				body: this.buildDataAuthor(author, files),
@@ -620,7 +624,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -654,7 +658,7 @@ export class LibraryService {
 	async updateAuthor(author: Author, files: FileList | null) {
 		try {
 			this.validateAuthor(author)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'put',
 				URL: `/api/l/authors/update_author/${author._id}`,
 				body: this.buildDataUpdateAuthor(author, files),
@@ -668,7 +672,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -679,7 +683,7 @@ export class LibraryService {
 
 	async saveBook(idBook: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/l/books/save_book/${idBook}`,
 				spinnerStatus: true,
@@ -687,7 +691,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -698,7 +702,7 @@ export class LibraryService {
 
 	async uploadRanking(opinion: string, idBook: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'post',
 				URL: `/api/l/books/rank_book/${idBook}`,
 				spinnerStatus: true,
@@ -710,7 +714,7 @@ export class LibraryService {
 				type: 'success',
 			})
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',
@@ -720,7 +724,7 @@ export class LibraryService {
 
 	async deleteAuthor(idAuthor: string) {
 		try {
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch.fetchData({
 				method: 'delete',
 				URL: `/api/l/authors/delete_author/${idAuthor}`,
 				spinnerStatus: true,
@@ -732,7 +736,7 @@ export class LibraryService {
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
+			const _err = this.fetch.handleError(err)
 			this.toastStore.addToast({
 				message: _err.message,
 				type: 'error',

@@ -1,26 +1,21 @@
 // Types
+import { Service } from './service'
 import { Address } from '~/models/address/address'
 import { Parent } from '~/models/user/parent.model'
-import type { DefaultResponse } from '~~/common/fetchModule'
 import type { BodyFetch } from '~~/models/body.model'
 import { User } from '~~/models/user/user.model'
 
-export class ParentService {
-	private readonly authStore = useAuthStore()
-	private readonly toastsStore = useToastsStore()
-	private readonly nuxtApp = useNuxtApp()
+export class ParentService extends Service {
 	private readonly LIMIT = 30
 
 	async getParents(total = false, skip?: number, search?: string) {
 		let URL = `/api/parents?total=${total}&limit=${this.LIMIT}`
 		if (search) URL += `&search=${search}`
 		if (skip && skip >= 0) URL += `&skip=${skip}`
-		const data = await this.nuxtApp.$fetchModule.fetchData<
-			BodyFetch<{ parents: Array<Parent>; total?: number }> &
-				DefaultResponse
+		const data = await this.fetch<
+			BodyFetch<{ parents: Array<Parent>; total?: number }>
 		>({
 			URL,
-			token: this.authStore.getToken,
 			spinnerStatus: true,
 			method: 'get',
 			abort: {
@@ -32,12 +27,11 @@ export class ParentService {
 	}
 
 	async getParentStudent() {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
-			BodyFetch<{ students: Array<User> }> & DefaultResponse
+		const dataFetch = await this.fetch<
+			BodyFetch<{ students: Array<User> }>
 		>({
 			URL: `/api/parents/students`,
 			method: 'get',
-			token: this.authStore.getToken,
 			spinnerStatus: true,
 			abort: {
 				url: 'same',
@@ -47,13 +41,19 @@ export class ParentService {
 		return dataFetch.body.students
 	}
 
+	async getParentsByStudentID(idStudent: string) {
+		return await this.fetch<BodyFetch<{ parents: Array<Parent> }>>({
+			method: 'get',
+			URL: `/api/parents/student/${idStudent}`,
+		}).then(({ body }) => body.parents)
+	}
+
 	async getParentStudentsByID(idParent: string) {
-		const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
-			BodyFetch<{ students: Array<User> }> & DefaultResponse
+		const dataFetch = await this.fetch<
+			BodyFetch<{ students: Array<User> }>
 		>({
 			URL: `/api/parents/${idParent}/students`,
 			method: 'get',
-			token: this.authStore.getToken,
 			spinnerStatus: true,
 			abort: {
 				url: 'same',
@@ -68,25 +68,20 @@ export class ParentService {
 			if (why.length > 535 || why === '')
 				throw new Error('Debe existir un motivo de máx 535 cárac.')
 
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'post',
 				URL: `/api/parents/status/${idParent}`,
 				body: { why },
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
 
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha cambiado el estado del apoderado exitosamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
@@ -151,83 +146,65 @@ export class ParentService {
 	async uploadParent(parent: User & { address: Address }) {
 		try {
 			this.validatorsParent(parent)
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
+			const dataFetch = await this.fetch<
 				BodyFetch<{
 					parents: Parent
-				}> &
-					DefaultResponse
+				}>
 			>({
 				method: 'post',
 				URL: '/api/parents',
 				body: [parent],
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha agregado el apoderado exitosamente',
 				type: 'success',
 			})
 
 			return dataFetch.body.parents
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 		}
 	}
 
 	async uploadParents(parents: Array<User>) {
 		try {
 			for (const parent of parents) this.validatorsParent(parent)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'post',
 				URL: '/api/parents',
 				body: parents,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se han agregado los apoderados exitosamente',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}
 
 	async assignStudent(idParent: string, idStudent: string) {
 		try {
-			const dataFetch = await this.nuxtApp.$fetchModule.fetchData<
-				BodyFetch<{ student: User }> & DefaultResponse
-			>({
+			const dataFetch = await this.fetch<BodyFetch<{ student: User }>>({
 				method: 'put',
 				URL: `/api/parents/${idParent}/students`,
 				body: {
 					idStudent,
 				},
-				token: this.authStore.getToken,
 				spinnerStatus: true,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha asignado el alumno exitosamente',
 				type: 'success',
 			})
 
 			return dataFetch.body.student
 		} catch (err) {
-			const error = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: error.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return null
 		}
 	}
@@ -235,24 +212,19 @@ export class ParentService {
 	async editParent(parent: User, idParent: string) {
 		try {
 			this.validatorsParent(parent)
-			await this.nuxtApp.$fetchModule.fetchData({
+			await this.fetch({
 				method: 'put',
 				URL: `/api/parents/${idParent}`,
 				spinnerStatus: true,
-				token: this.authStore.getToken,
 				body: parent,
 			})
-			this.toastsStore.addToast({
+			this.addToast({
 				message: 'Se ha editado con éxito el apoderado',
 				type: 'success',
 			})
 			return true
 		} catch (err) {
-			const _err = this.nuxtApp.$fetchModule.handleError(err)
-			this.toastsStore.addToast({
-				message: _err.message,
-				type: 'error',
-			})
+			this.addErrorToast(err)
 			return false
 		}
 	}

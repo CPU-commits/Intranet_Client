@@ -39,7 +39,11 @@ async function deleteWork() {
 					class="Work__config"
 					:class="open ? 'Work__config--open' : ''"
 				>
-					<NuxtLink :to="`trabajos/editar/${work._id}`">
+					<NuxtLink
+						:to="`trabajos/editar${
+							work.type === 'in-person' ? '/presencial' : ''
+						}/${work._id}`"
+					>
 						<i class="fa-solid fa-pen-to-square" /> Editar
 					</NuxtLink>
 					<button
@@ -62,7 +66,11 @@ async function deleteWork() {
 						v-if="work.type === 'form'"
 						class="fa-solid fa-clipboard"
 					></i>
-					<i v-else class="fa-solid fa-file-arrow-up"></i>
+					<i
+						v-else-if="work.type === 'files'"
+						class="fa-solid fa-file-arrow-up"
+					></i>
+					<i v-else class="fa-solid fa-school-flag"></i>
 					{{ work.title }}
 				</h3>
 				<div v-if="work.is_qualified" class="Grade">
@@ -83,20 +91,35 @@ async function deleteWork() {
 					<i class="fa-solid fa-circle-check" />
 					Trabajo revisado
 				</small>
-				<p v-if="dateIsBefore(new Date(), work.date_start)">
+				<p
+					v-if="
+						work.type !== 'in-person' &&
+						dateIsBefore(new Date(), work.date_start)
+					"
+				>
 					<i
 						title="Fecha apertura trabajo"
 						class="fa-solid fa-door-open"
 					/>
 					{{ formatDate(work.date_start) }}
 				</p>
-				<p v-if="!work.is_revised">
+				<p v-if="work.type !== 'in-person' && !work.is_revised">
 					<i
 						title="Fecha cierre trabajo"
 						class="fa-solid fa-door-closed"
 					/>
 					{{ formatDate(work.date_limit) }}
 				</p>
+				<!-- eslint-disable-next-line vue/no-v-for-template-key -->
+				<template v-for="(session, i) in work.sessions" :key="i">
+					<p v-for="(date, j) in session.dates" :key="j">
+						<i class="fa-solid fa-calendar-day"></i>
+						{{ formatDateLLUTC(date) }}
+						<i class="fa-solid fa-square"></i>
+						{{ work.blocks?.at(i)?.block.hour_start }} -
+						{{ work.blocks?.at(i)?.block.hour_finish }}
+					</p>
+				</template>
 			</section>
 			<footer>
 				<small>
@@ -241,6 +264,15 @@ aside a {
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
+	p {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+	}
+}
+
+.fa-square {
+	font-size: 0.45rem;
 }
 
 small i,
